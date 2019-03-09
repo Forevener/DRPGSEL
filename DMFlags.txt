@@ -1,0 +1,51 @@
+DMFlags	1	Allow Health (DM)	true	Allows players to pick up items which restore health
+DMFlags	2	Allow Powerups (DM)	true	Allows players to pick up and use powerup items
+DMFlags	4	Weapons Stay (DM)	false	Weapons aren't removed from the map when a player picks them up; Doesn't work with weapons dropped by enemies
+DMFlags	8	Falling damage (Old)	false	Damages the player when they fall too far; uses old ZDoom damage calculation
+DMFlags	16	Falling damage (Hexen)	false	Damages the player when they fall too far; uses Hexen's damage calculation
+DMFlags	24	Falling damage (Strife)	false	Damages the player when they fall too far; uses Strife's damage calculation
+DMFlags	64	Same Map (DM)	false	After exiting, the current map is started over instead of proceeding to the next
+DMFlags	128	Spawn Farthest (DM)	false	Tries to spawn players far away from each other in a Deathmatch game
+DMFlags	256	Force Respawn	false	Forces the player to respawn a few seconds after death
+DMFlags	512	Allow Armor (DM)	true	Allows players to pick up items which give armor
+DMFlags	1024	Allow Exit (DM)	true	If off, trying to exit the level by normal means will kill the offending player instead
+DMFlags	2048	Infinite ammo	false	All players have infinite ammo
+DMFlags	4096	No monsters	false	Monsters placed in the map don't appear; does not stop monsters from spawning via scripts, however
+DMFlags	8192	Monsters respawn	false	Monsters who are killed automatically respawn; this is the default behavior for the Nightmare skill setting
+DMFlags	16384	Items respawn	false	Basic items, such as weapons and ammo, respawn after being picked up
+DMFlags	32768	Fast monsters	false	Monsters move and react faster; this is the default behavior for the Nightmare skill setting
+DMFlags	65536	Allow jump	true	Players are allowed to jump; can be overridden in the MAPINFO lump
+DMFlags	262144	Allow freelook	true	Players are allowed to look up and down; can be overridden in the MAPINFO lump
+DMFlags	1048576	Allow FOV	true	Players are allowed to change their FOV (Field of Vision) from the default
+DMFlags	2097152	Spawn multiplayer weapons (Coop)	true	If off, weapons marked as Multiplayer Only in the map won't appear in Cooperative games
+DMFlags	4194304	Allow crouch	true	Players are allowed to crouch; can be overridden in the MAPINFO lump
+DMFlags	16777216	Lose entire inventory (Coop)	false	Players lose everything in their inventory upon death (Coop only)
+DMFlags	33554432	Keep keys (Coop)	true	If off, players lose keys upon death (Coop only)
+DMFlags	67108864	Keep weapons (Coop)	true	If off, players lose all weapons upon death and are given the standard pistol and 50 bullets on respawn (Coop only)
+DMFlags	134217728	Keep armor (Coop)	true	If off, armor is reset to 0% on death (Coop only)
+DMFlags	268435456	Keep powerups (Coop)	true	If off, powerups are lost on death (Coop only)
+DMFlags	536870912	Keep ammo (Coop)	true	If off, ammo is lost on death and the player starts with only 50 bullets (Coop only)
+DMFlags	1073741824	Lose half ammo (Coop)	false	If on, half of the player's ammo is removed on death (Coop only)
+DMFlags2	2	Drop weapon	false	Drops the player's currently selected weapon on death
+DMFlags2	16	No team changing (DM)	false	If on, players cannot change teams in a teamplay match after the map has started.
+DMFlags2	64	Double ammo	false	If on, ammo pickups are doubled.
+DMFlags2	128	Degeneration	false	Players have their health slowly drained when over 100%
+DMFlags2	256	Allow BFG aiming	true	Players are allowed to aim BFG shots up and down; turn off to prevent the BFG from being fired into the ground to generate instant tracers
+DMFlags2	512	Barrels respawn (DM)	false	Respawns barrels in a Deathmatch game
+DMFlags2	1024	Respawn protection (DM)	false	Players who are respawning are invulnerable for a few seconds
+DMFlags2	4096	Spawn where died (Coop)	false	If on, players respawn at the spot they died, unless they died in an instant-death sector (Sector type 115). (Coop only)
+DMFlags2	8192	Keep frags gained (DM)	false	If on, players keep their frag count from one map to the next.
+DMFlags2	16384	No respawn	false	If enabled, players will not be able to respawn after dying.
+DMFlags2	32768	Lose frag on death (DM)	false	Players lose a frag each time they die.
+DMFlags2	65536	Infinite inventory	false	Inventory items aren't removed when used.
+DMFlags2	131072	No monsters to exit	false	Players cannot exit the map until all monsters are killed
+DMFlags2	262144	Allow automap	true	Players are allowed to access their automap
+DMFlags2	524288	Automap allies	true	Players can see other friendly players on the automap
+DMFlags2	1048576	Allow spying	true	Players can use the spynext command to see through their allies' eyes
+DMFlags2	2097152	Chasecam cheat	false	Players are allowed to use the third-person chase cam
+DMFlags2	4194304	Disallow Suicide	false	Players cannot die due to self-inflicted damage
+DMFlags2	8388608	Allow Autoaim	true	Player weapons cannot auto aim
+DMFlags2	16777216	Check ammo for weapon switch	true	Player cannot switch to empty weapon
+DMFlags2	33554432	Icon of Sins death kills its spawns	true	Death of the BossBrain kills all monsters created by the BossEye before ending the level, allowing a 100% kill tally on the intermission screen
+DMFlags2	67108864	End sector counts for kill%	true	Monsters placed in sectors with the dDamage_End type (as used in Doom E1M8) not count towards the total
+DMFlags2	134217728	Big powerups respawn	false	Powerups, such as the Invisibility and Invulnerability, respawn after being picked up
