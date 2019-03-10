@@ -849,25 +849,29 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel,
             this.toolStripProgressBar});
-            this.statusStrip.Location = new System.Drawing.Point(0, 795);
+            this.statusStrip.Location = new System.Drawing.Point(0, 791);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Padding = new System.Windows.Forms.Padding(2, 0, 28, 0);
-            this.statusStrip.Size = new System.Drawing.Size(856, 38);
+            this.statusStrip.Size = new System.Drawing.Size(856, 42);
+            this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 9;
             // 
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.AutoSize = false;
+            this.toolStripStatusLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(624, 33);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(563, 37);
             this.toolStripStatusLabel.Spring = true;
             this.toolStripStatusLabel.Text = "Ready";
             this.toolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // toolStripProgressBar
             // 
+            this.toolStripProgressBar.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripProgressBar.Margin = new System.Windows.Forms.Padding(1, 3, 0, 3);
             this.toolStripProgressBar.Name = "toolStripProgressBar";
-            this.toolStripProgressBar.Size = new System.Drawing.Size(200, 32);
+            this.toolStripProgressBar.Size = new System.Drawing.Size(200, 36);
             this.toolStripProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             // 
             // buttonCheckUpdates

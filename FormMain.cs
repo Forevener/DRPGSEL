@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -11,8 +12,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Octokit;
-using ICSharpCode.SharpZipLib;
-using ICSharpCode.SharpZipLib.Zip;
 
 namespace DoomRPG
 {
@@ -318,9 +317,9 @@ namespace DoomRPG
 
         private void SaveControls()
         {
-            config.portPath = File.Exists(textBoxPortPath.Text) ? textBoxPortPath.Text : String.Empty;
-            config.DRPGPath = Directory.Exists(textBoxDRPGPath.Text) ? textBoxDRPGPath.Text : String.Empty;
-            config.modsPath = Directory.Exists(textBoxModsPath.Text) ? textBoxModsPath.Text : String.Empty;
+            config.portPath = textBoxPortPath.Text;
+            config.DRPGPath = textBoxDRPGPath.Text;
+            config.modsPath = textBoxModsPath.Text;
             config.iwad = (IWAD)comboBoxIWAD.SelectedIndex;
             config.difficulty = (Difficulty)comboBoxDifficulty.SelectedIndex;
             config.rlClass = (DRLAClass)comboBoxClass.SelectedIndex;
@@ -493,7 +492,6 @@ namespace DoomRPG
         {
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string zipPath = path + "\\DoomRPG.zip";
-            FastZip zip = new FastZip();
 
             try
             {
@@ -512,10 +510,9 @@ namespace DoomRPG
         {
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             string zipPath = path + "\\DoomRPG.zip";
-            FastZip zip = new FastZip();
 
             // Extract the zip
-            zip.ExtractZip(zipPath, path, string.Empty);
+            ZipFile.ExtractToDirectory(zipPath, path);
 
             // Move the files to the root folder
             Directory.Move(path + "\\DoomRPG-" + currentBranch, config.DRPGPath);

@@ -47,7 +47,7 @@ namespace DoomRPG
 
             try
             {
-                FieldInfo[] fields = this.GetType().GetFields();
+                FieldInfo[] fields = GetType().GetFields();
 
                 foreach (FieldInfo field in fields)
                 {
@@ -89,7 +89,7 @@ namespace DoomRPG
             {
                 if (File.Exists(path))
                 {
-                    FieldInfo[] fields = this.GetType().GetFields();
+                    FieldInfo[] fields = GetType().GetFields();
                     string[] lines = File.ReadAllLines(path);
 
                     foreach (string option in lines)
