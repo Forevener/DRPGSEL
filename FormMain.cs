@@ -11,8 +11,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using Octokit;
-
 namespace DoomRPG
 {
     public partial class FormMain : Form
@@ -21,7 +19,6 @@ namespace DoomRPG
         Config config = new Config();
         string currentBranch = string.Empty;
         List<PatchInfo> patches = new List<PatchInfo>();
-        Dictionary<int, string> loadOrder = new Dictionary<int, string>();
         List<DMFlag> DMFlags = new List<DMFlag>();
         List<DMFlag> DMFlags2 = new List<DMFlag>();
 
@@ -50,6 +47,7 @@ namespace DoomRPG
             PopulatePatches();
 
             // Mods
+            checkedListBoxMods.ItemCheck += CheckedListBoxMods_ItemCheck;
             PopulateMods();
 
             // DMFLags
@@ -63,6 +61,15 @@ namespace DoomRPG
 
             // Populate branches combo box
             _ = PopulateBranchesComboBox();
+        }
+
+        private void CheckedListBoxMods_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            string mod = checkedListBoxMods.Items[e.Index].ToString();
+            if (e.NewValue == CheckState.Unchecked)
+                config.mods.Remove(mod);
+            else if (!config.mods.Contains(mod))
+                config.mods.Add(mod);
         }
 
         private void PopulateDMFlags()
@@ -331,10 +338,10 @@ namespace DoomRPG
             for (int i = 0; i < patches.Count; i++)
                 if (checkedListBoxPatches.GetItemChecked(i))
                     config.patches.Add(patches[i].Name);
-            config.mods.Clear();
-            for (int i = 0; i < checkedListBoxMods.Items.Count; i++)
-                if (checkedListBoxMods.GetItemChecked(i))
-                    config.mods.Add(checkedListBoxMods.Items[i].ToString());
+            //config.mods.Clear();
+            //for (int i = 0; i < checkedListBoxMods.Items.Count; i++)
+            //    if (checkedListBoxMods.GetItemChecked(i))
+            //        config.mods.Add(checkedListBoxMods.Items[i].ToString());
             config.multiplayer = checkBoxMultiplayer.Checked;
             if (radioButtonHosting.Checked)
                 config.multiplayerMode = MultiplayerMode.Hosting;
@@ -353,21 +360,19 @@ namespace DoomRPG
             config.EnableDMFlags2 = checkBoxDMFlags2.Checked;
         }
 
-        private async Task<string> GetMasterSHA()
+        private async Task<string> GetBranchSHA(string branchName)
         {
-            GitHubClient client = new GitHubClient(new ProductHeaderValue("DoomRPG"));
-            Branch master = await client.Repository.Branch.Get("Sumwunn", "DoomRPG", currentBranch);
-            return master.Commit.Sha;
+            Branch branch = (await Octokitten.GetAllBranches("Sumwunn", "DoomRPG")).Single(b => b.name == branchName);
+            return branch?.commit.sha;
         }
 
         private async Task<List<String>> GetBranches()
         {
-            GitHubClient client = new GitHubClient(new ProductHeaderValue("DoomRPG"));
             List<String> branchNames = new List<string>();
-            IReadOnlyList<Branch> branches = await client.Repository.Branch.GetAll("Sumwunn", "DoomRPG");
+            IReadOnlyList<Branch> branches = await Octokitten.GetAllBranches("Sumwunn", "DoomRPG");
 
             foreach (Branch branch in branches)
-                branchNames.Add(branch.Name);
+                branchNames.Add(branch.name);
 
             return branchNames;
         }
@@ -410,7 +415,7 @@ namespace DoomRPG
 
                 try
                 {
-                    string masterSHA = await GetMasterSHA();
+                    string branchSHA = await GetBranchSHA(currentBranch);
                     string SHAPath = config.DRPGPath + "\\SHA-1";
 
                     // Does the SHA-1 of the current version match the remote branch?
@@ -432,7 +437,7 @@ namespace DoomRPG
                         string localSHA = File.ReadAllLines(SHAPath)[0];
 
                         // Not a match, need to grab the latest version
-                        if (masterSHA != localSHA || !File.Exists(SHAPath))
+                        if (branchSHA != localSHA || !File.Exists(SHAPath))
                         {
                             toolStripStatusLabel.ForeColor = Color.Red;
                             toolStripStatusLabel.Text = "Out-of-date, downloading latest version...";
@@ -518,7 +523,7 @@ namespace DoomRPG
             Directory.Move(path + "\\DoomRPG-" + currentBranch, config.DRPGPath);
 
             // Add the SHA-1 file
-            File.WriteAllText(config.DRPGPath + "\\SHA-1", await GetMasterSHA());
+            File.WriteAllText(config.DRPGPath + "\\SHA-1", await GetBranchSHA(currentBranch));
 
             // Delete the zip
             File.Delete(zipPath);
@@ -602,9 +607,8 @@ namespace DoomRPG
             cmdline += " -file";
 
             // Mods selected from the mods list
-            for (int i = 0; i < checkedListBoxMods.Items.Count; i++)
-                if (checkedListBoxMods.GetItemChecked(i))
-                    cmdline += " \"" + config.modsPath + "\\" + checkedListBoxMods.Items[i].ToString() + "\"";
+            for (int i = 0; i < config.mods.Count; i++)
+                cmdline += " \"" + config.modsPath + "\\" + config.mods[i] + "\"";
 
             // Doom RPG
             cmdline += " \"" + config.DRPGPath + "\\DoomRPG\"";
@@ -864,7 +868,7 @@ namespace DoomRPG
             SaveControls();
             CalculateDMFlags();
             config.Save();
-            new FormCommandLine("\"" + config.portPath + "\"" + BuildCommandLine()) { StartPosition = FormStartPosition.CenterParent }.ShowDialog();
+            new FormCommandLine("\"" + config.portPath + "\"" + BuildCommandLine()).ShowDialog();
         }
 
         private void ButtonRefresh_Click(object sender, EventArgs e)
@@ -882,6 +886,15 @@ namespace DoomRPG
         private void ComboBoxBranch_SelectedIndexChanged(object sender, EventArgs e)
         {
             currentBranch = comboBoxBranch.Text;
+        }
+
+        private void ButtonLoadOrder_Click(object sender, EventArgs e)
+        {
+            var form = new FormLoadOrder(config.mods);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                config.mods = form.LoadOrder;
+            }
         }
     }
 }

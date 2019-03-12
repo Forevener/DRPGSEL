@@ -21,7 +21,7 @@ namespace DoomRPG
         public string demo = string.Empty;
         public bool enableCheats = false;
         public bool enableLogging = false;
-        public List<String> patches = new List<string>();
+        public List<string> patches = new List<string>();
         public List<string> mods = new List<string>();
         public string customCommands = string.Empty;
         public bool EnableDMFlags = false;

@@ -54,6 +54,7 @@
             this.Name = "FormCommandLine";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Command line arguments";
             this.ResumeLayout(false);
             this.PerformLayout();

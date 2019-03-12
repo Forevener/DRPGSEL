@@ -74,6 +74,7 @@
             this.radioButtonJoining = new System.Windows.Forms.RadioButton();
             this.checkBoxMultiplayer = new System.Windows.Forms.CheckBox();
             this.tabPageModsPatches = new System.Windows.Forms.TabPage();
+            this.buttonLoadOrder = new System.Windows.Forms.Button();
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.checkedListBoxMods = new System.Windows.Forms.CheckedListBox();
             this.labelMods = new System.Windows.Forms.Label();
@@ -191,7 +192,7 @@
             // 
             // buttonShowCommandLine
             // 
-            this.buttonShowCommandLine.Location = new System.Drawing.Point(588, 492);
+            this.buttonShowCommandLine.Location = new System.Drawing.Point(592, 495);
             this.buttonShowCommandLine.Margin = new System.Windows.Forms.Padding(6);
             this.buttonShowCommandLine.Name = "buttonShowCommandLine";
             this.buttonShowCommandLine.Size = new System.Drawing.Size(236, 69);
@@ -644,6 +645,7 @@
             // 
             // tabPageModsPatches
             // 
+            this.tabPageModsPatches.Controls.Add(this.buttonLoadOrder);
             this.tabPageModsPatches.Controls.Add(this.buttonRefresh);
             this.tabPageModsPatches.Controls.Add(this.checkedListBoxMods);
             this.tabPageModsPatches.Controls.Add(this.labelMods);
@@ -657,12 +659,23 @@
             this.tabPageModsPatches.Text = "Mods/Patches";
             this.tabPageModsPatches.UseVisualStyleBackColor = true;
             // 
+            // buttonLoadOrder
+            // 
+            this.buttonLoadOrder.Location = new System.Drawing.Point(582, 512);
+            this.buttonLoadOrder.Margin = new System.Windows.Forms.Padding(6);
+            this.buttonLoadOrder.Name = "buttonLoadOrder";
+            this.buttonLoadOrder.Size = new System.Drawing.Size(236, 56);
+            this.buttonLoadOrder.TabIndex = 29;
+            this.buttonLoadOrder.Text = "Edit Load Order";
+            this.buttonLoadOrder.UseVisualStyleBackColor = true;
+            this.buttonLoadOrder.Click += new System.EventHandler(this.ButtonLoadOrder_Click);
+            // 
             // buttonRefresh
             // 
             this.buttonRefresh.Location = new System.Drawing.Point(22, 512);
             this.buttonRefresh.Margin = new System.Windows.Forms.Padding(6);
             this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Size = new System.Drawing.Size(800, 56);
+            this.buttonRefresh.Size = new System.Drawing.Size(548, 56);
             this.buttonRefresh.TabIndex = 21;
             this.buttonRefresh.Text = "Reload Patches and Mods";
             this.buttonRefresh.UseVisualStyleBackColor = true;
@@ -861,7 +874,7 @@
             this.toolStripStatusLabel.AutoSize = false;
             this.toolStripStatusLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(563, 37);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(625, 37);
             this.toolStripStatusLabel.Spring = true;
             this.toolStripStatusLabel.Text = "Ready";
             this.toolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -901,6 +914,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(856, 833);
             this.Controls.Add(this.buttonCheckUpdates);
             this.Controls.Add(this.statusStrip);
@@ -1013,6 +1027,7 @@
         private System.Windows.Forms.ListView listViewDMFlags;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.Button buttonLoadOrder;
     }
 }
 
