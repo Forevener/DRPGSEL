@@ -33,7 +33,7 @@ namespace DoomRPG
         public FormMain()
         {
             InitializeComponent();
-            
+
             // Title
             Text = "Doom RPG SE Launcher v" + version;
 
@@ -47,7 +47,6 @@ namespace DoomRPG
             PopulatePatches();
 
             // Mods
-            checkedListBoxMods.ItemCheck += CheckedListBoxMods_ItemCheck;
             PopulateMods();
 
             // DMFLags
@@ -158,7 +157,7 @@ namespace DoomRPG
             comboBoxClass.SelectedIndex = (int)config.rlClass;
 
             // Savegames
-            if (config.portPath != string.Empty)
+            if (config.portPath != string.Empty && File.Exists(config.portPath))
             {
                 List<string> files = Directory.EnumerateFiles(Path.GetDirectoryName(config.portPath)).ToList<string>();
 
@@ -186,11 +185,11 @@ namespace DoomRPG
             if (config.DRPGPath != string.Empty)
                 if (Directory.Exists(config.DRPGPath))
                 {
-                    List<string> folders = Directory.EnumerateDirectories(config.DRPGPath).ToList<string>();
+                    List<string> folders = Directory.EnumerateDirectories(config.DRPGPath).ToList();
 
                     foreach (string folder in folders)
                     {
-                        List<string> files = Directory.EnumerateFiles(folder).ToList<string>();
+                        List<string> files = Directory.EnumerateFiles(folder).ToList();
                         bool isValid = false;
 
                         foreach (string file in files)
@@ -557,7 +556,7 @@ namespace DoomRPG
                 cmdline += " -warp " + config.mapNumber;
 
                 // DRLA Class
-                if (IsDRLAActive())
+                if (IsDRLAActive)
                     cmdline += " +playerclass " + config.rlClass.ToString();
             }
 
@@ -632,14 +631,9 @@ namespace DoomRPG
             return cmdline;
         }
 
-        private bool IsDRLAActive()
+        private bool IsDRLAActive
         {
-            for (int i = 0; i < patches.Count; i++)
-                if (patches[i].Name.ToLower().Contains("doomrl"))
-                    if (checkedListBoxPatches.GetItemChecked(i))
-                        return true;
-
-            return false;
+            get => patches.Find(p => p.Name == "DoomRL Arsenal")?.Enabled ?? false;
         }
 
         private void ButtonBrowsePortPath_Click(object sender, EventArgs e)
@@ -691,8 +685,16 @@ namespace DoomRPG
 
         private void TextBoxModsPath_TextChanged(object sender, EventArgs e)
         {
-            // Re-populate the mods list
-            PopulateMods();
+            if (Directory.Exists(textBoxModsPath.Text))
+            {
+                textBoxModsPath.ForeColor = SystemColors.WindowText;
+                // Re-populate the mods list
+                PopulateMods();
+            }
+            else
+            {
+                textBoxModsPath.ForeColor = Color.Red;
+            }
         }
 
         private async void ButtonCheckUpdates_Click(object sender, EventArgs e)
@@ -803,47 +805,24 @@ namespace DoomRPG
             }
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void RadioButtonJoining_CheckedChanged(object sender, EventArgs e)
         {
-            // Check loaded patches
-            for (int i = 0; i < patches.Count; i++)
-                patches[i].Enabled = checkedListBoxPatches.GetItemChecked(i);
+            CheckMultiplayerJoining();
+        }
 
-            // If Map Number is 0, skill is irrelevent
-            if (numericUpDownMapNumber.Value == 0)
-                comboBoxDifficulty.Enabled = false;
-            else
-                comboBoxDifficulty.Enabled = true;
+        private void RadioButtonHosting_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckMultiplayerHosting();
+        }
 
-            // Player Class
-            if (numericUpDownMapNumber.Value > 0 && IsDRLAActive())
-                comboBoxClass.Enabled = true;
-            else
-                comboBoxClass.Enabled = false;
-
-            // Multiplayer Checkbox
+        private void CheckBoxMultiplayer_CheckedChanged(object sender, EventArgs e)
+        {
             if (checkBoxMultiplayer.Checked)
             {
                 groupBoxMode.Enabled = true;
                 groupBoxServerMode.Enabled = true;
-                if (radioButtonHosting.Checked)
-                {
-                    numericUpDownPlayers.Enabled = true;
-                    radioButtonPeerToPeer.Enabled = true;
-                    radioButtonPacketServer.Enabled = true;
-                    groupBoxServerOptions.Enabled = true;
-                }
-                else
-                {
-                    numericUpDownPlayers.Enabled = false;
-                    radioButtonPeerToPeer.Enabled = false;
-                    radioButtonPacketServer.Enabled = false;
-                    groupBoxServerOptions.Enabled = false;
-                }
-                if (radioButtonJoining.Checked)
-                    textBoxHostname.Enabled = true;
-                else
-                    textBoxHostname.Enabled = false;
+                CheckMultiplayerHosting();
+                CheckMultiplayerJoining();
             }
             else
             {
@@ -851,6 +830,63 @@ namespace DoomRPG
                 groupBoxServerMode.Enabled = false;
                 groupBoxServerOptions.Enabled = false;
             }
+        }
+
+        private void CheckMultiplayerHosting()
+        {
+            if (radioButtonHosting.Checked)
+            {
+                numericUpDownPlayers.Enabled = true;
+                radioButtonPeerToPeer.Enabled = true;
+                radioButtonPacketServer.Enabled = true;
+                groupBoxServerOptions.Enabled = true;
+            }
+            else
+            {
+                numericUpDownPlayers.Enabled = false;
+                radioButtonPeerToPeer.Enabled = false;
+                radioButtonPacketServer.Enabled = false;
+                groupBoxServerOptions.Enabled = false;
+            }
+        }
+
+        private void CheckMultiplayerJoining()
+        {
+            if (radioButtonJoining.Checked)
+                textBoxHostname.Enabled = true;
+            else
+                textBoxHostname.Enabled = false;
+        }
+
+        private void NumericUpDownMapNumber_ValueChanged(object sender, EventArgs e)
+        {
+            // If Map Number is 0, skill and class are irrelevent
+            if (numericUpDownMapNumber.Value == 0)
+            {
+                comboBoxDifficulty.Enabled = false;
+                comboBoxClass.Enabled = false;
+            }
+            else
+            {
+                comboBoxDifficulty.Enabled = true;
+                if (IsDRLAActive)
+                    comboBoxClass.Enabled = true;
+            }
+        }
+
+        private void TextBoxPortPath_TextChanged(object sender, EventArgs e)
+        {
+            textBoxPortPath.ForeColor = File.Exists(textBoxPortPath.Text) ? SystemColors.WindowText : Color.Red;
+        }
+
+        private void CheckedListBoxPatches_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            // Check loaded patches
+            patches[e.Index].Enabled = e.NewValue.HasFlag(CheckState.Checked);
+            if (IsDRLAActive && numericUpDownMapNumber.Value > 0)
+                comboBoxClass.Enabled = true;
+            else
+                comboBoxClass.Enabled = false;
         }
 
         private void TimerPulse_Tick(object sender, EventArgs e)
@@ -880,7 +916,15 @@ namespace DoomRPG
 
         private void TextBoxDRPGPath_TextChanged(object sender, EventArgs e)
         {
-            LoadCredits();
+            if (Directory.Exists(textBoxDRPGPath.Text))
+            {
+                textBoxDRPGPath.ForeColor = SystemColors.WindowText;
+                LoadCredits();
+            }
+            else
+            {
+                textBoxDRPGPath.ForeColor = Color.Red;
+            }
         }
         
         private void ComboBoxBranch_SelectedIndexChanged(object sender, EventArgs e)

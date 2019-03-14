@@ -97,7 +97,6 @@
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.buttonCheckUpdates = new System.Windows.Forms.Button();
-            this.timer = new System.Windows.Forms.Timer(this.components);
             this.timerPulse = new System.Windows.Forms.Timer(this.components);
             this.toolTipMain = new System.Windows.Forms.ToolTip(this.components);
             this.tabControlMain.SuspendLayout();
@@ -345,6 +344,7 @@
             this.numericUpDownMapNumber.Name = "numericUpDownMapNumber";
             this.numericUpDownMapNumber.Size = new System.Drawing.Size(148, 31);
             this.numericUpDownMapNumber.TabIndex = 9;
+            this.numericUpDownMapNumber.ValueChanged += new System.EventHandler(this.NumericUpDownMapNumber_ValueChanged);
             // 
             // labelMapNumber
             // 
@@ -424,6 +424,7 @@
             this.textBoxPortPath.Name = "textBoxPortPath";
             this.textBoxPortPath.Size = new System.Drawing.Size(654, 31);
             this.textBoxPortPath.TabIndex = 1;
+            this.textBoxPortPath.TextChanged += new System.EventHandler(this.TextBoxPortPath_TextChanged);
             // 
             // labelPortLocation
             // 
@@ -619,6 +620,7 @@
             this.radioButtonHosting.TabStop = true;
             this.radioButtonHosting.Text = "Hosting";
             this.radioButtonHosting.UseVisualStyleBackColor = true;
+            this.radioButtonHosting.CheckedChanged += new System.EventHandler(this.RadioButtonHosting_CheckedChanged);
             // 
             // radioButtonJoining
             // 
@@ -631,6 +633,7 @@
             this.radioButtonJoining.TabStop = true;
             this.radioButtonJoining.Text = "Joining";
             this.radioButtonJoining.UseVisualStyleBackColor = true;
+            this.radioButtonJoining.CheckedChanged += new System.EventHandler(this.RadioButtonJoining_CheckedChanged);
             // 
             // checkBoxMultiplayer
             // 
@@ -642,6 +645,7 @@
             this.checkBoxMultiplayer.TabIndex = 0;
             this.checkBoxMultiplayer.Text = "Multiplayer Game";
             this.checkBoxMultiplayer.UseVisualStyleBackColor = true;
+            this.checkBoxMultiplayer.CheckedChanged += new System.EventHandler(this.CheckBoxMultiplayer_CheckedChanged);
             // 
             // tabPageModsPatches
             // 
@@ -689,6 +693,7 @@
             this.checkedListBoxMods.Name = "checkedListBoxMods";
             this.checkedListBoxMods.Size = new System.Drawing.Size(416, 446);
             this.checkedListBoxMods.TabIndex = 20;
+            this.checkedListBoxMods.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CheckedListBoxMods_ItemCheck);
             // 
             // labelMods
             // 
@@ -708,6 +713,7 @@
             this.checkedListBoxPatches.Name = "checkedListBoxPatches";
             this.checkedListBoxPatches.Size = new System.Drawing.Size(366, 446);
             this.checkedListBoxPatches.TabIndex = 18;
+            this.checkedListBoxPatches.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CheckedListBoxPatches_ItemCheck);
             // 
             // labelPatches
             // 
@@ -899,11 +905,6 @@
             this.buttonCheckUpdates.UseVisualStyleBackColor = true;
             this.buttonCheckUpdates.Click += new System.EventHandler(this.ButtonCheckUpdates_Click);
             // 
-            // timer
-            // 
-            this.timer.Enabled = true;
-            this.timer.Tick += new System.EventHandler(this.Timer_Tick);
-            // 
             // timerPulse
             // 
             this.timerPulse.Enabled = true;
@@ -1006,7 +1007,6 @@
         private System.Windows.Forms.Label labelIWAD;
         private System.Windows.Forms.ComboBox comboBoxClass;
         private System.Windows.Forms.Label labelPlayerClass;
-        private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.ComboBox comboBoxSaveGame;
         private System.Windows.Forms.Label labelSavegame;
         private System.Windows.Forms.CheckBox checkBoxLogging;
