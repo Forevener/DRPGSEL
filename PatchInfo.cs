@@ -12,25 +12,31 @@ namespace DoomRPG
             get { return name; }
         }
 
-        List<string> conflicts = new List<string>();
+        private List<string> conflicts = new List<string>();
         public List<string> Conflicts
         {
             get { return conflicts; }
         }
 
-        List<string> requires = new List<string>();
+        private List<string> requires = new List<string>();
         public List<string> Requires
         {
             get { return requires; }
         }
 
-        string path;
+        private List<string> reqiredMods = new List<string>();
+        public List<string> ReqiredMods
+        {
+            get { return reqiredMods; }
+        }
+
+        private string path;
         public string Path
         {
             get { return path; }
         }
 
-        bool enabled;
+        private bool enabled;
         public bool Enabled
         {
             get { return enabled; }
@@ -39,9 +45,10 @@ namespace DoomRPG
 
         public static PatchInfo ReadPatch(string path)
         {
-            PatchInfo info = new PatchInfo();
-
-            info.path = System.IO.Path.GetDirectoryName(path);
+            PatchInfo info = new PatchInfo
+            {
+                path = System.IO.Path.GetDirectoryName(path)
+            };
 
             if (File.Exists(path))
             {
@@ -51,20 +58,24 @@ namespace DoomRPG
                 {
                     string[] s = line.Split('=');
 
-                    if (s.Length != 2)
-                        continue;
+                    if (s.Length == 2)
+                    {
+                        // Name
+                        if (s[0].ToLower() == "name")
+                            info.name = s[1];
 
-                    // Name
-                    if (s[0].ToLower() == "name")
-                        info.name = s[1];
-                    
-                    // Conflicts
-                    if (s[0].ToLower() == "conflicts")
-                        info.conflicts.Add(s[1]);
+                        // Conflicts
+                        else if (s[0].ToLower() == "conflicts")
+                            info.conflicts.Add(s[1]);
 
-                    // Requires
-                    if (s[0].ToLower() == "requires")
-                        info.requires.Add(s[1]);
+                        // Requires
+                        else if (s[0].ToLower() == "requires")
+                            info.requires.Add(s[1]);
+
+                        // Requires
+                        else if (s[0].ToLower() == "mods")
+                            info.reqiredMods.Add(s[1]);
+                    }
                 }
             }
             else
@@ -81,18 +92,15 @@ namespace DoomRPG
             string error = string.Empty;
             bool hasError = false;
 
-            for (int i = 0; i < patches.Count; i++)
+            foreach (PatchInfo patch in patches.FindAll(p => p.enabled))
             {
-                if (!patches[i].Enabled) continue;
-
-                for (int j = 0; j < patches.Count; j++)
+                foreach (string req in patch.requires)
                 {
-                    for (int k = 0; k < patches[i].Requires.Count; k++)
-                        if (patches[i].Requires[k].ToLower() == patches[j].Name.ToLower() && !patches[j].Enabled)
-                        {
-                            error += "Patch " + patches[i].name + " requires the patch " + patches[j].name + "\n";
-                            hasError = true;
-                        }
+                    if (!patches.Find(p => p.name == req)?.enabled ?? false)
+                    {
+                        error += $"Patch {patch.name} requires the patch {req}\n";
+                        hasError = true;
+                    }
                 }
             }
 
@@ -105,25 +113,46 @@ namespace DoomRPG
                 return true;
         }
 
+        public static bool CheckForMods(List<PatchInfo> patches, List<string> mods)
+        {
+            string error = string.Empty;
+            bool hasError = false;
+
+            foreach (PatchInfo patch in patches.FindAll(p => p.Enabled))
+            {
+                foreach (string mod in patch.reqiredMods)
+                {
+                    if (!mods.Contains(mod))
+                    {
+                        error += $"Patch {patch.name} requires the file {mod}\n";
+                        hasError = true;
+                    }
+                }
+            }
+
+            if (hasError)
+            {
+                Utils.ShowError(error.TrimEnd('\n'), "Mods missing");
+                return false;
+            }
+            else
+                return true;
+        }
+
         public static bool CheckForConflicts(List<PatchInfo> patches)
         {
             string error = string.Empty;
             bool hasError = false;
 
-            for (int i = 0; i < patches.Count; i++)
+            foreach (PatchInfo patch in patches.FindAll(p => p.enabled))
             {
-                if (!patches[i].Enabled) continue;
-                
-                for (int j = 0; j < patches.Count; j++)
+                foreach (string conf in patch.conflicts)
                 {
-                    if (!patches[j].Enabled) continue;
-
-                    for (int k = 0; k < patches[j].Conflicts.Count; k++)
-                        if (patches[j].Conflicts[k].ToLower() == patches[i].Name.ToLower())
-                        {
-                            error += "Patch " + patches[i].name + " conflicts with patch " + patches[j].name + "\n";
-                            hasError = true;
-                        }
+                    if (patches.Find(p => p.name == conf)?.enabled ?? false)
+                    {
+                        error += $"Patch {patch.name} conflicts with patch {conf}\n";
+                        hasError = true;
+                    }
                 }
             }
 

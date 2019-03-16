@@ -19,6 +19,7 @@ namespace DoomRPG
         public DRLAClass rlClass = DRLAClass.Marine;
         public int mapNumber = 1;
         public string demo = string.Empty;
+        public bool enableDRPG = true;
         public bool enableCheats = false;
         public bool enableLogging = false;
         public List<string> patches = new List<string>();
@@ -96,55 +97,55 @@ namespace DoomRPG
                     {
                         string[] s = option.Split('=');
 
-                        if (s.Length != 2)
-                            continue;
-
-                        FieldInfo field = fields.FirstOrDefault(o => o.Name == s[0]);
-                        
-                        if (field != null)
+                        if (s.Length == 2)
                         {
-                            // Basic Types
-                            if (field.GetValue(this).GetType() == typeof(bool))
-                                field.SetValue(this, bool.Parse(s[1]));
-                            if (field.GetValue(this).GetType() == typeof(int))
-                                field.SetValue(this, int.Parse(s[1]));
-                            if (field.GetValue(this).GetType() == typeof(float))
-                                field.SetValue(this, float.Parse(s[1]));
-                            if (field.GetValue(this).GetType() == typeof(string))
-                                field.SetValue(this, s[1]);
+                            FieldInfo field = fields.FirstOrDefault(o => o.Name == s[0]);
 
-                            // String List
-                            if (field.GetValue(this).GetType() == typeof(List<string>))
+                            if (field != null)
                             {
-                                List<string> listStrings = new List<string>();
-                                string[] entries = s[1].Split(';');
-                                if (entries.Length > 0 && entries[0] != string.Empty)
-                                    foreach (string entry in entries)
-                                        listStrings.Add(entry.Trim(new char[] { '{', '}' }));
-                                field.SetValue(this, listStrings);
-                            }
+                                // Basic Types
+                                if (field.GetValue(this).GetType() == typeof(bool))
+                                    field.SetValue(this, bool.Parse(s[1]));
+                                if (field.GetValue(this).GetType() == typeof(int))
+                                    field.SetValue(this, int.Parse(s[1]));
+                                if (field.GetValue(this).GetType() == typeof(float))
+                                    field.SetValue(this, float.Parse(s[1]));
+                                if (field.GetValue(this).GetType() == typeof(string))
+                                    field.SetValue(this, s[1]);
 
-                            // Enums
-                            if (field.GetValue(this).GetType() == typeof(IWAD))
-                                for (int i = 0; i < Enum.GetNames(typeof(IWAD)).Length; i++)
-                                    if (Enum.GetNames(typeof(IWAD))[i].Contains(s[1]))
-                                        field.SetValue(this, Enum.ToObject(typeof(IWAD), i));
-                            if (field.GetValue(this).GetType() == typeof(Difficulty))
-                                for (int i = 0; i < Enum.GetNames(typeof(Difficulty)).Length; i++)
-                                    if (Enum.GetNames(typeof(Difficulty))[i].Contains(s[1]))
-                                        field.SetValue(this, Enum.ToObject(typeof(Difficulty), i));
-                            if (field.GetValue(this).GetType() == typeof(DRLAClass))
-                                for (int i = 0; i < Enum.GetNames(typeof(DRLAClass)).Length; i++)
-                                    if (Enum.GetNames(typeof(DRLAClass))[i].Contains(s[1]))
-                                        field.SetValue(this, Enum.ToObject(typeof(DRLAClass), i));
-                            if (field.GetValue(this).GetType() == typeof(MultiplayerMode))
-                                for (int i = 0; i < Enum.GetNames(typeof(MultiplayerMode)).Length; i++)
-                                    if (Enum.GetNames(typeof(MultiplayerMode))[i].Contains(s[1]))
-                                        field.SetValue(this, Enum.ToObject(typeof(MultiplayerMode), i));
-                            if (field.GetValue(this).GetType() == typeof(ServerType))
-                                for (int i = 0; i < Enum.GetNames(typeof(ServerType)).Length; i++)
-                                    if (Enum.GetNames(typeof(ServerType))[i].Contains(s[1]))
-                                        field.SetValue(this, Enum.ToObject(typeof(ServerType), i));
+                                // String List
+                                if (field.GetValue(this).GetType() == typeof(List<string>))
+                                {
+                                    List<string> listStrings = new List<string>();
+                                    string[] entries = s[1].Split(';');
+                                    if (entries.Length > 0 && entries[0] != string.Empty)
+                                        foreach (string entry in entries)
+                                            listStrings.Add(entry.Trim(new char[] { '{', '}' }));
+                                    field.SetValue(this, listStrings);
+                                }
+
+                                // Enums
+                                if (field.GetValue(this).GetType() == typeof(IWAD))
+                                    for (int i = 0; i < Enum.GetNames(typeof(IWAD)).Length; i++)
+                                        if (Enum.GetNames(typeof(IWAD))[i].Contains(s[1]))
+                                            field.SetValue(this, Enum.ToObject(typeof(IWAD), i));
+                                if (field.GetValue(this).GetType() == typeof(Difficulty))
+                                    for (int i = 0; i < Enum.GetNames(typeof(Difficulty)).Length; i++)
+                                        if (Enum.GetNames(typeof(Difficulty))[i].Contains(s[1]))
+                                            field.SetValue(this, Enum.ToObject(typeof(Difficulty), i));
+                                if (field.GetValue(this).GetType() == typeof(DRLAClass))
+                                    for (int i = 0; i < Enum.GetNames(typeof(DRLAClass)).Length; i++)
+                                        if (Enum.GetNames(typeof(DRLAClass))[i].Contains(s[1]))
+                                            field.SetValue(this, Enum.ToObject(typeof(DRLAClass), i));
+                                if (field.GetValue(this).GetType() == typeof(MultiplayerMode))
+                                    for (int i = 0; i < Enum.GetNames(typeof(MultiplayerMode)).Length; i++)
+                                        if (Enum.GetNames(typeof(MultiplayerMode))[i].Contains(s[1]))
+                                            field.SetValue(this, Enum.ToObject(typeof(MultiplayerMode), i));
+                                if (field.GetValue(this).GetType() == typeof(ServerType))
+                                    for (int i = 0; i < Enum.GetNames(typeof(ServerType)).Length; i++)
+                                        if (Enum.GetNames(typeof(ServerType))[i].Contains(s[1]))
+                                            field.SetValue(this, Enum.ToObject(typeof(ServerType), i));
+                            }
                         }
                     }
                 }

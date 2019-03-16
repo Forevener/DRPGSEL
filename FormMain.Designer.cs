@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageBasic = new System.Windows.Forms.TabPage();
+            this.checkBoxDRPG = new System.Windows.Forms.CheckBox();
             this.comboBoxBranch = new System.Windows.Forms.ComboBox();
             this.labelBranch = new System.Windows.Forms.Label();
             this.buttonShowCommandLine = new System.Windows.Forms.Button();
@@ -132,6 +133,7 @@
             // 
             // tabPageBasic
             // 
+            this.tabPageBasic.Controls.Add(this.checkBoxDRPG);
             this.tabPageBasic.Controls.Add(this.comboBoxBranch);
             this.tabPageBasic.Controls.Add(this.labelBranch);
             this.tabPageBasic.Controls.Add(this.buttonShowCommandLine);
@@ -166,6 +168,19 @@
             this.tabPageBasic.TabIndex = 0;
             this.tabPageBasic.Text = "Basic";
             this.tabPageBasic.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxDRPG
+            // 
+            this.checkBoxDRPG.AutoSize = true;
+            this.checkBoxDRPG.Checked = true;
+            this.checkBoxDRPG.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxDRPG.Location = new System.Drawing.Point(24, 399);
+            this.checkBoxDRPG.Margin = new System.Windows.Forms.Padding(6);
+            this.checkBoxDRPG.Name = "checkBoxDRPG";
+            this.checkBoxDRPG.Size = new System.Drawing.Size(218, 29);
+            this.checkBoxDRPG.TabIndex = 28;
+            this.checkBoxDRPG.Text = "Enable DoomRPG";
+            this.checkBoxDRPG.UseVisualStyleBackColor = true;
             // 
             // comboBoxBranch
             // 
@@ -221,7 +236,7 @@
             // checkBoxLogging
             // 
             this.checkBoxLogging.AutoSize = true;
-            this.checkBoxLogging.Location = new System.Drawing.Point(24, 458);
+            this.checkBoxLogging.Location = new System.Drawing.Point(24, 481);
             this.checkBoxLogging.Margin = new System.Windows.Forms.Padding(6);
             this.checkBoxLogging.Name = "checkBoxLogging";
             this.checkBoxLogging.Size = new System.Drawing.Size(259, 29);
@@ -232,7 +247,7 @@
             // checkBoxEnableCheats
             // 
             this.checkBoxEnableCheats.AutoSize = true;
-            this.checkBoxEnableCheats.Location = new System.Drawing.Point(24, 413);
+            this.checkBoxEnableCheats.Location = new System.Drawing.Point(23, 440);
             this.checkBoxEnableCheats.Margin = new System.Windows.Forms.Padding(6);
             this.checkBoxEnableCheats.Name = "checkBoxEnableCheats";
             this.checkBoxEnableCheats.Size = new System.Drawing.Size(185, 29);
@@ -1028,6 +1043,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Button buttonLoadOrder;
+        private System.Windows.Forms.CheckBox checkBoxDRPG;
     }
 }
 
