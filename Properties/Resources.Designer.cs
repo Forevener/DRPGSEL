@@ -61,6 +61,26 @@ namespace DoomRPG.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap AddFile_16x {
+            get {
+                object obj = ResourceManager.GetObject("AddFile_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Copy_16x {
+            get {
+                object obj = ResourceManager.GetObject("Copy_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to DMFlags	1	Allow Health (DM)	true	Allows players to pick up items which restore health
         ///DMFlags	2	Allow Powerups (DM)	true	Allows players to pick up and use powerup items
         ///DMFlags	4	Weapons Stay (DM)	false	Weapons aren&apos;t removed from the map when a player picks them up; Doesn&apos;t work with weapons dropped by enemies
@@ -70,6 +90,36 @@ namespace DoomRPG.Properties {
         internal static string DMFlags {
             get {
                 return ResourceManager.GetString("DMFlags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Eraser_16x {
+            get {
+                object obj = ResourceManager.GetObject("Eraser_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Pen1_16x {
+            get {
+                object obj = ResourceManager.GetObject("Pen1_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Save_16x {
+            get {
+                object obj = ResourceManager.GetObject("Save_16x", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

@@ -19,6 +19,7 @@ namespace DoomRPG
             listViewLoadOrder.MouseDown += ListViewLoadOrder_MouseDown;
             listViewLoadOrder.DragOver += ListViewLoadOrder_DragOver;
             listViewLoadOrder.DragDrop += ListViewLoadOrder_DragDrop;
+            // REFACTORING : TRY BINDING ITEMS
             foreach (string s in mods)
                 listViewLoadOrder.Items.Add(s);
             listViewLoadOrder.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);

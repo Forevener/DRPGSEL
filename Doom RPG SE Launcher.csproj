@@ -78,6 +78,12 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormSetName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSetName.Designer.cs">
+      <DependentUpon>FormSetName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Octokitten.cs" />
     <Compile Include="PatchInfo.cs" />
     <Compile Include="Program.cs" />
@@ -91,6 +97,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSetName.resx">
+      <DependentUpon>FormSetName.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -114,6 +123,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Save_16x.png" />
+    <None Include="Resources\AddFile_16x.png" />
+    <None Include="Resources\Eraser_16x.png" />
+    <None Include="Resources\Copy_16x.png" />
+    <None Include="Resources\Pen1_16x.png" />
     <None Include="DMFlags.txt" />
     <Content Include="Doom RPG Launcher.ico" />
   </ItemGroup>

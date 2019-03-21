@@ -122,7 +122,7 @@ namespace DoomRPG
             {
                 foreach (string mod in patch.reqiredMods)
                 {
-                    if (!mods.Contains(mod))
+                    if (!mods.Exists(m => m.Contains(mod)))
                     {
                         error += $"Patch {patch.name} requires the file {mod}\n";
                         hasError = true;

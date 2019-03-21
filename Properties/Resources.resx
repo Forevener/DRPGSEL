@@ -117,8 +117,51 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="AddFile_16x" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAB0SURBVDhP7Y4xDoAgDEU9lINzD8fgJTyiunTFfALmAzXU
+        xcmfvIS0+a9MJaoamTz2B6VlnROvBHyVBQO2XK8vt2AnIhUhhFoyEhz7eWNK8iPBxYIlYEn6BdIKuGgJ
+        QCdgLAHTCUowxNIqMb/gC4GHR4EfjRe1oHCao2evrwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="Copy_16x" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAACVSURBVDhPtdBBCoAgEEBRb9Vel+Laa3icWtQRNVu4nZpg
+        wMa0hBI+ETUPVQCASClBpXg0iNYiQEpZ5JwD7/3WRHJgDfHSMi/PSAvIkRDC/ZFqgLUWjDGgtW4fqQbg
+        MH+fxqlEegB8FvfSC2CEHHOxC6DoXnDuNcD7B8i3qZS6HaQKgMd3xOMA7xvgKfzvBPjCD+9KsAN4ldKh
+        Io9kBwAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="Pen1_16x" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADjSURBVDhPzZG7DcIwEIYzCiMwQ/rsQJGWiDLUoUeZgA1I
+        kT4rhCGAJkVAyqM0/k42WCgvOn7pZMd3339nx1uqtm1PXdcpJ44mNS8LB0GgfN+XtSiKZSYuHG0jdbve
+        VVle5JtzUzYsC9M1O2cCJ8lBVs4mDVzYjk1nYCaZnOAbdk2YxMLUGeSjMdiNP4T7vl/pZJ2m6SBIjMJI
+        G2yqqpLCON7LI/0Mh2Eo//hRP8VkEYx0cme7Y0Cw5zqzMNJFZZ7n745MgqE+r2dhRCEgJoAE1+JhTcm0
+        mqZZY8IkXAfYpBbI81590Y9xyj860QAAAABJRU5ErkJggg==
+</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="DMFlags" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\DMFlags.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Eraser_16x" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAE8SURBVDhPlZJPaoNQEMbtqtseIKuQbS8hIp6hQdCV3sBs
+        3Ai60I3gTbxICQmkUCO0tX/gtbYF43Y68+ILVlO1A9/Cmfl9b2ZQGou6rheoW9R1k5oeBB8OhyJNU6iq
+        iv3LRMBRFIGiKOB53nSTNmyaJux2d2Db9jQTgrGp8H2fw48PT/D1+Q0vz6/jJgKmpjYsNGgyBrdNLMvi
+        Jrgm68GapkG+z8/CpH2Ww/JmCXEcA3JZ72UaceWs4J199GCaStd1oOPi6xmyMzLYBkFwGlvs2TWhGvU0
+        cIHcnI9fliXIsgybzfbU3DURcLM3wQsOU+DHOgxDMAyD79c1cRynffm3XzAFJcRPQ8dpm2T3GaiqCq7r
+        EkxHE7pq8GNgYk5HSZKErzOkswYUmJyhMsYYDOlPAwosXFJxgi6OhCT9AC5CQVt0kILbAAAAAElFTkSu
+        QmCC
+</value>
+  </data>
+  <data name="Save_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Save_16x.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

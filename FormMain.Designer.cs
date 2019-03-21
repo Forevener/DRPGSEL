@@ -32,6 +32,16 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageBasic = new System.Windows.Forms.TabPage();
+            this.buttonConfigSave = new System.Windows.Forms.Button();
+            this.buttonBrowseIWADsPath = new System.Windows.Forms.Button();
+            this.textBoxIWADsPath = new System.Windows.Forms.TextBox();
+            this.labelIWADsLocation = new System.Windows.Forms.Label();
+            this.buttonConfigRemove = new System.Windows.Forms.Button();
+            this.buttonDuplicateConfig = new System.Windows.Forms.Button();
+            this.buttonRenameConfig = new System.Windows.Forms.Button();
+            this.buttonCreateConfig = new System.Windows.Forms.Button();
+            this.comboBoxConfig = new System.Windows.Forms.ComboBox();
+            this.labelConfig = new System.Windows.Forms.Label();
             this.checkBoxDRPG = new System.Windows.Forms.CheckBox();
             this.comboBoxBranch = new System.Windows.Forms.ComboBox();
             this.labelBranch = new System.Windows.Forms.Label();
@@ -75,11 +85,12 @@
             this.radioButtonJoining = new System.Windows.Forms.RadioButton();
             this.checkBoxMultiplayer = new System.Windows.Forms.CheckBox();
             this.tabPageModsPatches = new System.Windows.Forms.TabPage();
-            this.buttonLoadOrder = new System.Windows.Forms.Button();
-            this.buttonRefresh = new System.Windows.Forms.Button();
-            this.checkedListBoxMods = new System.Windows.Forms.CheckedListBox();
-            this.labelMods = new System.Windows.Forms.Label();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.checkedListBoxPatches = new System.Windows.Forms.CheckedListBox();
+            this.buttonLoadOrder = new System.Windows.Forms.Button();
+            this.checkedListBoxMods = new System.Windows.Forms.CheckedListBox();
+            this.buttonRefresh = new System.Windows.Forms.Button();
+            this.labelMods = new System.Windows.Forms.Label();
             this.labelPatches = new System.Windows.Forms.Label();
             this.tabPageDMFlags = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -100,6 +111,7 @@
             this.buttonCheckUpdates = new System.Windows.Forms.Button();
             this.timerPulse = new System.Windows.Forms.Timer(this.components);
             this.toolTipMain = new System.Windows.Forms.ToolTip(this.components);
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControlMain.SuspendLayout();
             this.tabPageBasic.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMapNumber)).BeginInit();
@@ -110,29 +122,42 @@
             this.groupBoxMode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPlayers)).BeginInit();
             this.tabPageModsPatches.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.tabPageDMFlags.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tabPageCredits.SuspendLayout();
             this.statusStrip.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControlMain
             // 
+            this.tableLayoutPanel3.SetColumnSpan(this.tabControlMain, 2);
             this.tabControlMain.Controls.Add(this.tabPageBasic);
             this.tabControlMain.Controls.Add(this.tabPageMultiplayer);
             this.tabControlMain.Controls.Add(this.tabPageModsPatches);
             this.tabControlMain.Controls.Add(this.tabPageDMFlags);
             this.tabControlMain.Controls.Add(this.tabPageCredits);
-            this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tabControlMain.Location = new System.Drawing.Point(0, 0);
+            this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlMain.Location = new System.Drawing.Point(6, 6);
             this.tabControlMain.Margin = new System.Windows.Forms.Padding(6);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(856, 623);
+            this.tabControlMain.Size = new System.Drawing.Size(904, 721);
             this.tabControlMain.TabIndex = 0;
             // 
             // tabPageBasic
             // 
+            this.tabPageBasic.Controls.Add(this.buttonConfigSave);
+            this.tabPageBasic.Controls.Add(this.buttonBrowseIWADsPath);
+            this.tabPageBasic.Controls.Add(this.textBoxIWADsPath);
+            this.tabPageBasic.Controls.Add(this.labelIWADsLocation);
+            this.tabPageBasic.Controls.Add(this.buttonConfigRemove);
+            this.tabPageBasic.Controls.Add(this.buttonDuplicateConfig);
+            this.tabPageBasic.Controls.Add(this.buttonRenameConfig);
+            this.tabPageBasic.Controls.Add(this.buttonCreateConfig);
+            this.tabPageBasic.Controls.Add(this.comboBoxConfig);
+            this.tabPageBasic.Controls.Add(this.labelConfig);
             this.tabPageBasic.Controls.Add(this.checkBoxDRPG);
             this.tabPageBasic.Controls.Add(this.comboBoxBranch);
             this.tabPageBasic.Controls.Add(this.labelBranch);
@@ -164,40 +189,167 @@
             this.tabPageBasic.Margin = new System.Windows.Forms.Padding(6);
             this.tabPageBasic.Name = "tabPageBasic";
             this.tabPageBasic.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPageBasic.Size = new System.Drawing.Size(840, 576);
+            this.tabPageBasic.Size = new System.Drawing.Size(888, 674);
             this.tabPageBasic.TabIndex = 0;
             this.tabPageBasic.Text = "Basic";
             this.tabPageBasic.UseVisualStyleBackColor = true;
+            // 
+            // buttonConfigSave
+            // 
+            this.buttonConfigSave.BackgroundImage = global::DoomRPG.Properties.Resources.Save_16x;
+            this.buttonConfigSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonConfigSave.Location = new System.Drawing.Point(362, 533);
+            this.buttonConfigSave.Margin = new System.Windows.Forms.Padding(6);
+            this.buttonConfigSave.Name = "buttonConfigSave";
+            this.buttonConfigSave.Size = new System.Drawing.Size(48, 48);
+            this.buttonConfigSave.TabIndex = 38;
+            this.toolTipMain.SetToolTip(this.buttonConfigSave, "Save current config");
+            this.buttonConfigSave.UseVisualStyleBackColor = true;
+            this.buttonConfigSave.Click += new System.EventHandler(this.ButtonConfigSave_Click);
+            // 
+            // buttonBrowseIWADsPath
+            // 
+            this.buttonBrowseIWADsPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonBrowseIWADsPath.Location = new System.Drawing.Point(740, 183);
+            this.buttonBrowseIWADsPath.Margin = new System.Windows.Forms.Padding(6);
+            this.buttonBrowseIWADsPath.Name = "buttonBrowseIWADsPath";
+            this.buttonBrowseIWADsPath.Size = new System.Drawing.Size(132, 38);
+            this.buttonBrowseIWADsPath.TabIndex = 37;
+            this.buttonBrowseIWADsPath.Text = "Browse...";
+            this.buttonBrowseIWADsPath.UseVisualStyleBackColor = true;
+            this.buttonBrowseIWADsPath.Click += new System.EventHandler(this.ButtonBrowseIWADsPath_Click);
+            // 
+            // textBoxIWADsPath
+            // 
+            this.textBoxIWADsPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxIWADsPath.Location = new System.Drawing.Point(21, 187);
+            this.textBoxIWADsPath.Margin = new System.Windows.Forms.Padding(6);
+            this.textBoxIWADsPath.Name = "textBoxIWADsPath";
+            this.textBoxIWADsPath.Size = new System.Drawing.Size(702, 31);
+            this.textBoxIWADsPath.TabIndex = 36;
+            this.textBoxIWADsPath.TextChanged += new System.EventHandler(this.TextBoxIWADsPath_TextChanged);
+            // 
+            // labelIWADsLocation
+            // 
+            this.labelIWADsLocation.AutoSize = true;
+            this.labelIWADsLocation.Location = new System.Drawing.Point(17, 156);
+            this.labelIWADsLocation.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.labelIWADsLocation.Name = "labelIWADsLocation";
+            this.labelIWADsLocation.Size = new System.Drawing.Size(221, 25);
+            this.labelIWADsLocation.TabIndex = 35;
+            this.labelIWADsLocation.Text = "IWAD Folder Location";
+            this.labelIWADsLocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // buttonConfigRemove
+            // 
+            this.buttonConfigRemove.BackgroundImage = global::DoomRPG.Properties.Resources.Eraser_16x;
+            this.buttonConfigRemove.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonConfigRemove.Location = new System.Drawing.Point(542, 533);
+            this.buttonConfigRemove.Margin = new System.Windows.Forms.Padding(6);
+            this.buttonConfigRemove.Name = "buttonConfigRemove";
+            this.buttonConfigRemove.Size = new System.Drawing.Size(48, 48);
+            this.buttonConfigRemove.TabIndex = 34;
+            this.toolTipMain.SetToolTip(this.buttonConfigRemove, "Remove selected config");
+            this.buttonConfigRemove.UseVisualStyleBackColor = true;
+            this.buttonConfigRemove.Click += new System.EventHandler(this.ButtonConfigRemove_Click);
+            // 
+            // buttonDuplicateConfig
+            // 
+            this.buttonDuplicateConfig.BackgroundImage = global::DoomRPG.Properties.Resources.Copy_16x;
+            this.buttonDuplicateConfig.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonDuplicateConfig.Location = new System.Drawing.Point(482, 533);
+            this.buttonDuplicateConfig.Margin = new System.Windows.Forms.Padding(6);
+            this.buttonDuplicateConfig.Name = "buttonDuplicateConfig";
+            this.buttonDuplicateConfig.Size = new System.Drawing.Size(48, 48);
+            this.buttonDuplicateConfig.TabIndex = 33;
+            this.toolTipMain.SetToolTip(this.buttonDuplicateConfig, "Duplicate selected config");
+            this.buttonDuplicateConfig.UseVisualStyleBackColor = true;
+            this.buttonDuplicateConfig.Click += new System.EventHandler(this.ButtonDuplicateConfig_Click);
+            // 
+            // buttonRenameConfig
+            // 
+            this.buttonRenameConfig.BackgroundImage = global::DoomRPG.Properties.Resources.Pen1_16x;
+            this.buttonRenameConfig.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonRenameConfig.Location = new System.Drawing.Point(422, 533);
+            this.buttonRenameConfig.Margin = new System.Windows.Forms.Padding(6);
+            this.buttonRenameConfig.Name = "buttonRenameConfig";
+            this.buttonRenameConfig.Size = new System.Drawing.Size(48, 48);
+            this.buttonRenameConfig.TabIndex = 32;
+            this.toolTipMain.SetToolTip(this.buttonRenameConfig, "Rename selected config");
+            this.buttonRenameConfig.UseVisualStyleBackColor = true;
+            this.buttonRenameConfig.Click += new System.EventHandler(this.ButtonRenameConfig_Click);
+            // 
+            // buttonCreateConfig
+            // 
+            this.buttonCreateConfig.BackgroundImage = global::DoomRPG.Properties.Resources.AddFile_16x;
+            this.buttonCreateConfig.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonCreateConfig.Location = new System.Drawing.Point(302, 533);
+            this.buttonCreateConfig.Margin = new System.Windows.Forms.Padding(6);
+            this.buttonCreateConfig.Name = "buttonCreateConfig";
+            this.buttonCreateConfig.Size = new System.Drawing.Size(48, 48);
+            this.buttonCreateConfig.TabIndex = 31;
+            this.toolTipMain.SetToolTip(this.buttonCreateConfig, "Create new config");
+            this.buttonCreateConfig.UseVisualStyleBackColor = true;
+            this.buttonCreateConfig.Click += new System.EventHandler(this.ButtonCreateConfig_Click);
+            // 
+            // comboBoxConfig
+            // 
+            this.comboBoxConfig.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxConfig.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxConfig.FormattingEnabled = true;
+            this.comboBoxConfig.Location = new System.Drawing.Point(302, 488);
+            this.comboBoxConfig.Margin = new System.Windows.Forms.Padding(6);
+            this.comboBoxConfig.Name = "comboBoxConfig";
+            this.comboBoxConfig.Size = new System.Drawing.Size(287, 33);
+            this.comboBoxConfig.TabIndex = 30;
+            this.comboBoxConfig.SelectionChangeCommitted += new System.EventHandler(this.ComboBoxConfig_SelectionChangeCommitted);
+            // 
+            // labelConfig
+            // 
+            this.labelConfig.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelConfig.AutoSize = true;
+            this.labelConfig.Location = new System.Drawing.Point(296, 458);
+            this.labelConfig.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.labelConfig.Name = "labelConfig";
+            this.labelConfig.Size = new System.Drawing.Size(140, 25);
+            this.labelConfig.TabIndex = 29;
+            this.labelConfig.Text = "Config preset";
             // 
             // checkBoxDRPG
             // 
             this.checkBoxDRPG.AutoSize = true;
             this.checkBoxDRPG.Checked = true;
             this.checkBoxDRPG.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxDRPG.Location = new System.Drawing.Point(24, 399);
+            this.checkBoxDRPG.Location = new System.Drawing.Point(20, 472);
             this.checkBoxDRPG.Margin = new System.Windows.Forms.Padding(6);
             this.checkBoxDRPG.Name = "checkBoxDRPG";
             this.checkBoxDRPG.Size = new System.Drawing.Size(218, 29);
             this.checkBoxDRPG.TabIndex = 28;
             this.checkBoxDRPG.Text = "Enable DoomRPG";
             this.checkBoxDRPG.UseVisualStyleBackColor = true;
+            this.checkBoxDRPG.CheckedChanged += new System.EventHandler(this.CheckBoxDRPG_CheckedChanged);
             // 
             // comboBoxBranch
             // 
+            this.comboBoxBranch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxBranch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxBranch.Enabled = false;
             this.comboBoxBranch.FormattingEnabled = true;
-            this.comboBoxBranch.Location = new System.Drawing.Point(588, 415);
+            this.comboBoxBranch.Location = new System.Drawing.Point(635, 488);
             this.comboBoxBranch.Margin = new System.Windows.Forms.Padding(6);
             this.comboBoxBranch.Name = "comboBoxBranch";
             this.comboBoxBranch.Size = new System.Drawing.Size(232, 33);
             this.comboBoxBranch.TabIndex = 27;
-            this.comboBoxBranch.Text = "Checking...";
             this.comboBoxBranch.SelectedIndexChanged += new System.EventHandler(this.ComboBoxBranch_SelectedIndexChanged);
             // 
             // labelBranch
             // 
+            this.labelBranch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelBranch.AutoSize = true;
-            this.labelBranch.Location = new System.Drawing.Point(582, 385);
+            this.labelBranch.Location = new System.Drawing.Point(629, 458);
             this.labelBranch.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelBranch.Name = "labelBranch";
             this.labelBranch.Size = new System.Drawing.Size(80, 25);
@@ -206,7 +358,8 @@
             // 
             // buttonShowCommandLine
             // 
-            this.buttonShowCommandLine.Location = new System.Drawing.Point(592, 495);
+            this.buttonShowCommandLine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonShowCommandLine.Location = new System.Drawing.Point(639, 568);
             this.buttonShowCommandLine.Margin = new System.Windows.Forms.Padding(6);
             this.buttonShowCommandLine.Name = "buttonShowCommandLine";
             this.buttonShowCommandLine.Size = new System.Drawing.Size(236, 69);
@@ -217,7 +370,8 @@
             // 
             // textBoxDemo
             // 
-            this.textBoxDemo.Location = new System.Drawing.Point(588, 340);
+            this.textBoxDemo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDemo.Location = new System.Drawing.Point(635, 413);
             this.textBoxDemo.Margin = new System.Windows.Forms.Padding(6);
             this.textBoxDemo.Name = "textBoxDemo";
             this.textBoxDemo.Size = new System.Drawing.Size(232, 31);
@@ -225,8 +379,9 @@
             // 
             // labelRecordDemo
             // 
+            this.labelRecordDemo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelRecordDemo.AutoSize = true;
-            this.labelRecordDemo.Location = new System.Drawing.Point(582, 310);
+            this.labelRecordDemo.Location = new System.Drawing.Point(629, 383);
             this.labelRecordDemo.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelRecordDemo.Name = "labelRecordDemo";
             this.labelRecordDemo.Size = new System.Drawing.Size(143, 25);
@@ -236,7 +391,7 @@
             // checkBoxLogging
             // 
             this.checkBoxLogging.AutoSize = true;
-            this.checkBoxLogging.Location = new System.Drawing.Point(24, 481);
+            this.checkBoxLogging.Location = new System.Drawing.Point(20, 554);
             this.checkBoxLogging.Margin = new System.Windows.Forms.Padding(6);
             this.checkBoxLogging.Name = "checkBoxLogging";
             this.checkBoxLogging.Size = new System.Drawing.Size(259, 29);
@@ -247,7 +402,7 @@
             // checkBoxEnableCheats
             // 
             this.checkBoxEnableCheats.AutoSize = true;
-            this.checkBoxEnableCheats.Location = new System.Drawing.Point(23, 440);
+            this.checkBoxEnableCheats.Location = new System.Drawing.Point(20, 513);
             this.checkBoxEnableCheats.Margin = new System.Windows.Forms.Padding(6);
             this.checkBoxEnableCheats.Name = "checkBoxEnableCheats";
             this.checkBoxEnableCheats.Size = new System.Drawing.Size(185, 29);
@@ -257,20 +412,22 @@
             // 
             // comboBoxSaveGame
             // 
+            this.comboBoxSaveGame.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxSaveGame.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSaveGame.FormattingEnabled = true;
-            this.comboBoxSaveGame.Items.AddRange(new object[] {
-            "None"});
-            this.comboBoxSaveGame.Location = new System.Drawing.Point(304, 340);
+            this.comboBoxSaveGame.Location = new System.Drawing.Point(303, 413);
             this.comboBoxSaveGame.Margin = new System.Windows.Forms.Padding(6);
             this.comboBoxSaveGame.Name = "comboBoxSaveGame";
-            this.comboBoxSaveGame.Size = new System.Drawing.Size(238, 33);
+            this.comboBoxSaveGame.Size = new System.Drawing.Size(286, 33);
             this.comboBoxSaveGame.TabIndex = 20;
-            this.comboBoxSaveGame.Text = "None";
             // 
             // labelSavegame
             // 
+            this.labelSavegame.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelSavegame.AutoSize = true;
-            this.labelSavegame.Location = new System.Drawing.Point(298, 310);
+            this.labelSavegame.Location = new System.Drawing.Point(297, 383);
             this.labelSavegame.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelSavegame.Name = "labelSavegame";
             this.labelSavegame.Size = new System.Drawing.Size(114, 25);
@@ -279,9 +436,10 @@
             // 
             // comboBoxClass
             // 
+            this.comboBoxClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxClass.Enabled = false;
             this.comboBoxClass.FormattingEnabled = true;
-            this.comboBoxClass.Location = new System.Drawing.Point(22, 340);
+            this.comboBoxClass.Location = new System.Drawing.Point(20, 414);
             this.comboBoxClass.Margin = new System.Windows.Forms.Padding(6);
             this.comboBoxClass.Name = "comboBoxClass";
             this.comboBoxClass.Size = new System.Drawing.Size(238, 33);
@@ -290,7 +448,7 @@
             // labelPlayerClass
             // 
             this.labelPlayerClass.AutoSize = true;
-            this.labelPlayerClass.Location = new System.Drawing.Point(16, 310);
+            this.labelPlayerClass.Location = new System.Drawing.Point(15, 383);
             this.labelPlayerClass.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelPlayerClass.Name = "labelPlayerClass";
             this.labelPlayerClass.Size = new System.Drawing.Size(133, 25);
@@ -299,8 +457,9 @@
             // 
             // comboBoxIWAD
             // 
+            this.comboBoxIWAD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxIWAD.FormattingEnabled = true;
-            this.comboBoxIWAD.Location = new System.Drawing.Point(24, 262);
+            this.comboBoxIWAD.Location = new System.Drawing.Point(20, 335);
             this.comboBoxIWAD.Margin = new System.Windows.Forms.Padding(6);
             this.comboBoxIWAD.Name = "comboBoxIWAD";
             this.comboBoxIWAD.Size = new System.Drawing.Size(238, 33);
@@ -309,7 +468,7 @@
             // labelIWAD
             // 
             this.labelIWAD.AutoSize = true;
-            this.labelIWAD.Location = new System.Drawing.Point(18, 231);
+            this.labelIWAD.Location = new System.Drawing.Point(17, 304);
             this.labelIWAD.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelIWAD.Name = "labelIWAD";
             this.labelIWAD.Size = new System.Drawing.Size(128, 25);
@@ -318,7 +477,8 @@
             // 
             // buttonBrowseModsPath
             // 
-            this.buttonBrowseModsPath.Location = new System.Drawing.Point(694, 187);
+            this.buttonBrowseModsPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonBrowseModsPath.Location = new System.Drawing.Point(740, 256);
             this.buttonBrowseModsPath.Margin = new System.Windows.Forms.Padding(6);
             this.buttonBrowseModsPath.Name = "buttonBrowseModsPath";
             this.buttonBrowseModsPath.Size = new System.Drawing.Size(132, 38);
@@ -329,17 +489,19 @@
             // 
             // textBoxModsPath
             // 
-            this.textBoxModsPath.Location = new System.Drawing.Point(24, 187);
+            this.textBoxModsPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxModsPath.Location = new System.Drawing.Point(21, 260);
             this.textBoxModsPath.Margin = new System.Windows.Forms.Padding(6);
             this.textBoxModsPath.Name = "textBoxModsPath";
-            this.textBoxModsPath.Size = new System.Drawing.Size(654, 31);
+            this.textBoxModsPath.Size = new System.Drawing.Size(702, 31);
             this.textBoxModsPath.TabIndex = 13;
             this.textBoxModsPath.TextChanged += new System.EventHandler(this.TextBoxModsPath_TextChanged);
             // 
             // labelModsLocation
             // 
             this.labelModsLocation.AutoSize = true;
-            this.labelModsLocation.Location = new System.Drawing.Point(18, 156);
+            this.labelModsLocation.Location = new System.Drawing.Point(17, 229);
             this.labelModsLocation.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelModsLocation.Name = "labelModsLocation";
             this.labelModsLocation.Size = new System.Drawing.Size(273, 25);
@@ -349,7 +511,8 @@
             // 
             // numericUpDownMapNumber
             // 
-            this.numericUpDownMapNumber.Location = new System.Drawing.Point(588, 262);
+            this.numericUpDownMapNumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numericUpDownMapNumber.Location = new System.Drawing.Point(635, 335);
             this.numericUpDownMapNumber.Margin = new System.Windows.Forms.Padding(6);
             this.numericUpDownMapNumber.Maximum = new decimal(new int[] {
             1000,
@@ -363,8 +526,9 @@
             // 
             // labelMapNumber
             // 
+            this.labelMapNumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelMapNumber.AutoSize = true;
-            this.labelMapNumber.Location = new System.Drawing.Point(582, 231);
+            this.labelMapNumber.Location = new System.Drawing.Point(629, 304);
             this.labelMapNumber.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelMapNumber.Name = "labelMapNumber";
             this.labelMapNumber.Size = new System.Drawing.Size(135, 25);
@@ -373,17 +537,22 @@
             // 
             // comboBoxDifficulty
             // 
+            this.comboBoxDifficulty.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxDifficulty.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxDifficulty.FormattingEnabled = true;
-            this.comboBoxDifficulty.Location = new System.Drawing.Point(304, 262);
+            this.comboBoxDifficulty.Location = new System.Drawing.Point(303, 335);
             this.comboBoxDifficulty.Margin = new System.Windows.Forms.Padding(6);
             this.comboBoxDifficulty.Name = "comboBoxDifficulty";
-            this.comboBoxDifficulty.Size = new System.Drawing.Size(238, 33);
+            this.comboBoxDifficulty.Size = new System.Drawing.Size(286, 33);
             this.comboBoxDifficulty.TabIndex = 7;
             // 
             // labelDifficulty
             // 
+            this.labelDifficulty.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelDifficulty.AutoSize = true;
-            this.labelDifficulty.Location = new System.Drawing.Point(298, 231);
+            this.labelDifficulty.Location = new System.Drawing.Point(297, 304);
             this.labelDifficulty.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelDifficulty.Name = "labelDifficulty";
             this.labelDifficulty.Size = new System.Drawing.Size(94, 25);
@@ -392,7 +561,8 @@
             // 
             // buttonBrowseDRPGPath
             // 
-            this.buttonBrowseDRPGPath.Location = new System.Drawing.Point(692, 112);
+            this.buttonBrowseDRPGPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonBrowseDRPGPath.Location = new System.Drawing.Point(740, 108);
             this.buttonBrowseDRPGPath.Margin = new System.Windows.Forms.Padding(6);
             this.buttonBrowseDRPGPath.Name = "buttonBrowseDRPGPath";
             this.buttonBrowseDRPGPath.Size = new System.Drawing.Size(132, 38);
@@ -403,10 +573,12 @@
             // 
             // textBoxDRPGPath
             // 
-            this.textBoxDRPGPath.Location = new System.Drawing.Point(22, 112);
+            this.textBoxDRPGPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxDRPGPath.Location = new System.Drawing.Point(21, 112);
             this.textBoxDRPGPath.Margin = new System.Windows.Forms.Padding(6);
             this.textBoxDRPGPath.Name = "textBoxDRPGPath";
-            this.textBoxDRPGPath.Size = new System.Drawing.Size(654, 31);
+            this.textBoxDRPGPath.Size = new System.Drawing.Size(702, 31);
             this.textBoxDRPGPath.TabIndex = 4;
             this.textBoxDRPGPath.TextChanged += new System.EventHandler(this.TextBoxDRPGPath_TextChanged);
             // 
@@ -423,7 +595,8 @@
             // 
             // buttonBrowsePortPath
             // 
-            this.buttonBrowsePortPath.Location = new System.Drawing.Point(692, 37);
+            this.buttonBrowsePortPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonBrowsePortPath.Location = new System.Drawing.Point(740, 33);
             this.buttonBrowsePortPath.Margin = new System.Windows.Forms.Padding(6);
             this.buttonBrowsePortPath.Name = "buttonBrowsePortPath";
             this.buttonBrowsePortPath.Size = new System.Drawing.Size(132, 38);
@@ -434,10 +607,12 @@
             // 
             // textBoxPortPath
             // 
-            this.textBoxPortPath.Location = new System.Drawing.Point(22, 37);
+            this.textBoxPortPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxPortPath.Location = new System.Drawing.Point(21, 37);
             this.textBoxPortPath.Margin = new System.Windows.Forms.Padding(6);
             this.textBoxPortPath.Name = "textBoxPortPath";
-            this.textBoxPortPath.Size = new System.Drawing.Size(654, 31);
+            this.textBoxPortPath.Size = new System.Drawing.Size(702, 31);
             this.textBoxPortPath.TabIndex = 1;
             this.textBoxPortPath.TextChanged += new System.EventHandler(this.TextBoxPortPath_TextChanged);
             // 
@@ -462,7 +637,7 @@
             this.tabPageMultiplayer.Margin = new System.Windows.Forms.Padding(6);
             this.tabPageMultiplayer.Name = "tabPageMultiplayer";
             this.tabPageMultiplayer.Padding = new System.Windows.Forms.Padding(6);
-            this.tabPageMultiplayer.Size = new System.Drawing.Size(840, 576);
+            this.tabPageMultiplayer.Size = new System.Drawing.Size(888, 674);
             this.tabPageMultiplayer.TabIndex = 1;
             this.tabPageMultiplayer.Text = "Multiplayer";
             this.tabPageMultiplayer.UseVisualStyleBackColor = true;
@@ -476,7 +651,7 @@
             this.groupBoxServerOptions.Margin = new System.Windows.Forms.Padding(6);
             this.groupBoxServerOptions.Name = "groupBoxServerOptions";
             this.groupBoxServerOptions.Padding = new System.Windows.Forms.Padding(6);
-            this.groupBoxServerOptions.Size = new System.Drawing.Size(474, 506);
+            this.groupBoxServerOptions.Size = new System.Drawing.Size(474, 373);
             this.groupBoxServerOptions.TabIndex = 5;
             this.groupBoxServerOptions.TabStop = false;
             this.groupBoxServerOptions.Text = "Server Options";
@@ -664,76 +839,98 @@
             // 
             // tabPageModsPatches
             // 
-            this.tabPageModsPatches.Controls.Add(this.buttonLoadOrder);
-            this.tabPageModsPatches.Controls.Add(this.buttonRefresh);
-            this.tabPageModsPatches.Controls.Add(this.checkedListBoxMods);
-            this.tabPageModsPatches.Controls.Add(this.labelMods);
-            this.tabPageModsPatches.Controls.Add(this.checkedListBoxPatches);
-            this.tabPageModsPatches.Controls.Add(this.labelPatches);
+            this.tabPageModsPatches.Controls.Add(this.tableLayoutPanel2);
             this.tabPageModsPatches.Location = new System.Drawing.Point(8, 39);
             this.tabPageModsPatches.Margin = new System.Windows.Forms.Padding(6);
             this.tabPageModsPatches.Name = "tabPageModsPatches";
-            this.tabPageModsPatches.Size = new System.Drawing.Size(840, 576);
+            this.tabPageModsPatches.Size = new System.Drawing.Size(888, 674);
             this.tabPageModsPatches.TabIndex = 3;
             this.tabPageModsPatches.Text = "Mods/Patches";
             this.tabPageModsPatches.UseVisualStyleBackColor = true;
             // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Controls.Add(this.checkedListBoxPatches, 0, 1);
+            this.tableLayoutPanel2.Controls.Add(this.buttonLoadOrder, 1, 2);
+            this.tableLayoutPanel2.Controls.Add(this.checkedListBoxMods, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.buttonRefresh, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.labelMods, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.labelPatches, 0, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 3;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(888, 674);
+            this.tableLayoutPanel2.TabIndex = 30;
+            // 
+            // checkedListBoxPatches
+            // 
+            this.checkedListBoxPatches.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkedListBoxPatches.FormattingEnabled = true;
+            this.checkedListBoxPatches.Location = new System.Drawing.Point(6, 31);
+            this.checkedListBoxPatches.Margin = new System.Windows.Forms.Padding(6);
+            this.checkedListBoxPatches.Name = "checkedListBoxPatches";
+            this.checkedListBoxPatches.Size = new System.Drawing.Size(432, 569);
+            this.checkedListBoxPatches.TabIndex = 18;
+            this.checkedListBoxPatches.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CheckedListBoxPatches_ItemCheck);
+            // 
             // buttonLoadOrder
             // 
-            this.buttonLoadOrder.Location = new System.Drawing.Point(582, 512);
+            this.buttonLoadOrder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonLoadOrder.Location = new System.Drawing.Point(450, 612);
             this.buttonLoadOrder.Margin = new System.Windows.Forms.Padding(6);
             this.buttonLoadOrder.Name = "buttonLoadOrder";
-            this.buttonLoadOrder.Size = new System.Drawing.Size(236, 56);
+            this.buttonLoadOrder.Size = new System.Drawing.Size(432, 56);
             this.buttonLoadOrder.TabIndex = 29;
             this.buttonLoadOrder.Text = "Edit Load Order";
             this.buttonLoadOrder.UseVisualStyleBackColor = true;
             this.buttonLoadOrder.Click += new System.EventHandler(this.ButtonLoadOrder_Click);
             // 
+            // checkedListBoxMods
+            // 
+            this.checkedListBoxMods.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.checkedListBoxMods.FormattingEnabled = true;
+            this.checkedListBoxMods.Location = new System.Drawing.Point(450, 31);
+            this.checkedListBoxMods.Margin = new System.Windows.Forms.Padding(6);
+            this.checkedListBoxMods.Name = "checkedListBoxMods";
+            this.checkedListBoxMods.Size = new System.Drawing.Size(432, 569);
+            this.checkedListBoxMods.TabIndex = 20;
+            this.checkedListBoxMods.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CheckedListBoxMods_ItemCheck);
+            // 
             // buttonRefresh
             // 
-            this.buttonRefresh.Location = new System.Drawing.Point(22, 512);
+            this.buttonRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonRefresh.Location = new System.Drawing.Point(6, 612);
             this.buttonRefresh.Margin = new System.Windows.Forms.Padding(6);
             this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Size = new System.Drawing.Size(548, 56);
+            this.buttonRefresh.Size = new System.Drawing.Size(432, 56);
             this.buttonRefresh.TabIndex = 21;
             this.buttonRefresh.Text = "Reload Patches and Mods";
             this.buttonRefresh.UseVisualStyleBackColor = true;
             this.buttonRefresh.Click += new System.EventHandler(this.ButtonRefresh_Click);
             // 
-            // checkedListBoxMods
-            // 
-            this.checkedListBoxMods.FormattingEnabled = true;
-            this.checkedListBoxMods.Location = new System.Drawing.Point(402, 31);
-            this.checkedListBoxMods.Margin = new System.Windows.Forms.Padding(6);
-            this.checkedListBoxMods.Name = "checkedListBoxMods";
-            this.checkedListBoxMods.Size = new System.Drawing.Size(416, 446);
-            this.checkedListBoxMods.TabIndex = 20;
-            this.checkedListBoxMods.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CheckedListBoxMods_ItemCheck);
-            // 
             // labelMods
             // 
             this.labelMods.AutoSize = true;
-            this.labelMods.Location = new System.Drawing.Point(396, 0);
+            this.labelMods.Location = new System.Drawing.Point(450, 0);
             this.labelMods.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelMods.Name = "labelMods";
             this.labelMods.Size = new System.Drawing.Size(159, 25);
             this.labelMods.TabIndex = 19;
             this.labelMods.Text = "WAD/PK3 Files";
             // 
-            // checkedListBoxPatches
-            // 
-            this.checkedListBoxPatches.FormattingEnabled = true;
-            this.checkedListBoxPatches.Location = new System.Drawing.Point(20, 31);
-            this.checkedListBoxPatches.Margin = new System.Windows.Forms.Padding(6);
-            this.checkedListBoxPatches.Name = "checkedListBoxPatches";
-            this.checkedListBoxPatches.Size = new System.Drawing.Size(366, 446);
-            this.checkedListBoxPatches.TabIndex = 18;
-            this.checkedListBoxPatches.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CheckedListBoxPatches_ItemCheck);
-            // 
             // labelPatches
             // 
             this.labelPatches.AutoSize = true;
-            this.labelPatches.Location = new System.Drawing.Point(16, 0);
+            this.labelPatches.Location = new System.Drawing.Point(6, 0);
             this.labelPatches.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelPatches.Name = "labelPatches";
             this.labelPatches.Size = new System.Drawing.Size(203, 25);
@@ -746,7 +943,7 @@
             this.tabPageDMFlags.Location = new System.Drawing.Point(8, 39);
             this.tabPageDMFlags.Margin = new System.Windows.Forms.Padding(6);
             this.tabPageDMFlags.Name = "tabPageDMFlags";
-            this.tabPageDMFlags.Size = new System.Drawing.Size(840, 576);
+            this.tabPageDMFlags.Size = new System.Drawing.Size(888, 674);
             this.tabPageDMFlags.TabIndex = 4;
             this.tabPageDMFlags.Text = "Gameplay options";
             this.tabPageDMFlags.UseVisualStyleBackColor = true;
@@ -766,7 +963,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(840, 576);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(888, 674);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // listViewDMFlags2
@@ -776,10 +973,10 @@
             this.columnHeader2});
             this.listViewDMFlags2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewDMFlags2.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.listViewDMFlags2.Location = new System.Drawing.Point(423, 44);
+            this.listViewDMFlags2.Location = new System.Drawing.Point(447, 44);
             this.listViewDMFlags2.Name = "listViewDMFlags2";
             this.listViewDMFlags2.ShowItemToolTips = true;
-            this.listViewDMFlags2.Size = new System.Drawing.Size(414, 529);
+            this.listViewDMFlags2.Size = new System.Drawing.Size(438, 627);
             this.listViewDMFlags2.TabIndex = 25;
             this.listViewDMFlags2.UseCompatibleStateImageBehavior = false;
             this.listViewDMFlags2.View = System.Windows.Forms.View.Details;
@@ -787,7 +984,7 @@
             // checkBoxDMFlags2
             // 
             this.checkBoxDMFlags2.AutoSize = true;
-            this.checkBoxDMFlags2.Location = new System.Drawing.Point(426, 6);
+            this.checkBoxDMFlags2.Location = new System.Drawing.Point(450, 6);
             this.checkBoxDMFlags2.Margin = new System.Windows.Forms.Padding(6);
             this.checkBoxDMFlags2.Name = "checkBoxDMFlags2";
             this.checkBoxDMFlags2.Size = new System.Drawing.Size(215, 29);
@@ -817,7 +1014,7 @@
             this.listViewDMFlags.Location = new System.Drawing.Point(3, 44);
             this.listViewDMFlags.Name = "listViewDMFlags";
             this.listViewDMFlags.ShowItemToolTips = true;
-            this.listViewDMFlags.Size = new System.Drawing.Size(414, 529);
+            this.listViewDMFlags.Size = new System.Drawing.Size(438, 627);
             this.listViewDMFlags.TabIndex = 24;
             this.listViewDMFlags.UseCompatibleStateImageBehavior = false;
             this.listViewDMFlags.View = System.Windows.Forms.View.Details;
@@ -828,7 +1025,7 @@
             this.tabPageCredits.Location = new System.Drawing.Point(8, 39);
             this.tabPageCredits.Margin = new System.Windows.Forms.Padding(6);
             this.tabPageCredits.Name = "tabPageCredits";
-            this.tabPageCredits.Size = new System.Drawing.Size(840, 576);
+            this.tabPageCredits.Size = new System.Drawing.Size(888, 674);
             this.tabPageCredits.TabIndex = 2;
             this.tabPageCredits.Text = "Credits";
             this.tabPageCredits.UseVisualStyleBackColor = true;
@@ -842,18 +1039,20 @@
             this.richTextBoxCredits.Margin = new System.Windows.Forms.Padding(6);
             this.richTextBoxCredits.Name = "richTextBoxCredits";
             this.richTextBoxCredits.ReadOnly = true;
-            this.richTextBoxCredits.Size = new System.Drawing.Size(840, 576);
+            this.richTextBoxCredits.Size = new System.Drawing.Size(888, 674);
             this.richTextBoxCredits.TabIndex = 0;
             this.richTextBoxCredits.Text = "";
             this.richTextBoxCredits.TextChanged += new System.EventHandler(this.RichTextBoxCredits_TextChanged);
             // 
             // buttonLaunch
             // 
+            this.buttonLaunch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonLaunch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonLaunch.Location = new System.Drawing.Point(412, 712);
+            this.buttonLaunch.Location = new System.Drawing.Point(464, 809);
             this.buttonLaunch.Margin = new System.Windows.Forms.Padding(6);
             this.buttonLaunch.Name = "buttonLaunch";
-            this.buttonLaunch.Size = new System.Drawing.Size(444, 67);
+            this.buttonLaunch.Size = new System.Drawing.Size(446, 67);
             this.buttonLaunch.TabIndex = 6;
             this.buttonLaunch.Text = "Launch Doom RPG";
             this.buttonLaunch.UseVisualStyleBackColor = true;
@@ -861,20 +1060,26 @@
             // 
             // labelCustomCommands
             // 
-            this.labelCustomCommands.Location = new System.Drawing.Point(10, 629);
+            this.labelCustomCommands.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel3.SetColumnSpan(this.labelCustomCommands, 2);
+            this.labelCustomCommands.Location = new System.Drawing.Point(6, 733);
             this.labelCustomCommands.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelCustomCommands.Name = "labelCustomCommands";
-            this.labelCustomCommands.Size = new System.Drawing.Size(838, 27);
+            this.labelCustomCommands.Size = new System.Drawing.Size(904, 27);
             this.labelCustomCommands.TabIndex = 7;
             this.labelCustomCommands.Text = "Custom Commands";
             this.labelCustomCommands.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // textBoxCustomCommands
             // 
-            this.textBoxCustomCommands.Location = new System.Drawing.Point(8, 662);
+            this.textBoxCustomCommands.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel3.SetColumnSpan(this.textBoxCustomCommands, 2);
+            this.textBoxCustomCommands.Location = new System.Drawing.Point(6, 766);
             this.textBoxCustomCommands.Margin = new System.Windows.Forms.Padding(6);
             this.textBoxCustomCommands.Name = "textBoxCustomCommands";
-            this.textBoxCustomCommands.Size = new System.Drawing.Size(836, 31);
+            this.textBoxCustomCommands.Size = new System.Drawing.Size(904, 31);
             this.textBoxCustomCommands.TabIndex = 8;
             // 
             // statusStrip
@@ -883,11 +1088,10 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel,
             this.toolStripProgressBar});
-            this.statusStrip.Location = new System.Drawing.Point(0, 791);
+            this.statusStrip.Location = new System.Drawing.Point(0, 882);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Padding = new System.Windows.Forms.Padding(2, 0, 28, 0);
-            this.statusStrip.Size = new System.Drawing.Size(856, 42);
-            this.statusStrip.SizingGrip = false;
+            this.statusStrip.Size = new System.Drawing.Size(916, 42);
             this.statusStrip.TabIndex = 9;
             // 
             // toolStripStatusLabel
@@ -895,7 +1099,7 @@
             this.toolStripStatusLabel.AutoSize = false;
             this.toolStripStatusLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(625, 37);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(685, 37);
             this.toolStripStatusLabel.Spring = true;
             this.toolStripStatusLabel.Text = "Ready";
             this.toolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -910,11 +1114,13 @@
             // 
             // buttonCheckUpdates
             // 
+            this.buttonCheckUpdates.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCheckUpdates.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonCheckUpdates.Location = new System.Drawing.Point(8, 712);
+            this.buttonCheckUpdates.Location = new System.Drawing.Point(6, 809);
             this.buttonCheckUpdates.Margin = new System.Windows.Forms.Padding(6);
             this.buttonCheckUpdates.Name = "buttonCheckUpdates";
-            this.buttonCheckUpdates.Size = new System.Drawing.Size(392, 67);
+            this.buttonCheckUpdates.Size = new System.Drawing.Size(446, 67);
             this.buttonCheckUpdates.TabIndex = 10;
             this.buttonCheckUpdates.Text = "Check for Updates";
             this.buttonCheckUpdates.UseVisualStyleBackColor = true;
@@ -926,22 +1132,38 @@
             this.timerPulse.Interval = 10;
             this.timerPulse.Tick += new System.EventHandler(this.TimerPulse_Tick);
             // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.tabControlMain, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.labelCustomCommands, 0, 1);
+            this.tableLayoutPanel3.Controls.Add(this.textBoxCustomCommands, 0, 2);
+            this.tableLayoutPanel3.Controls.Add(this.buttonCheckUpdates, 0, 3);
+            this.tableLayoutPanel3.Controls.Add(this.buttonLaunch, 1, 3);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 4;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(916, 882);
+            this.tableLayoutPanel3.TabIndex = 11;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(856, 833);
-            this.Controls.Add(this.buttonCheckUpdates);
+            this.ClientSize = new System.Drawing.Size(916, 924);
+            this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.statusStrip);
-            this.Controls.Add(this.textBoxCustomCommands);
-            this.Controls.Add(this.labelCustomCommands);
-            this.Controls.Add(this.buttonLaunch);
-            this.Controls.Add(this.tabControlMain);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(6);
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(882, 995);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Doom RPG SE Launcher";
@@ -960,13 +1182,16 @@
             this.groupBoxMode.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPlayers)).EndInit();
             this.tabPageModsPatches.ResumeLayout(false);
-            this.tabPageModsPatches.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.tabPageDMFlags.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tabPageCredits.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tableLayoutPanel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1044,6 +1269,18 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Button buttonLoadOrder;
         private System.Windows.Forms.CheckBox checkBoxDRPG;
+        private System.Windows.Forms.Button buttonCreateConfig;
+        private System.Windows.Forms.ComboBox comboBoxConfig;
+        private System.Windows.Forms.Label labelConfig;
+        private System.Windows.Forms.Button buttonConfigRemove;
+        private System.Windows.Forms.Button buttonDuplicateConfig;
+        private System.Windows.Forms.Button buttonRenameConfig;
+        private System.Windows.Forms.Button buttonBrowseIWADsPath;
+        private System.Windows.Forms.TextBox textBoxIWADsPath;
+        private System.Windows.Forms.Label labelIWADsLocation;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.Button buttonConfigSave;
     }
 }
 
