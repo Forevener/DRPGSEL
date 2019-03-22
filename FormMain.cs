@@ -241,7 +241,7 @@ namespace DoomRPG
             // Error Handling
             if (!CheckForErrors())
                 return;
-
+            
             buttonCheckUpdates.Enabled = false;
             buttonLaunch.Enabled = false;
             await CheckForUpdates();
@@ -376,16 +376,16 @@ namespace DoomRPG
             int flags = 0;
             int flags2 = 0;
 
-            for (int i = 0; i < listViewDMFlags.Items.Count; i++)
+            for (int i = 0; i < DMFlags.Count; i++)
             {
                 if (listViewDMFlags.Items[i].Checked ^ DMFlags[i].DefaultState)
                     flags |= DMFlags[i].Key;
             }
 
-            for (int i = 0; i < listViewDMFlags2.Items.Count; i++)
+            for (int i = 0; i < DMFlags2.Count; i++)
             {
                 if (listViewDMFlags2.Items[i].Checked ^ DMFlags2[i].DefaultState)
-                    flags |= DMFlags2[i].Key;
+                    flags2 |= DMFlags2[i].Key;
             }
 
             config.DMFlags = flags;
@@ -415,7 +415,7 @@ namespace DoomRPG
         {
             // Check loaded patches
             patches[e.Index].Enabled = e.NewValue.HasFlag(CheckState.Checked);
-            if (IsDRLAActive && numericUpDownMapNumber.Value > 0)
+            if (IsDRLAActive && (numericUpDownMapNumber.Value > 0 || checkBoxMultiplayer.Enabled))
                 comboBoxClass.Enabled = true;
             else
                 comboBoxClass.Enabled = false;
@@ -886,7 +886,7 @@ namespace DoomRPG
         private void NumericUpDownMapNumber_ValueChanged(object sender, EventArgs e)
         {
             // If Map Number is 0, skill and class are irrelevent
-            if (numericUpDownMapNumber.Value == 0)
+            if (numericUpDownMapNumber.Value == 0 && !checkBoxMultiplayer.Enabled)
             {
                 comboBoxDifficulty.Enabled = false;
                 comboBoxClass.Enabled = false;
@@ -936,16 +936,16 @@ namespace DoomRPG
 
         private void PopulateSaveGames()
         {
+            comboBoxSaveGame.Items.Clear();
+            comboBoxSaveGame.Items.Add("None");
+            comboBoxSaveGame.SelectedIndex = 0;
+
             if (File.Exists(config.portPath))
             {
-                List<string> files = Directory.EnumerateFiles(Path.GetDirectoryName(config.portPath)).ToList();
+                List<string> files = Directory.EnumerateFiles(Path.GetDirectoryName(config.portPath), "*.zds").ToList();
 
-                comboBoxSaveGame.Items.Clear();
-                comboBoxSaveGame.Items.Add("None");
                 foreach (string file in files)
-                    if (file.EndsWith(".zds"))
-                        comboBoxSaveGame.Items.Add(Path.GetFileName(file));
-                comboBoxSaveGame.SelectedIndex = 0;
+                    comboBoxSaveGame.Items.Add(Path.GetFileName(file));
             }
         }
 
