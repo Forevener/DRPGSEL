@@ -111,7 +111,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -128,7 +127,9 @@
     <None Include="Resources\Eraser_16x.png" />
     <None Include="Resources\Copy_16x.png" />
     <None Include="Resources\Pen1_16x.png" />
-    <None Include="DMFlags.txt" />
+    <None Include="DMFlags.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Doom RPG Launcher.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -6,48 +6,18 @@ namespace DoomRPG
 {
     public class PatchInfo
     {
-        string name;
-        public string Name
-        {
-            get { return name; }
-        }
-
-        private List<string> conflicts = new List<string>();
-        public List<string> Conflicts
-        {
-            get { return conflicts; }
-        }
-
-        private List<string> requires = new List<string>();
-        public List<string> Requires
-        {
-            get { return requires; }
-        }
-
-        private List<string> reqiredMods = new List<string>();
-        public List<string> ReqiredMods
-        {
-            get { return reqiredMods; }
-        }
-
-        private string path;
-        public string Path
-        {
-            get { return path; }
-        }
-
-        private bool enabled;
-        public bool Enabled
-        {
-            get { return enabled; }
-            set { enabled = value; }
-        }
+        public string Name { get; private set; }
+        public List<string> Conflicts { get; } = new List<string>();
+        public List<string> Requires { get; } = new List<string>();
+        public List<string> ReqiredMods { get; } = new List<string>();
+        public string Path { get; private set; }
+        public bool Enabled { get; set; }
 
         public static PatchInfo ReadPatch(string path)
         {
             PatchInfo info = new PatchInfo
             {
-                path = System.IO.Path.GetDirectoryName(path)
+                Path = System.IO.Path.GetDirectoryName(path)
             };
 
             if (File.Exists(path))
@@ -62,19 +32,19 @@ namespace DoomRPG
                     {
                         // Name
                         if (s[0].ToLower() == "name")
-                            info.name = s[1];
+                            info.Name = s[1];
 
                         // Conflicts
                         else if (s[0].ToLower() == "conflicts")
-                            info.conflicts.Add(s[1]);
+                            info.Conflicts.Add(s[1]);
 
                         // Requires
                         else if (s[0].ToLower() == "requires")
-                            info.requires.Add(s[1]);
+                            info.Requires.Add(s[1]);
 
                         // Requires
                         else if (s[0].ToLower() == "mods")
-                            info.reqiredMods.Add(s[1]);
+                            info.ReqiredMods.Add(s[1]);
                     }
                 }
             }
@@ -92,13 +62,13 @@ namespace DoomRPG
             string error = string.Empty;
             bool hasError = false;
 
-            foreach (PatchInfo patch in patches.FindAll(p => p.enabled))
+            foreach (PatchInfo patch in patches.FindAll(p => p.Enabled))
             {
-                foreach (string req in patch.requires)
+                foreach (string req in patch.Requires)
                 {
-                    if (!patches.Find(p => p.name == req)?.enabled ?? false)
+                    if (!patches.Find(p => p.Name == req)?.Enabled ?? false)
                     {
-                        error += $"Patch {patch.name} requires the patch {req}\n";
+                        error += $"Patch {patch.Name} requires the patch {req}\n";
                         hasError = true;
                     }
                 }
@@ -120,11 +90,11 @@ namespace DoomRPG
 
             foreach (PatchInfo patch in patches.FindAll(p => p.Enabled))
             {
-                foreach (string mod in patch.reqiredMods)
+                foreach (string req in patch.ReqiredMods)
                 {
-                    if (!mods.Exists(m => m.Contains(mod)))
+                    if (!mods.Exists(m => m.Contains(req)))
                     {
-                        error += $"Patch {patch.name} requires the file {mod}\n";
+                        error += $"Patch {patch.Name} requires the file {req}\n";
                         hasError = true;
                     }
                 }
@@ -144,13 +114,13 @@ namespace DoomRPG
             string error = string.Empty;
             bool hasError = false;
 
-            foreach (PatchInfo patch in patches.FindAll(p => p.enabled))
+            foreach (PatchInfo patch in patches.FindAll(p => p.Enabled))
             {
-                foreach (string conf in patch.conflicts)
+                foreach (string conf in patch.Conflicts)
                 {
-                    if (patches.Find(p => p.name == conf)?.enabled ?? false)
+                    if (patches.Find(p => p.Name == conf)?.Enabled ?? false)
                     {
-                        error += $"Patch {patch.name} conflicts with patch {conf}\n";
+                        error += $"Patch {patch.Name} conflicts with patch {conf}\n";
                         hasError = true;
                     }
                 }
@@ -167,7 +137,7 @@ namespace DoomRPG
 
         public override string ToString()
         {
-            return name;
+            return Name;
         }
     }
 }

@@ -56,7 +56,7 @@ namespace DoomRPG
 
             // Populate controls
             LoadContent();
-
+            CheckForMods();
             // Populate branches combo box
             _ = PopulateBranchesComboBox();
         }
@@ -457,7 +457,7 @@ namespace DoomRPG
         {
             if (Directory.Exists(textBoxDRPGPath.Text))
             {
-                var files = from file in Directory.EnumerateFiles(textBoxDRPGPath.Text) where file.Length > 4 select file.Substring(file.Length - 4).ToLower();
+                var files = from file in Directory.EnumerateFiles(textBoxDRPGPath.Text) where file.Length > 3 select file.Substring(file.Length - 3).ToLower();
                 foreach (string file in files)
                     if (fileTypes.Contains(file))
                         return true;
@@ -468,29 +468,37 @@ namespace DoomRPG
 
         bool CheckForPatches()
         {
-            var requirements = new Dictionary<string, string>()
-            {
-                { "ColourfulHell", "Colourful Hell" },
-                { "DoomRL_Monsters", "DoomRL Arsenal - Monster Pack" },
-                { "DoomRL_Arsenal", "DoomRL Arsenal" },
-                { "j-jukebox", "Jimmy's Jukebox Instant Randomizer" },
-                { "LegenDoom", "LegenDoom" },
-                { "doom_complete", "WadSmoosh" }
-            };
             string error = string.Empty;
             bool hasError = false;
+            var requirements = new Dictionary<string, string>();
+            string pathCompatInfo = $"{config.DRPGPath}\\DoomRPG\\COMPATINFO.txt";
 
-            foreach (string mod in config.mods)
-            {
-                var req = requirements.FirstOrDefault(r => mod.Contains(r.Key));
-                if (req.Value != null)
+            if (File.Exists(pathCompatInfo))
+            { 
+                string[] data = File.ReadAllLines(pathCompatInfo);
+                foreach (string s in data)
                 {
-                    if (!patches.Find(p => p.Name == req.Value)?.Enabled ?? false)
+                    string[] pair = s.Split('\t');
+                    requirements.Add(pair[0], pair[1]);
+                }
+
+                foreach (string mod in config.mods)
+                {
+                    var req = requirements.FirstOrDefault(r => mod.Contains(r.Key));
+                    if (req.Value != null)
                     {
-                        error += $"Mod {mod} requires the patch {req.Value}\n";
-                        hasError = true;
+                        if (!patches.Find(p => p.Name == req.Value)?.Enabled ?? false)
+                        {
+                            error += $"Mod {mod} requires the patch {req.Value}\n";
+                            hasError = true;
+                        }
                     }
                 }
+            }
+            else
+            {
+                error = "Can't locate COMPATINFO.txt in DoomRPG folder of your DRPG installation directory. Please check if you have the latest version of DRPG.";
+                hasError = true;
             }
 
             if (hasError)
@@ -943,35 +951,49 @@ namespace DoomRPG
 
         private void PopulateDMFlags()
         {
-            string[] lines = Properties.Resources.DMFlags.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            foreach (string line in lines)
+            if (File.Exists("DMFlags.txt"))
             {
-                string[] values = line.Split('\t');
-                if (values[0] == "DMFlags")
-                    DMFlags.Add(new DMFlag(int.Parse(values[1]), values[2], bool.Parse(values[3]), values[4]));
-                else
-                    DMFlags2.Add(new DMFlag(int.Parse(values[1]), values[2], bool.Parse(values[3]), values[4]));
-            }
-            // Disable selection of items to prevent confusion
-            listViewDMFlags.SelectedIndexChanged += SkipSelection;
-            // Allow only one type of FallingDamage selected
-            listViewDMFlags.ItemCheck += ListViewDMFlags_ItemCheck;
-            for (int i = 0; i < DMFlags.Count; i++)
-            {
-                listViewDMFlags.Items.Add(DMFlags[i].Name);
-                listViewDMFlags.Items[listViewDMFlags.Items.Count - 1].Checked = ((config.DMFlags & DMFlags[i].Key) == DMFlags[i].Key) ^ DMFlags[i].DefaultState;
-                listViewDMFlags.Items[listViewDMFlags.Items.Count - 1].ToolTipText = DMFlags[i].Description;
-            }
-            listViewDMFlags.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                try
+                {
+                    string[] lines = File.ReadAllLines("DMFlags.txt");
+                    foreach (string line in lines)
+                    {
+                        string[] values = line.Split('\t');
+                        if (values[0] == "DMFlags")
+                            DMFlags.Add(new DMFlag(int.Parse(values[1]), values[2], bool.Parse(values[3]), values[4]));
+                        else
+                            DMFlags2.Add(new DMFlag(int.Parse(values[1]), values[2], bool.Parse(values[3]), values[4]));
+                    }
+                    // Disable selection of items to prevent confusion
+                    listViewDMFlags.SelectedIndexChanged += SkipSelection;
+                    // Allow only one type of FallingDamage selected
+                    listViewDMFlags.ItemCheck += ListViewDMFlags_ItemCheck;
+                    for (int i = 0; i < DMFlags.Count; i++)
+                    {
+                        listViewDMFlags.Items.Add(DMFlags[i].Name);
+                        listViewDMFlags.Items[listViewDMFlags.Items.Count - 1].Checked = ((config.DMFlags & DMFlags[i].Key) == DMFlags[i].Key) ^ DMFlags[i].DefaultState;
+                        listViewDMFlags.Items[listViewDMFlags.Items.Count - 1].ToolTipText = DMFlags[i].Description;
+                    }
+                    listViewDMFlags.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
 
-            listViewDMFlags2.SelectedIndexChanged += SkipSelection;
-            for (int i = 0; i < DMFlags2.Count; i++)
-            {
-                listViewDMFlags2.Items.Add(DMFlags2[i].Name);
-                listViewDMFlags2.Items[listViewDMFlags2.Items.Count - 1].Checked = ((config.DMFlags2 & DMFlags2[i].Key) == DMFlags2[i].Key) ^ DMFlags2[i].DefaultState;
-                listViewDMFlags2.Items[listViewDMFlags2.Items.Count - 1].ToolTipText = DMFlags2[i].Description;
+                    listViewDMFlags2.SelectedIndexChanged += SkipSelection;
+                    for (int i = 0; i < DMFlags2.Count; i++)
+                    {
+                        listViewDMFlags2.Items.Add(DMFlags2[i].Name);
+                        listViewDMFlags2.Items[listViewDMFlags2.Items.Count - 1].Checked = ((config.DMFlags2 & DMFlags2[i].Key) == DMFlags2[i].Key) ^ DMFlags2[i].DefaultState;
+                        listViewDMFlags2.Items[listViewDMFlags2.Items.Count - 1].ToolTipText = DMFlags2[i].Description;
+                    }
+                    listViewDMFlags2.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                }
+                catch (Exception e)
+                {
+                    Utils.ShowError(e);
+                }
             }
-            listViewDMFlags2.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            else
+            {
+                Utils.ShowError("Can't locate DMFlags.txt in DRPG SE Launcher folder. Please re-download the launcher");
+            }
         }
 
         private void PopulateIWADs()

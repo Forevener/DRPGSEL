@@ -81,19 +81,6 @@ namespace DoomRPG.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DMFlags	1	Allow Health (DM)	true	Allows players to pick up items which restore health
-        ///DMFlags	2	Allow Powerups (DM)	true	Allows players to pick up and use powerup items
-        ///DMFlags	4	Weapons Stay (DM)	false	Weapons aren&apos;t removed from the map when a player picks them up; Doesn&apos;t work with weapons dropped by enemies
-        ///DMFlags	8	Falling damage (Old)	false	Damages the player when they fall too far; uses old ZDoom damage calculation
-        ///DMFlags	16	Falling damage (Hexen)	false	Damages the player when they fall too far [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string DMFlags {
-            get {
-                return ResourceManager.GetString("DMFlags", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Eraser_16x {
