@@ -16,7 +16,7 @@ namespace DoomRPG
         public string DRPGPath = string.Empty;
         public string modsPath = string.Empty;
         public string iwad = "doom2.wad";
-        public Difficulty difficulty = Difficulty.Normal;
+        public int difficulty = 1;
         public DRLAClass rlClass = DRLAClass.Marine;
         public int mapNumber = 1;
         public string demo = string.Empty;
@@ -105,7 +105,7 @@ namespace DoomRPG
                             field.SetValue(this, float.Parse(s[1]));
                         if (field.GetValue(this).GetType() == typeof(string))
                             field.SetValue(this, s[1]);
-
+                        
                         // String List
                         if (field.GetValue(this).GetType() == typeof(List<string>))
                         {
@@ -118,10 +118,6 @@ namespace DoomRPG
                         }
 
                         // Enums
-                        if (field.GetValue(this).GetType() == typeof(Difficulty))
-                            for (int i = 0; i < Enum.GetNames(typeof(Difficulty)).Length; i++)
-                                if (Enum.GetNames(typeof(Difficulty))[i].Contains(s[1]))
-                                    field.SetValue(this, Enum.ToObject(typeof(Difficulty), i));
                         if (field.GetValue(this).GetType() == typeof(DRLAClass))
                             for (int i = 0; i < Enum.GetNames(typeof(DRLAClass)).Length; i++)
                                 if (Enum.GetNames(typeof(DRLAClass))[i].Contains(s[1]))

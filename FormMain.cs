@@ -76,7 +76,7 @@ namespace DoomRPG
             if (config.mapNumber > 0)
             {
                 // Skill/Difficulty
-                cmdline += " -skill " + ((int)config.difficulty + 1);
+                cmdline += " -skill " + (config.difficulty + 1);
 
                 // Map Number
                 cmdline += " -warp " + config.mapNumber;
@@ -122,7 +122,7 @@ namespace DoomRPG
 
             // Load Savegame
             if (comboBoxSaveGame.Text != "None")
-                cmdline += " -loadgame " + Path.GetDirectoryName(textBoxPortPath.Text) + "\\" + comboBoxSaveGame.Text;
+                cmdline += $" -loadgame \"{Path.GetDirectoryName(textBoxPortPath.Text)}\\{comboBoxSaveGame.Text}\"";
 
             // Record Demo
             if (textBoxDemo.TextLength > 0)
@@ -419,6 +419,9 @@ namespace DoomRPG
                 comboBoxClass.Enabled = true;
             else
                 comboBoxClass.Enabled = false;
+            // Reload difficulty levels
+            if (checkedListBoxPatches.Items[e.Index].ToString().Contains("DoomRL Arsenal"))
+                PopulateDifficulty();
         }
 
         private bool CheckForErrors()
@@ -804,7 +807,11 @@ namespace DoomRPG
                         }
                         else
                         {
-                            package.Add(data[i]);
+                            // Backwards compatibility again
+                            if (data[i].StartsWith("difficulty=") && !int.TryParse(data[i].Substring(11), out _))
+                                package.Add("difficulty=1");
+                            else
+                                package.Add(data[i]);
                         }
                     }
 
@@ -919,10 +926,7 @@ namespace DoomRPG
             PopulateIWADs();
 
             // Difficulty
-            comboBoxDifficulty.Items.Clear();
-            for (int i = 0; i < Enum.GetNames(typeof(Difficulty)).Length; i++)
-                comboBoxDifficulty.Items.Add(Enum.GetName(typeof(Difficulty), i));
-            comboBoxDifficulty.SelectedIndex = (int)config.difficulty;
+            PopulateDifficulty();
 
             // DRLA Class
             comboBoxClass.Items.Clear();
@@ -932,6 +936,15 @@ namespace DoomRPG
 
             // Savegames
             PopulateSaveGames();
+        }
+
+        private void PopulateDifficulty()
+        {
+            comboBoxDifficulty.Items.Clear();
+            string[] difficulties = IsDRLAActive ? Enum.GetNames(typeof(DRLADifficulty)) : Enum.GetNames(typeof(Difficulty));
+            foreach (string d in difficulties)
+                comboBoxDifficulty.Items.Add(d);
+            comboBoxDifficulty.SelectedIndex = Math.Min(config.difficulty, difficulties.Length - 1);
         }
 
         private void PopulateSaveGames()
@@ -1106,7 +1119,7 @@ namespace DoomRPG
             config.DRPGPath = textBoxDRPGPath.Text;
             config.modsPath = textBoxModsPath.Text;
             config.iwad = comboBoxIWAD.SelectedItem?.ToString() ?? "doom2.wad";
-            config.difficulty = (Difficulty)comboBoxDifficulty.SelectedIndex;
+            config.difficulty = comboBoxDifficulty.SelectedIndex;
             config.rlClass = (DRLAClass)comboBoxClass.SelectedIndex;
             config.mapNumber = (int)numericUpDownMapNumber.Value;
             config.demo = textBoxDemo.Text;

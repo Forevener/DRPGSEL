@@ -8,8 +8,18 @@ namespace DoomRPG
         Normal,
         Hard,
         Nightmare,
+        Hell
+    }
+
+    public enum DRLADifficulty
+    {
+        Easy,
+        Moderate,
+        Standard,
+        Nightmare,
         Hell,
-        Armegeddon
+        Armageddon,
+        Adaptive
     }
 
     public enum DRLAClass
