@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -67,7 +66,7 @@ namespace DoomRPG
                 // List types
                 else if (field.GetValue(this).GetType() == typeof(List<string>))
                 {
-                    List<string> strings = (List<String>)field.GetValue(this);
+                    List<string> strings = (List<string>)field.GetValue(this);
                     string listString = field.Name + "=";
                     foreach (string s in strings)
                         listString += "{" + s + "};";

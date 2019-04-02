@@ -29,6 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Mod1");
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Mod2");
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("Mod3");
+            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Mod4");
+            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("Mod5");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageBasic = new System.Windows.Forms.TabPage();
@@ -84,14 +89,12 @@
             this.radioButtonHosting = new System.Windows.Forms.RadioButton();
             this.radioButtonJoining = new System.Windows.Forms.RadioButton();
             this.checkBoxMultiplayer = new System.Windows.Forms.CheckBox();
-            this.tabPageModsPatches = new System.Windows.Forms.TabPage();
+            this.tabPageMods = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.checkedListBoxPatches = new System.Windows.Forms.CheckedListBox();
-            this.buttonLoadOrder = new System.Windows.Forms.Button();
-            this.checkedListBoxMods = new System.Windows.Forms.CheckedListBox();
+            this.labelLoadOrder = new System.Windows.Forms.Label();
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.labelMods = new System.Windows.Forms.Label();
-            this.labelPatches = new System.Windows.Forms.Label();
+            this.treeViewMods = new System.Windows.Forms.TreeView();
             this.tabPageDMFlags = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.listViewDMFlags2 = new System.Windows.Forms.ListView();
@@ -112,6 +115,8 @@
             this.timerPulse = new System.Windows.Forms.Timer(this.components);
             this.toolTipMain = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.listViewLoadOrder = new System.Windows.Forms.ListView();
+            this.columnHeaderModName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControlMain.SuspendLayout();
             this.tabPageBasic.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMapNumber)).BeginInit();
@@ -121,7 +126,7 @@
             this.groupBoxServerMode.SuspendLayout();
             this.groupBoxMode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPlayers)).BeginInit();
-            this.tabPageModsPatches.SuspendLayout();
+            this.tabPageMods.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tabPageDMFlags.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -135,7 +140,7 @@
             this.tableLayoutPanel3.SetColumnSpan(this.tabControlMain, 2);
             this.tabControlMain.Controls.Add(this.tabPageBasic);
             this.tabControlMain.Controls.Add(this.tabPageMultiplayer);
-            this.tabControlMain.Controls.Add(this.tabPageModsPatches);
+            this.tabControlMain.Controls.Add(this.tabPageMods);
             this.tabControlMain.Controls.Add(this.tabPageDMFlags);
             this.tabControlMain.Controls.Add(this.tabPageCredits);
             this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -837,28 +842,27 @@
             this.checkBoxMultiplayer.UseVisualStyleBackColor = true;
             this.checkBoxMultiplayer.CheckedChanged += new System.EventHandler(this.CheckBoxMultiplayer_CheckedChanged);
             // 
-            // tabPageModsPatches
+            // tabPageMods
             // 
-            this.tabPageModsPatches.Controls.Add(this.tableLayoutPanel2);
-            this.tabPageModsPatches.Location = new System.Drawing.Point(8, 39);
-            this.tabPageModsPatches.Margin = new System.Windows.Forms.Padding(6);
-            this.tabPageModsPatches.Name = "tabPageModsPatches";
-            this.tabPageModsPatches.Size = new System.Drawing.Size(888, 674);
-            this.tabPageModsPatches.TabIndex = 3;
-            this.tabPageModsPatches.Text = "Mods/Patches";
-            this.tabPageModsPatches.UseVisualStyleBackColor = true;
+            this.tabPageMods.Controls.Add(this.tableLayoutPanel2);
+            this.tabPageMods.Location = new System.Drawing.Point(8, 39);
+            this.tabPageMods.Margin = new System.Windows.Forms.Padding(6);
+            this.tabPageMods.Name = "tabPageMods";
+            this.tabPageMods.Size = new System.Drawing.Size(888, 674);
+            this.tabPageMods.TabIndex = 3;
+            this.tabPageMods.Text = "Mods";
+            this.tabPageMods.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.checkedListBoxPatches, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.buttonLoadOrder, 1, 2);
-            this.tableLayoutPanel2.Controls.Add(this.checkedListBoxMods, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.listViewLoadOrder, 1, 1);
+            this.tableLayoutPanel2.Controls.Add(this.labelLoadOrder, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonRefresh, 0, 2);
-            this.tableLayoutPanel2.Controls.Add(this.labelMods, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.labelPatches, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.labelMods, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.treeViewMods, 0, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -866,76 +870,53 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(888, 674);
             this.tableLayoutPanel2.TabIndex = 30;
             // 
-            // checkedListBoxPatches
+            // labelLoadOrder
             // 
-            this.checkedListBoxPatches.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkedListBoxPatches.FormattingEnabled = true;
-            this.checkedListBoxPatches.Location = new System.Drawing.Point(6, 31);
-            this.checkedListBoxPatches.Margin = new System.Windows.Forms.Padding(6);
-            this.checkedListBoxPatches.Name = "checkedListBoxPatches";
-            this.checkedListBoxPatches.Size = new System.Drawing.Size(432, 569);
-            this.checkedListBoxPatches.TabIndex = 18;
-            this.checkedListBoxPatches.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CheckedListBoxPatches_ItemCheck);
-            // 
-            // buttonLoadOrder
-            // 
-            this.buttonLoadOrder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonLoadOrder.Location = new System.Drawing.Point(450, 612);
-            this.buttonLoadOrder.Margin = new System.Windows.Forms.Padding(6);
-            this.buttonLoadOrder.Name = "buttonLoadOrder";
-            this.buttonLoadOrder.Size = new System.Drawing.Size(432, 56);
-            this.buttonLoadOrder.TabIndex = 29;
-            this.buttonLoadOrder.Text = "Edit Load Order";
-            this.buttonLoadOrder.UseVisualStyleBackColor = true;
-            this.buttonLoadOrder.Click += new System.EventHandler(this.ButtonLoadOrder_Click);
-            // 
-            // checkedListBoxMods
-            // 
-            this.checkedListBoxMods.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.checkedListBoxMods.FormattingEnabled = true;
-            this.checkedListBoxMods.Location = new System.Drawing.Point(450, 31);
-            this.checkedListBoxMods.Margin = new System.Windows.Forms.Padding(6);
-            this.checkedListBoxMods.Name = "checkedListBoxMods";
-            this.checkedListBoxMods.Size = new System.Drawing.Size(432, 569);
-            this.checkedListBoxMods.TabIndex = 20;
-            this.checkedListBoxMods.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.CheckedListBoxMods_ItemCheck);
+            this.labelLoadOrder.AutoSize = true;
+            this.labelLoadOrder.Location = new System.Drawing.Point(450, 0);
+            this.labelLoadOrder.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.labelLoadOrder.Name = "labelLoadOrder";
+            this.labelLoadOrder.Size = new System.Drawing.Size(120, 25);
+            this.labelLoadOrder.TabIndex = 31;
+            this.labelLoadOrder.Text = "Load Order";
             // 
             // buttonRefresh
             // 
             this.buttonRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.SetColumnSpan(this.buttonRefresh, 2);
             this.buttonRefresh.Location = new System.Drawing.Point(6, 612);
             this.buttonRefresh.Margin = new System.Windows.Forms.Padding(6);
             this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Size = new System.Drawing.Size(432, 56);
+            this.buttonRefresh.Size = new System.Drawing.Size(876, 56);
             this.buttonRefresh.TabIndex = 21;
-            this.buttonRefresh.Text = "Reload Patches and Mods";
+            this.buttonRefresh.Text = "Reload Mods";
             this.buttonRefresh.UseVisualStyleBackColor = true;
             this.buttonRefresh.Click += new System.EventHandler(this.ButtonRefresh_Click);
             // 
             // labelMods
             // 
             this.labelMods.AutoSize = true;
-            this.labelMods.Location = new System.Drawing.Point(450, 0);
+            this.labelMods.Location = new System.Drawing.Point(6, 0);
             this.labelMods.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelMods.Name = "labelMods";
             this.labelMods.Size = new System.Drawing.Size(159, 25);
             this.labelMods.TabIndex = 19;
             this.labelMods.Text = "WAD/PK3 Files";
             // 
-            // labelPatches
+            // treeViewMods
             // 
-            this.labelPatches.AutoSize = true;
-            this.labelPatches.Location = new System.Drawing.Point(6, 0);
-            this.labelPatches.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.labelPatches.Name = "labelPatches";
-            this.labelPatches.Size = new System.Drawing.Size(203, 25);
-            this.labelPatches.TabIndex = 17;
-            this.labelPatches.Text = "Doom RPG Patches";
+            this.treeViewMods.CheckBoxes = true;
+            this.treeViewMods.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewMods.Location = new System.Drawing.Point(3, 28);
+            this.treeViewMods.Name = "treeViewMods";
+            this.treeViewMods.Size = new System.Drawing.Size(438, 575);
+            this.treeViewMods.TabIndex = 30;
+            this.treeViewMods.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.TreeViewMods_AfterCheck);
             // 
             // tabPageDMFlags
             // 
@@ -1153,6 +1134,41 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(916, 882);
             this.tableLayoutPanel3.TabIndex = 11;
             // 
+            // listViewLoadOrder
+            // 
+            this.listViewLoadOrder.AllowDrop = true;
+            this.listViewLoadOrder.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeaderModName});
+            this.listViewLoadOrder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewLoadOrder.GridLines = true;
+            this.listViewLoadOrder.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.listViewLoadOrder.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem6,
+            listViewItem7,
+            listViewItem8,
+            listViewItem9,
+            listViewItem10});
+            this.listViewLoadOrder.LabelWrap = false;
+            this.listViewLoadOrder.Location = new System.Drawing.Point(447, 28);
+            this.listViewLoadOrder.MultiSelect = false;
+            this.listViewLoadOrder.Name = "listViewLoadOrder";
+            this.listViewLoadOrder.ShowGroups = false;
+            this.listViewLoadOrder.Size = new System.Drawing.Size(438, 575);
+            this.listViewLoadOrder.TabIndex = 32;
+            this.listViewLoadOrder.UseCompatibleStateImageBehavior = false;
+            this.listViewLoadOrder.View = System.Windows.Forms.View.Details;
+            this.listViewLoadOrder.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.ListViewLoadOrder_ItemDrag);
+            this.listViewLoadOrder.SizeChanged += new System.EventHandler(this.ListViewLoadOrder_SizeChanged);
+            this.listViewLoadOrder.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListViewLoadOrder_DragDrop);
+            this.listViewLoadOrder.DragEnter += new System.Windows.Forms.DragEventHandler(this.ListViewLoadOrder_DragEnter);
+            this.listViewLoadOrder.DragOver += new System.Windows.Forms.DragEventHandler(this.ListViewLoadOrder_DragOver);
+            this.listViewLoadOrder.DragLeave += new System.EventHandler(this.ListViewLoadOrder_DragLeave);
+            // 
+            // columnHeaderModName
+            // 
+            this.columnHeaderModName.Text = "Mod Name";
+            this.columnHeaderModName.Width = 438;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -1181,7 +1197,7 @@
             this.groupBoxMode.ResumeLayout(false);
             this.groupBoxMode.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPlayers)).EndInit();
-            this.tabPageModsPatches.ResumeLayout(false);
+            this.tabPageMods.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tabPageDMFlags.ResumeLayout(false);
@@ -1238,11 +1254,8 @@
         private System.Windows.Forms.Button buttonCheckUpdates;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
         private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar;
-        private System.Windows.Forms.TabPage tabPageModsPatches;
-        private System.Windows.Forms.CheckedListBox checkedListBoxMods;
+        private System.Windows.Forms.TabPage tabPageMods;
         private System.Windows.Forms.Label labelMods;
-        private System.Windows.Forms.CheckedListBox checkedListBoxPatches;
-        private System.Windows.Forms.Label labelPatches;
         private System.Windows.Forms.ComboBox comboBoxIWAD;
         private System.Windows.Forms.Label labelIWAD;
         private System.Windows.Forms.ComboBox comboBoxClass;
@@ -1267,7 +1280,6 @@
         private System.Windows.Forms.ListView listViewDMFlags;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.Button buttonLoadOrder;
         private System.Windows.Forms.CheckBox checkBoxDRPG;
         private System.Windows.Forms.Button buttonCreateConfig;
         private System.Windows.Forms.ComboBox comboBoxConfig;
@@ -1281,6 +1293,10 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Button buttonConfigSave;
+        private System.Windows.Forms.Label labelLoadOrder;
+        private System.Windows.Forms.TreeView treeViewMods;
+        private System.Windows.Forms.ListView listViewLoadOrder;
+        private System.Windows.Forms.ColumnHeader columnHeaderModName;
     }
 }
 

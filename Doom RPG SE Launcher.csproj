@@ -66,12 +66,6 @@
     <Compile Include="FormCommandLine.Designer.cs">
       <DependentUpon>FormCommandLine.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormLoadOrder.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormLoadOrder.Designer.cs">
-      <DependentUpon>FormLoadOrder.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,9 +85,6 @@
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="FormCommandLine.resx">
       <DependentUpon>FormCommandLine.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormLoadOrder.resx">
-      <DependentUpon>FormLoadOrder.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
