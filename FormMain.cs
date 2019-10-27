@@ -17,20 +17,20 @@ namespace DoomRPG
     {
         readonly string configPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\" + Assembly.GetEntryAssembly().GetName().Name + ".cfg";
         Config config;
-        List<Config> configs = new List<Config>();
+        private List<Config> configs = new List<Config>();
         string currentBranch = string.Empty;
-        List<DMFlag> DMFlags = new List<DMFlag>();
-        List<DMFlag> DMFlags2 = new List<DMFlag>();
+        private List<DMFlag> DMFlags = new List<DMFlag>();
+        private List<DMFlag> DMFlags2 = new List<DMFlag>();
 
         // Extensions of known mod filetypes
-        string[] fileTypes =
+        private readonly string[] fileTypes =
         {
             "wad",                  // Original vanilla Doom archive type
             "zip", "pk3", "pk7",    // Archive File Types
             "deh", "bex"            // DeHackEd File Types
         };
 
-        List<string> IWADs = new List<string>()
+        private readonly List<string> IWADs = new List<string>()
         {
             "doom.wad",
             "doom2.wad",
@@ -38,8 +38,8 @@ namespace DoomRPG
             "plutonia.wad"
         };
 
-        List<PatchInfo> patches = new List<PatchInfo>();
-        Version version = Assembly.GetExecutingAssembly().GetName().Version;
+        private List<PatchInfo> patches = new List<PatchInfo>();
+        private readonly Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
         private bool IsDRLAActive
         {
@@ -132,13 +132,19 @@ namespace DoomRPG
 
             // Mods selected from the mods list
             for (int i = 0; i < config.mods.Count; i++)
-                cmdline += $" \"{config.modsPath}\\{config.mods[i]}\"";
+            {
+                if (config.mods[i] == config.DRPGPath + "\\DoomRPG")
+                {
+                    cmdline += $" \"{config.mods[i]}\"";
+                }
+                else
+                {
+                    cmdline += $" \"{config.modsPath}\\{config.mods[i]}\"";
+                }
+            }
 
             if (checkBoxDRPG.Checked)
             {
-                // Doom RPG
-                cmdline += " \"" + config.DRPGPath + "\\DoomRPG\"";
-
                 // Doom RPG Patches
                 for (int i = 0; i < patches.Count; i++)
                     if (patches[i].Enabled)
@@ -196,6 +202,7 @@ namespace DoomRPG
                 LoadCredits();
                 PopulatePatches();
             }
+            dialog.Dispose();
         }
 
         private void ButtonBrowseIWADsPath_Click(object sender, EventArgs e)
@@ -216,6 +223,7 @@ namespace DoomRPG
             {
                 textBoxIWADsPath.Text = dialog.SelectedPath;
             }
+            dialog.Dispose();
         }
 
         private void ButtonBrowseModsPath_Click(object sender, EventArgs e)
@@ -230,6 +238,7 @@ namespace DoomRPG
                 textBoxModsPath.Text = dialog.SelectedPath;
                 config.modsPath = dialog.SelectedPath;
             }
+            dialog.Dispose();
         }
 
         private void ButtonBrowsePortPath_Click(object sender, EventArgs e)
@@ -244,6 +253,7 @@ namespace DoomRPG
                 textBoxPortPath.Text = dialog.FileName;
                 config.portPath = dialog.FileName;
             }
+            dialog.Dispose();
         }
 
         private async void ButtonCheckUpdates_Click(object sender, EventArgs e)
@@ -300,6 +310,7 @@ namespace DoomRPG
                 config = configs.Last();
                 LoadContent();
             }
+            formName.Dispose();
         }
 
         private void ButtonDuplicateConfig_Click(object sender, EventArgs e)
@@ -315,6 +326,7 @@ namespace DoomRPG
                 config = configs.Last();
                 LoadContent();
             }
+            formName.Dispose();
         }
 
         private void ButtonLaunch_Click(object sender, EventArgs e)
@@ -363,6 +375,7 @@ namespace DoomRPG
                 config.Name = formName.Result;
                 comboBoxConfig.Items[comboBoxConfig.SelectedIndex] = formName.Result;
             }
+            formName.Dispose();
         }
 
         private void ButtonShowCommandLine_Click(object sender, EventArgs e)
@@ -376,7 +389,9 @@ namespace DoomRPG
             SaveControls();
             CalculateDMFlags();
             SaveConfigs();
-            new FormCommandLine("\"" + config.portPath + "\"" + BuildCommandLine()).ShowDialog();
+            FormCommandLine fcl = new FormCommandLine("\"" + config.portPath + "\"" + BuildCommandLine());
+            fcl.ShowDialog();
+            fcl.Dispose();
         }
 
         private void CalculateDMFlags()
@@ -403,6 +418,32 @@ namespace DoomRPG
         private void CheckBoxDRPG_CheckedChanged(object sender, EventArgs e)
         {
             buttonLaunch.Text = checkBoxDRPG.Checked ? "Launch Doom RPG" : "Launch Doom";
+            CheckDRPGLoadOrder();
+        }
+
+        private void CheckDRPGLoadOrder()
+        {
+            string DRPGpath = config.DRPGPath + "\\DoomRPG";
+            if (checkBoxDRPG.Checked)
+            {
+                if (!config.mods.Contains(DRPGpath))
+                {
+                    // DRPG goes before the Arsenal
+                    if (config.mods.Exists(m => m.Contains("DoomRL_Arsenal")))
+                    {
+                        config.mods.Insert(config.mods.FindIndex(m => m.Contains("DoomRL_Arsenal")), DRPGpath);
+                    }
+                    else
+                    {
+                        config.mods.Add(DRPGpath);
+                    }
+                }
+            }
+            else
+            {
+                config.mods.Remove(DRPGpath);
+            }
+            RefreshLoadOrder();
         }
 
         private void CheckBoxMultiplayer_CheckedChanged(object sender, EventArgs e)
@@ -455,49 +496,50 @@ namespace DoomRPG
             return false;
         }
 
-        bool CheckForPatches()
-        {
-            string error = string.Empty;
-            bool hasError = false;
-            var requirements = new Dictionary<string, string>();
-            string pathCompatInfo = $"{config.DRPGPath}\\DoomRPG\\COMPATINFO.txt";
+        // NOT USED CURRENTLY
+        //bool CheckForPatches()
+        //{
+        //    string error = string.Empty;
+        //    bool hasError = false;
+        //    var requirements = new Dictionary<string, string>();
+        //    string pathCompatInfo = $"{config.DRPGPath}\\DoomRPG\\COMPATINFO.txt";
 
-            if (File.Exists(pathCompatInfo))
-            {
-                string[] data = File.ReadAllLines(pathCompatInfo);
-                foreach (string s in data)
-                {
-                    string[] pair = s.Split('\t');
-                    requirements.Add(pair[0], pair[1]);
-                }
+        //    if (File.Exists(pathCompatInfo))
+        //    {
+        //        string[] data = File.ReadAllLines(pathCompatInfo);
+        //        foreach (string s in data)
+        //        {
+        //            string[] pair = s.Split('\t');
+        //            requirements.Add(pair[0], pair[1]);
+        //        }
 
-                foreach (string mod in config.mods)
-                {
-                    var req = requirements.FirstOrDefault(r => mod.Contains(r.Key));
-                    if (req.Value != null)
-                    {
-                        if (!patches.Find(p => p.Name == req.Value)?.Enabled ?? false)
-                        {
-                            error += $"Mod {mod} requires the patch {req.Value}\n";
-                            hasError = true;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                error = "Can't locate COMPATINFO.txt in DoomRPG folder of your DRPG installation directory. Please check if you have the latest version of DRPG.";
-                hasError = true;
-            }
+        //        foreach (string mod in config.mods)
+        //        {
+        //            var req = requirements.FirstOrDefault(r => mod.Contains(r.Key));
+        //            if (req.Value != null)
+        //            {
+        //                if (!patches.Find(p => p.Name == req.Value)?.Enabled ?? false)
+        //                {
+        //                    error += $"Mod {mod} requires the patch {req.Value}\n";
+        //                    hasError = true;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        error = "Can't locate COMPATINFO.txt in DoomRPG folder of your DRPG installation directory. Please check if you have the latest version of DRPG.";
+        //        hasError = true;
+        //    }
 
-            if (hasError)
-            {
-                Utils.ShowError(error.TrimEnd('\n'), "Mods missing");
-                return false;
-            }
-            else
-                return true;
-        }
+        //    if (hasError)
+        //    {
+        //        Utils.ShowError(error.TrimEnd('\n'), "Mods missing");
+        //        return false;
+        //    }
+        //    else
+        //        return true;
+        //}
 
         private async Task CheckForUpdates()
         {
@@ -669,6 +711,8 @@ namespace DoomRPG
             SaveControls();
             config = configs.Find(c => c.Name == comboBoxConfig.SelectedItem.ToString());
             LoadContent();
+            PopulateMods();
+            PopulatePatches();
         }
 
         private void DownloadDRPG()
@@ -851,6 +895,7 @@ namespace DoomRPG
 
             // Load Controls
             LoadControls();
+            CheckDRPGLoadOrder();
         }
 
         private void LoadControls()
@@ -1230,14 +1275,19 @@ namespace DoomRPG
             else if (!config.mods.Contains(mod))
                 config.mods.Add(mod);
 
+            RefreshLoadOrder();
+
+            if (mod.Contains("DoomRL_Arsenal"))
+                PopulateDifficulty();
+        }
+
+        private void RefreshLoadOrder()
+        {
             listViewLoadOrder.Items.Clear();
             foreach (string m in config.mods)
             {
                 listViewLoadOrder.Items.Add(m);
             }
-
-            if (mod.Contains("DoomRL Arsenal"))
-                PopulateDifficulty();
         }
 
         private void ListViewLoadOrder_ItemDrag(object sender, ItemDragEventArgs e)
