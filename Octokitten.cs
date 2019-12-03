@@ -12,7 +12,9 @@ namespace DoomRPG
         {
             HttpClient cl = new HttpClient() { BaseAddress = new Uri("https://api.github.com"), DefaultRequestHeaders = { { "User-Agent", "DRPGSEL" } } };
             DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Branch[]));
-            return (Branch[])serializer.ReadObject(await cl.GetStreamAsync($"repos/{author}/{repository}/branches"));
+            Branch[] result = (Branch[])serializer.ReadObject(await cl.GetStreamAsync($"repos/{author}/{repository}/branches"));
+            cl.Dispose();
+            return result;
         }
     }
 

@@ -113,6 +113,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Forks.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Save_16x.png" />
     <None Include="Resources\AddFile_16x.png" />
     <None Include="Resources\Eraser_16x.png" />

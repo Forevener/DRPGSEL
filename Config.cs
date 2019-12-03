@@ -10,6 +10,7 @@ namespace DoomRPG
         public string Name;
 
         // Basic
+        public string fork = "Sumwunn/DoomRPG";
         public string portPath = string.Empty;
         public string IWADPath = string.Empty;
         public string DRPGPath = string.Empty;

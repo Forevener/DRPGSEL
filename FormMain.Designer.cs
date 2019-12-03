@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Mod1");
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Mod2");
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("Mod3");
-            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Mod4");
-            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("Mod5");
+            System.Windows.Forms.ListViewItem listViewItem16 = new System.Windows.Forms.ListViewItem("Mod1");
+            System.Windows.Forms.ListViewItem listViewItem17 = new System.Windows.Forms.ListViewItem("Mod2");
+            System.Windows.Forms.ListViewItem listViewItem18 = new System.Windows.Forms.ListViewItem("Mod3");
+            System.Windows.Forms.ListViewItem listViewItem19 = new System.Windows.Forms.ListViewItem("Mod4");
+            System.Windows.Forms.ListViewItem listViewItem20 = new System.Windows.Forms.ListViewItem("Mod5");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageBasic = new System.Windows.Forms.TabPage();
@@ -91,6 +91,8 @@
             this.checkBoxMultiplayer = new System.Windows.Forms.CheckBox();
             this.tabPageMods = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.listViewLoadOrder = new System.Windows.Forms.ListView();
+            this.columnHeaderModName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.labelLoadOrder = new System.Windows.Forms.Label();
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.labelMods = new System.Windows.Forms.Label();
@@ -115,8 +117,8 @@
             this.timerPulse = new System.Windows.Forms.Timer(this.components);
             this.toolTipMain = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.listViewLoadOrder = new System.Windows.Forms.ListView();
-            this.columnHeaderModName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.comboBoxForks = new System.Windows.Forms.ComboBox();
+            this.labelFork = new System.Windows.Forms.Label();
             this.tabControlMain.SuspendLayout();
             this.tabPageBasic.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMapNumber)).BeginInit();
@@ -153,6 +155,8 @@
             // 
             // tabPageBasic
             // 
+            this.tabPageBasic.Controls.Add(this.comboBoxForks);
+            this.tabPageBasic.Controls.Add(this.labelFork);
             this.tabPageBasic.Controls.Add(this.buttonConfigSave);
             this.tabPageBasic.Controls.Add(this.buttonBrowseIWADsPath);
             this.tabPageBasic.Controls.Add(this.textBoxIWADsPath);
@@ -343,7 +347,7 @@
             this.comboBoxBranch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxBranch.Enabled = false;
             this.comboBoxBranch.FormattingEnabled = true;
-            this.comboBoxBranch.Location = new System.Drawing.Point(635, 488);
+            this.comboBoxBranch.Location = new System.Drawing.Point(635, 566);
             this.comboBoxBranch.Margin = new System.Windows.Forms.Padding(6);
             this.comboBoxBranch.Name = "comboBoxBranch";
             this.comboBoxBranch.Size = new System.Drawing.Size(232, 33);
@@ -354,7 +358,7 @@
             // 
             this.labelBranch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelBranch.AutoSize = true;
-            this.labelBranch.Location = new System.Drawing.Point(629, 458);
+            this.labelBranch.Location = new System.Drawing.Point(629, 536);
             this.labelBranch.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelBranch.Name = "labelBranch";
             this.labelBranch.Size = new System.Drawing.Size(80, 25);
@@ -364,10 +368,10 @@
             // buttonShowCommandLine
             // 
             this.buttonShowCommandLine.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonShowCommandLine.Location = new System.Drawing.Point(639, 568);
+            this.buttonShowCommandLine.Location = new System.Drawing.Point(12, 618);
             this.buttonShowCommandLine.Margin = new System.Windows.Forms.Padding(6);
             this.buttonShowCommandLine.Name = "buttonShowCommandLine";
-            this.buttonShowCommandLine.Size = new System.Drawing.Size(236, 69);
+            this.buttonShowCommandLine.Size = new System.Drawing.Size(338, 44);
             this.buttonShowCommandLine.TabIndex = 25;
             this.buttonShowCommandLine.Text = "Show Entire Command-Line";
             this.buttonShowCommandLine.UseVisualStyleBackColor = true;
@@ -874,6 +878,42 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(888, 674);
             this.tableLayoutPanel2.TabIndex = 30;
             // 
+            // listViewLoadOrder
+            // 
+            this.listViewLoadOrder.AllowDrop = true;
+            this.listViewLoadOrder.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeaderModName});
+            this.listViewLoadOrder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewLoadOrder.GridLines = true;
+            this.listViewLoadOrder.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.listViewLoadOrder.HideSelection = false;
+            this.listViewLoadOrder.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem16,
+            listViewItem17,
+            listViewItem18,
+            listViewItem19,
+            listViewItem20});
+            this.listViewLoadOrder.LabelWrap = false;
+            this.listViewLoadOrder.Location = new System.Drawing.Point(447, 28);
+            this.listViewLoadOrder.MultiSelect = false;
+            this.listViewLoadOrder.Name = "listViewLoadOrder";
+            this.listViewLoadOrder.ShowGroups = false;
+            this.listViewLoadOrder.Size = new System.Drawing.Size(438, 575);
+            this.listViewLoadOrder.TabIndex = 32;
+            this.listViewLoadOrder.UseCompatibleStateImageBehavior = false;
+            this.listViewLoadOrder.View = System.Windows.Forms.View.Details;
+            this.listViewLoadOrder.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.ListViewLoadOrder_ItemDrag);
+            this.listViewLoadOrder.SizeChanged += new System.EventHandler(this.ListViewLoadOrder_SizeChanged);
+            this.listViewLoadOrder.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListViewLoadOrder_DragDrop);
+            this.listViewLoadOrder.DragEnter += new System.Windows.Forms.DragEventHandler(this.ListViewLoadOrder_DragEnter);
+            this.listViewLoadOrder.DragOver += new System.Windows.Forms.DragEventHandler(this.ListViewLoadOrder_DragOver);
+            this.listViewLoadOrder.DragLeave += new System.EventHandler(this.ListViewLoadOrder_DragLeave);
+            // 
+            // columnHeaderModName
+            // 
+            this.columnHeaderModName.Text = "Mod Name";
+            this.columnHeaderModName.Width = 438;
+            // 
             // labelLoadOrder
             // 
             this.labelLoadOrder.AutoSize = true;
@@ -954,6 +994,7 @@
             this.columnHeader2});
             this.listViewDMFlags2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewDMFlags2.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.listViewDMFlags2.HideSelection = false;
             this.listViewDMFlags2.Location = new System.Drawing.Point(447, 44);
             this.listViewDMFlags2.Name = "listViewDMFlags2";
             this.listViewDMFlags2.ShowItemToolTips = true;
@@ -991,6 +1032,7 @@
             this.columnHeader1});
             this.listViewDMFlags.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewDMFlags.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.listViewDMFlags.HideSelection = false;
             this.listViewDMFlags.LabelWrap = false;
             this.listViewDMFlags.Location = new System.Drawing.Point(3, 44);
             this.listViewDMFlags.Name = "listViewDMFlags";
@@ -1080,7 +1122,7 @@
             // 
             this.toolStripStatusLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(79, 37);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(79, 32);
             this.toolStripStatusLabel.Spring = true;
             this.toolStripStatusLabel.Text = "Ready";
             this.toolStripStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1134,40 +1176,28 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(916, 882);
             this.tableLayoutPanel3.TabIndex = 11;
             // 
-            // listViewLoadOrder
+            // comboBoxForks
             // 
-            this.listViewLoadOrder.AllowDrop = true;
-            this.listViewLoadOrder.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeaderModName});
-            this.listViewLoadOrder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewLoadOrder.GridLines = true;
-            this.listViewLoadOrder.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
-            this.listViewLoadOrder.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem6,
-            listViewItem7,
-            listViewItem8,
-            listViewItem9,
-            listViewItem10});
-            this.listViewLoadOrder.LabelWrap = false;
-            this.listViewLoadOrder.Location = new System.Drawing.Point(447, 28);
-            this.listViewLoadOrder.MultiSelect = false;
-            this.listViewLoadOrder.Name = "listViewLoadOrder";
-            this.listViewLoadOrder.ShowGroups = false;
-            this.listViewLoadOrder.Size = new System.Drawing.Size(438, 575);
-            this.listViewLoadOrder.TabIndex = 32;
-            this.listViewLoadOrder.UseCompatibleStateImageBehavior = false;
-            this.listViewLoadOrder.View = System.Windows.Forms.View.Details;
-            this.listViewLoadOrder.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.ListViewLoadOrder_ItemDrag);
-            this.listViewLoadOrder.SizeChanged += new System.EventHandler(this.ListViewLoadOrder_SizeChanged);
-            this.listViewLoadOrder.DragDrop += new System.Windows.Forms.DragEventHandler(this.ListViewLoadOrder_DragDrop);
-            this.listViewLoadOrder.DragEnter += new System.Windows.Forms.DragEventHandler(this.ListViewLoadOrder_DragEnter);
-            this.listViewLoadOrder.DragOver += new System.Windows.Forms.DragEventHandler(this.ListViewLoadOrder_DragOver);
-            this.listViewLoadOrder.DragLeave += new System.EventHandler(this.ListViewLoadOrder_DragLeave);
+            this.comboBoxForks.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxForks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxForks.FormattingEnabled = true;
+            this.comboBoxForks.Location = new System.Drawing.Point(635, 488);
+            this.comboBoxForks.Margin = new System.Windows.Forms.Padding(6);
+            this.comboBoxForks.Name = "comboBoxForks";
+            this.comboBoxForks.Size = new System.Drawing.Size(232, 33);
+            this.comboBoxForks.TabIndex = 40;
+            this.comboBoxForks.SelectedIndexChanged += new System.EventHandler(this.ComboBoxForks_SelectedIndexChanged);
             // 
-            // columnHeaderModName
+            // labelFork
             // 
-            this.columnHeaderModName.Text = "Mod Name";
-            this.columnHeaderModName.Width = 438;
+            this.labelFork.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelFork.AutoSize = true;
+            this.labelFork.Location = new System.Drawing.Point(629, 458);
+            this.labelFork.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.labelFork.Name = "labelFork";
+            this.labelFork.Size = new System.Drawing.Size(55, 25);
+            this.labelFork.TabIndex = 39;
+            this.labelFork.Text = "Fork";
             // 
             // FormMain
             // 
@@ -1297,6 +1327,8 @@
         private System.Windows.Forms.TreeView treeViewMods;
         private System.Windows.Forms.ListView listViewLoadOrder;
         private System.Windows.Forms.ColumnHeader columnHeaderModName;
+        private System.Windows.Forms.ComboBox comboBoxForks;
+        private System.Windows.Forms.Label labelFork;
     }
 }
 

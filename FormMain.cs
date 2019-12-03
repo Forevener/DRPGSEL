@@ -62,9 +62,13 @@ namespace DoomRPG
             // Populate controls
             LoadContent();
             CheckForMods();
-            // Populate branches combo box
+        }
+
+        private void ComboBoxForks_SelectedIndexChanged(object sender, EventArgs e)
+        {
             _ = PopulateBranchesComboBox();
         }
+
         private string BuildCommandLine()
         {
             string cmdline = string.Empty;
@@ -806,8 +810,9 @@ namespace DoomRPG
         private async Task<List<string>> GetBranches()
         {
             List<string> branchNames = new List<string>();
+            string[] fork = comboBoxForks.Text.Split('/');
 
-            foreach (Branch branch in await Octokitten.GetAllBranches("Sumwunn", "DoomRPG"))
+            foreach (Branch branch in await Octokitten.GetAllBranches(fork[0], fork[1]))
                 branchNames.Add(branch.name);
 
             return branchNames;
@@ -815,7 +820,8 @@ namespace DoomRPG
 
         private async Task<string> GetBranchSHA(string branchName)
         {
-            Branch branch = (await Octokitten.GetAllBranches("Sumwunn", "DoomRPG")).Single(b => b.name == branchName);
+            string[] fork = comboBoxForks.Text.Split('/');
+            Branch branch = (await Octokitten.GetAllBranches(fork[0], fork[1])).Single(b => b.name == branchName);
             return branch?.commit.sha ?? string.Empty;
         }
 
@@ -900,6 +906,7 @@ namespace DoomRPG
 
         private void LoadControls()
         {
+            comboBoxForks.SelectedItem = config.fork;
             textBoxPortPath.Text = config.portPath;
             textBoxIWADsPath.Text = config.IWADPath;
             textBoxDRPGPath.Text = config.DRPGPath;
@@ -960,10 +967,9 @@ namespace DoomRPG
 
         private async Task PopulateBranchesComboBox()
         {
-            List<string> branches = await GetBranches();
-            foreach (string branch in branches)
-                comboBoxBranch.Items.Add(branch);
-            comboBoxBranch.Text = "master";
+            comboBoxBranch.Items.Clear();
+            comboBoxBranch.Items.AddRange((await GetBranches()).ToArray());
+            comboBoxBranch.SelectedItem = "master";
             comboBoxBranch.Enabled = true;
         }
 
@@ -974,7 +980,11 @@ namespace DoomRPG
             foreach (Config c in configs)
                 comboBoxConfig.Items.Add(c.Name);
             comboBoxConfig.SelectedIndex = configs.IndexOf(config);
+            
+            // Populate forks combo box
+            PopulateForksComboBox();
 
+            // IWADs
             PopulateIWADs();
 
             // Difficulty
@@ -1054,6 +1064,23 @@ namespace DoomRPG
                 comboBoxIWAD.Items.Add(iwad);
             }
             comboBoxIWAD.SelectedItem = config.iwad;
+        }
+
+        private void PopulateForksComboBox()
+        {
+            string[] forks;
+            if (!File.Exists("Forks.txt"))
+            {
+                File.WriteAllText("Forks.txt", "Sumwunn/DoomRPG");
+                forks = new string[] { "Sumwunn/DoomRPG" };
+            }
+            else
+            {
+                forks = File.ReadAllLines("Forks.txt");
+            }
+
+            comboBoxForks.Items.Clear();
+            comboBoxForks.Items.AddRange(forks);
         }
 
         private void PopulateMods()
@@ -1175,7 +1202,7 @@ namespace DoomRPG
 
         private void SaveControls()
         {
-            
+            config.fork = comboBoxForks.SelectedItem.ToString();
             config.portPath = textBoxPortPath.Text;
             config.IWADPath = textBoxIWADsPath.Text;
             config.DRPGPath = textBoxDRPGPath.Text;
