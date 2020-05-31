@@ -15,7 +15,7 @@ namespace DoomRPG
 {
     public partial class FormMain : Form
     {
-        readonly string configPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\" + Assembly.GetEntryAssembly().GetName().Name + ".cfg";
+        readonly string configPath = Application.StartupPath + "\\" + Assembly.GetEntryAssembly().GetName().Name + ".cfg";
         Config config;
         private List<Config> configs = new List<Config>();
         string currentBranch = string.Empty;
@@ -279,6 +279,8 @@ namespace DoomRPG
             
             buttonCheckUpdates.Enabled = false;
             buttonLaunch.Enabled = false;
+            comboBoxForks.Enabled = false;
+            comboBoxBranch.Enabled = false;
             await CheckForUpdates();
         }
 
@@ -477,7 +479,7 @@ namespace DoomRPG
                     return false;
                 }
 
-                if (config.DRPGPath == Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location))
+                if (config.DRPGPath == Application.StartupPath)
                 {
                     Utils.ShowError("You cannot keep the launcher within the Doom RPG folder! Please move it to a different location.");
                     return false;
@@ -589,6 +591,8 @@ namespace DoomRPG
                         toolStripProgressBar.Style = ProgressBarStyle.Continuous;
                         buttonCheckUpdates.Enabled = true;
                         buttonLaunch.Enabled = true;
+                        comboBoxForks.Enabled = true;
+                        comboBoxBranch.Enabled = true;
                         return;
                     }
                     else if (!Directory.Exists(config.DRPGPath)) // Directory wasn't found
@@ -613,6 +617,8 @@ namespace DoomRPG
                             toolStripProgressBar.Style = ProgressBarStyle.Continuous;
                             buttonCheckUpdates.Enabled = true;
                             buttonLaunch.Enabled = true;
+                            comboBoxForks.Enabled = true;
+                            comboBoxBranch.Enabled = true;
                             return;
                         }
                     }
@@ -640,6 +646,8 @@ namespace DoomRPG
             {
                 buttonCheckUpdates.Enabled = true;
                 buttonLaunch.Enabled = true;
+                comboBoxForks.Enabled = true;
+                comboBoxBranch.Enabled = true;
             }
         }
 
@@ -721,8 +729,8 @@ namespace DoomRPG
 
         private void DownloadDRPG()
         {
-            Uri uri = new Uri("https://github.com/Sumwunn/DoomRPG/archive/" + currentBranch + ".zip");
-            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            Uri uri = new Uri($@"https://github.com/{config.fork}/archive/{currentBranch}.zip");
+            string path = Application.StartupPath;
             string zipName = "\\DoomRPG.zip";
 
             using (WebClient client = new WebClient())
@@ -762,7 +770,7 @@ namespace DoomRPG
 
         private void ExtractDRPG()
         {
-            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string path = Application.StartupPath;
             string zipPath = path + "\\DoomRPG.zip";
 
             try
@@ -781,14 +789,14 @@ namespace DoomRPG
 
         private async void ExtractZip()
         {
-            string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string path = Application.StartupPath;
             string zipPath = path + "\\DoomRPG.zip";
 
             // Extract the zip
             ZipFile.ExtractToDirectory(zipPath, path);
 
             // Move the files to the root folder
-            Directory.Move(path + "\\DoomRPG-" + currentBranch, config.DRPGPath);
+            Directory.Move(path + $@"\{config.fork.Split('/')[1]}-" + currentBranch, config.DRPGPath);
 
             // Add the SHA-1 file
             File.WriteAllText(config.DRPGPath + "\\SHA-1", await GetBranchSHA(currentBranch));
@@ -820,7 +828,7 @@ namespace DoomRPG
 
         private async Task<string> GetBranchSHA(string branchName)
         {
-            string[] fork = comboBoxForks.Text.Split('/');
+            string[] fork = config.fork.Split('/');
             Branch branch = (await Octokitten.GetAllBranches(fork[0], fork[1])).Single(b => b.name == branchName);
             return branch?.commit.sha ?? string.Empty;
         }
