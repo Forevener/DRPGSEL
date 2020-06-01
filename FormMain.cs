@@ -49,7 +49,7 @@ namespace DoomRPG
         public FormMain()
         {
             InitializeComponent();
-            
+
             // Title
             Text = "Doom RPG SE Launcher v" + version.ToString(3);
 
@@ -276,11 +276,8 @@ namespace DoomRPG
             // Error Handling
             if (!CheckForErrors())
                 return;
-            
-            buttonCheckUpdates.Enabled = false;
-            buttonLaunch.Enabled = false;
-            comboBoxForks.Enabled = false;
-            comboBoxBranch.Enabled = false;
+
+            SetMainControlsState(false);
             await CheckForUpdates();
         }
 
@@ -589,10 +586,7 @@ namespace DoomRPG
                     {
                         toolStripStatusLabel.Text = "This version of Doom RPG is managed by git";
                         toolStripProgressBar.Style = ProgressBarStyle.Continuous;
-                        buttonCheckUpdates.Enabled = true;
-                        buttonLaunch.Enabled = true;
-                        comboBoxForks.Enabled = true;
-                        comboBoxBranch.Enabled = true;
+                        SetMainControlsState(true);
                         return;
                     }
                     else if (!Directory.Exists(config.DRPGPath)) // Directory wasn't found
@@ -615,10 +609,7 @@ namespace DoomRPG
                             toolStripStatusLabel.ForeColor = Color.Green;
                             toolStripStatusLabel.Text = "Already up-to-date!";
                             toolStripProgressBar.Style = ProgressBarStyle.Continuous;
-                            buttonCheckUpdates.Enabled = true;
-                            buttonLaunch.Enabled = true;
-                            comboBoxForks.Enabled = true;
-                            comboBoxBranch.Enabled = true;
+                            SetMainControlsState(true);
                             return;
                         }
                     }
@@ -644,10 +635,7 @@ namespace DoomRPG
             }
             else
             {
-                buttonCheckUpdates.Enabled = true;
-                buttonLaunch.Enabled = true;
-                comboBoxForks.Enabled = true;
-                comboBoxBranch.Enabled = true;
+                SetMainControlsState(true);
             }
         }
 
@@ -809,10 +797,17 @@ namespace DoomRPG
                 toolStripStatusLabel.ForeColor = Color.FromKnownColor(KnownColor.ControlText);
                 toolStripStatusLabel.Text = "Ready";
                 toolStripProgressBar.Style = ProgressBarStyle.Continuous;
-                buttonCheckUpdates.Enabled = true;
-                buttonLaunch.Enabled = true;
+                SetMainControlsState(true);
                 TextBoxDRPGPath_TextChanged(null, null);
             }));
+        }
+
+        private void SetMainControlsState(bool state)
+        {
+            buttonCheckUpdates.Enabled = state;
+            buttonLaunch.Enabled = state;
+            comboBoxForks.Enabled = state;
+            comboBoxBranch.Enabled = state;
         }
 
         private async Task<List<string>> GetBranches()
