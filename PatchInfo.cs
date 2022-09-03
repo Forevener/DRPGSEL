@@ -60,7 +60,6 @@ namespace DoomRPG
         public static bool CheckForRequirements(List<PatchInfo> patches)
         {
             string error = string.Empty;
-            bool hasError = false;
 
             foreach (PatchInfo patch in patches.FindAll(p => p.Enabled))
             {
@@ -69,12 +68,11 @@ namespace DoomRPG
                     if (!patches.Find(p => p.Name == req)?.Enabled ?? false)
                     {
                         error += $"Patch {patch.Name} requires the patch {req}\n";
-                        hasError = true;
                     }
                 }
             }
 
-            if (hasError)
+            if (error != String.Empty)
             {
                 Utils.ShowError(error.TrimEnd('\n'), "Patch Conflict");
                 return false;
@@ -86,7 +84,6 @@ namespace DoomRPG
         public static bool CheckForMods(List<PatchInfo> patches, List<string> mods)
         {
             string error = string.Empty;
-            bool hasError = false;
 
             foreach (PatchInfo patch in patches.FindAll(p => p.Enabled))
             {
@@ -95,12 +92,11 @@ namespace DoomRPG
                     if (!mods.Exists(m => m.Contains(req)))
                     {
                         error += $"Patch {patch.Name} requires the file {req}\n";
-                        hasError = true;
                     }
                 }
             }
 
-            if (hasError)
+            if (error != String.Empty)
             {
                 Utils.ShowError(error.TrimEnd('\n'), "Mods missing");
                 return false;
@@ -112,7 +108,6 @@ namespace DoomRPG
         public static bool CheckForConflicts(List<PatchInfo> patches)
         {
             string error = string.Empty;
-            bool hasError = false;
 
             foreach (PatchInfo patch in patches.FindAll(p => p.Enabled))
             {
@@ -121,14 +116,37 @@ namespace DoomRPG
                     if (patches.Find(p => p.Name == conf)?.Enabled ?? false)
                     {
                         error += $"Patch {patch.Name} conflicts with patch {conf}\n";
-                        hasError = true;
                     }
                 }
             }
 
-            if (hasError)
+            if (error != String.Empty)
             {
                 Utils.ShowError(error.TrimEnd('\n'), "Patch Conflict");
+                return false;
+            }
+            else
+                return true;
+        }
+
+        public static bool CheckForPatches(List<PatchInfo> patches, List<string> mods)
+        {
+            string error = string.Empty;
+
+            foreach (PatchInfo patch in patches)
+            {
+                foreach (string req in patch.ReqiredMods)
+                {
+                    if (mods.Exists(m => m.Contains(req)))
+                    {
+                        error += $"DoomRPG requires patch {patch.Name} for the mod {req}\n";
+                    }
+                }
+            }
+
+            if (error != String.Empty)
+            {
+                Utils.ShowError(error.TrimEnd('\n'), "Mods missing");
                 return false;
             }
             else

@@ -14,5 +14,11 @@ namespace DoomRPG
         {
             MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+
+        public static string RelativePath(string path, string root)
+        {
+            string result = "\"" + new Uri(root).MakeRelativeUri(new Uri(path)).ToString().Replace("/", "\\") + "\"";
+            return result.Replace("%20", " ");
+        }
     }
 }

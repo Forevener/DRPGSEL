@@ -11,25 +11,23 @@ namespace DoomRPG
 
         // Basic
         public string fork = "Sumwunn/DoomRPG";
+        public string branch = "master";
         public string portPath = string.Empty;
         public string IWADPath = string.Empty;
         public string DRPGPath = string.Empty;
         public string modsPath = string.Empty;
         public string iwad = "doom2.wad";
+        public string demo = string.Empty;
+        public bool enableCheats = false;
+        public bool enableLogging = false;
+        public List<string> mods = new List<string>();
+        public string customCommands = string.Empty;
+
+        // Startup
+        public int startupMode = 0;
         public int difficulty = 1;
         public DRLAClass rlClass = DRLAClass.Marine;
         public int mapNumber = 1;
-        public string demo = string.Empty;
-        public bool enableDRPG = true;
-        public bool enableCheats = false;
-        public bool enableLogging = false;
-        public List<string> patches = new List<string>();
-        public List<string> mods = new List<string>();
-        public string customCommands = string.Empty;
-        public bool EnableDMFlags = false;
-        public int DMFlags = 0;
-        public bool EnableDMFlags2 = false;
-        public int DMFlags2 = 0;        
 
         // Multiplayer
         public bool multiplayer = false;
@@ -39,6 +37,12 @@ namespace DoomRPG
         public string hostname = string.Empty;
         public bool extraTics = false;
         public int duplicate = 1;
+
+        // Gameplay
+        public bool EnableDMFlags = false;
+        public int DMFlags = 0;
+        public bool EnableDMFlags2 = false;
+        public int DMFlags2 = 0;
 
         // Warnings
         public bool wipeWarning = false;
