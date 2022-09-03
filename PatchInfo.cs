@@ -137,7 +137,7 @@ namespace DoomRPG
             {
                 foreach (string req in patch.ReqiredMods)
                 {
-                    if (mods.Exists(m => m.Contains(req)))
+                    if (mods.Exists(m => m.Contains(req)) && !patch.Enabled)
                     {
                         error += $"DoomRPG requires patch {patch.Name} for the mod {req}\n";
                     }
