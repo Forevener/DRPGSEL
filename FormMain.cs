@@ -1355,10 +1355,14 @@ namespace DoomRPG
                 }
 
                 ListViewItem draggedItem = (ListViewItem)e.Data.GetData(typeof(ListViewItem));
-                listViewLoadOrder.Items.Insert(targetIndex, (ListViewItem)draggedItem.Clone());
-                config.mods.Insert(targetIndex, config.mods[draggedItem.Index]);
+                ListViewItem item = (ListViewItem)draggedItem.Clone();
+                string mod = config.mods[draggedItem.Index];
+                int newIndex = draggedItem.Index > targetIndex ? targetIndex : targetIndex - 1;
+
                 listViewLoadOrder.Items.Remove(draggedItem);
-                config.mods.RemoveAt(draggedItem.Index + 1);
+                config.mods.Remove(mod);
+                listViewLoadOrder.Items.Insert(newIndex, item);
+                config.mods.Insert(newIndex, mod);
             }
         }
     }
