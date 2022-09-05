@@ -988,6 +988,7 @@
             this.listViewLoadOrder.Name = "listViewLoadOrder";
             this.tableLayoutPanel2.SetRowSpan(this.listViewLoadOrder, 3);
             this.listViewLoadOrder.ShowGroups = false;
+            this.listViewLoadOrder.ShowItemToolTips = true;
             this.listViewLoadOrder.Size = new System.Drawing.Size(438, 618);
             this.listViewLoadOrder.TabIndex = 32;
             this.listViewLoadOrder.UseCompatibleStateImageBehavior = false;

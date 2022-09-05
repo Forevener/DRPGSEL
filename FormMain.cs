@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace DoomRPG
@@ -407,38 +408,20 @@ namespace DoomRPG
 
         private void CheckedListBoxPatches_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            if (e.NewValue == CheckState.Checked)
+            if (e.NewValue != e.CurrentValue)
             {
-                if (config.mods.Contains($"{config.DRPGPath}\\DoomRPG"))
+                if (e.NewValue == CheckState.Checked)
                 {
                     patches[e.Index].Enabled = true;
-                    if (PatchInfo.CheckForMods(patches, config.mods) && PatchInfo.CheckForRequirements(patches) && PatchInfo.CheckForConflicts(patches))
-                    {
-                        if (!config.mods.Contains(patches[e.Index].Path))
-                            config.mods.Add(patches[e.Index].Path);
-                    }
-                    else
-                    {
-                        patches[e.Index].Enabled = false;
-                        e.NewValue = CheckState.Unchecked;
-                    }
+                    AddMod(patches[e.Index].Path);
                 }
                 else
                 {
-                    Utils.ShowError("DoomRPG should be enabled for patches to work");
-                    e.NewValue = CheckState.Unchecked;
+                    patches[e.Index].Enabled = false;
+                    RemoveMod(patches[e.Index].Path, true);
                 }
+                RefreshLoadOrder();
             }
-            else
-            {
-                patches[e.Index].Enabled = false;
-                int index = config.mods.FindIndex(m => m.Contains(patches[e.Index].Path));
-                if (index >= 0)
-                {
-                    config.mods.RemoveAt(index);
-                }
-            }
-            RefreshLoadOrder();
         }
 
         private void CheckBoxMultiplayer_CheckedChanged(object sender, EventArgs e)
@@ -852,6 +835,7 @@ namespace DoomRPG
             textBoxCustomCommands.Text = config.customCommands;
             checkBoxDMFlags.Checked = config.EnableDMFlags;
             checkBoxDMFlags2.Checked = config.EnableDMFlags2;
+            this.Size = config.windowSize;
         }
 
         private void LoadCredits()
@@ -893,22 +877,14 @@ namespace DoomRPG
             // Difficulty
             PopulateDifficulty();
 
-            // DRLA Class
-            comboBoxClass.Items.Clear();
-            for (int i = 0; i < Enum.GetNames(typeof(DRLAClass)).Length; i++)
-                comboBoxClass.Items.Add(Enum.GetName(typeof(DRLAClass), i));
-            comboBoxClass.SelectedIndex = (int)config.rlClass;
-
             // Savegames
             PopulateSaveGames();
         }
 
         private void PopulateDifficulty()
         {
-            comboBoxDifficulty.Items.Clear();
-            string[] difficulties = IsDRLAActive ? Enum.GetNames(typeof(DRLADifficulty)) : Enum.GetNames(typeof(Difficulty));
-            foreach (string d in difficulties)
-                comboBoxDifficulty.Items.Add(d);
+            var difficulties = IsDRLAActive ? Enum.GetValues(typeof(DRLADifficulty)) : Enum.GetValues(typeof(Difficulty));
+            comboBoxDifficulty.DataSource = difficulties;
             comboBoxDifficulty.SelectedIndex = Math.Min(config.difficulty, difficulties.Length - 1);
         }
 
@@ -990,13 +966,8 @@ namespace DoomRPG
         {
             // Remove non-existant mods
             config.mods.RemoveAll(m => !File.Exists(m) && !Directory.Exists(m));
-            
-            listViewLoadOrder.Items.Clear();
 
-            foreach (string mod in config.mods)
-            {
-                listViewLoadOrder.Items.Add(mod.Split('\\').Last());
-            }
+            RefreshLoadOrder();
 
             treeViewMods.Nodes.Clear();
             if (Directory.Exists($"{config.DRPGPath}\\DoomRPG"))
@@ -1050,7 +1021,17 @@ namespace DoomRPG
                             checkedListBoxPatches.SetItemChecked(patches.Count - 1, true);
                     }
                 }
+
+                // Populate DRLA(X) Class
+                PopulateClasses();
             }
+        }
+
+        private void PopulateClasses()
+        {
+            var classes = patches.Find(p => p.Name == "DoomRL Arsenal Extended")?.Enabled ?? false ? Enum.GetValues(typeof(DRLAXClass)) : Enum.GetValues(typeof(DRLAClass));
+            comboBoxClass.DataSource = classes;
+            comboBoxClass.SelectedIndex = Math.Min((int)config.rlClass, classes.Length - 1);
         }
 
         private void PopulateSaveGames()
@@ -1127,7 +1108,7 @@ namespace DoomRPG
             config.iwad = comboBoxIWAD.SelectedItem?.ToString() ?? "doom2.wad";
             config.startupMode = comboBoxStartupMode.SelectedIndex;
             config.difficulty = comboBoxDifficulty.SelectedIndex;
-            config.rlClass = (DRLAClass)comboBoxClass.SelectedIndex;
+            config.rlClass = (DRLAXClass)comboBoxClass.SelectedIndex;
             config.mapNumber = (int)numericUpDownMapNumber.Value;
             config.demo = textBoxDemo.Text;
             config.enableCheats = checkBoxEnableCheats.Checked;
@@ -1148,6 +1129,7 @@ namespace DoomRPG
             config.customCommands = textBoxCustomCommands.Text;
             config.EnableDMFlags = checkBoxDMFlags.Checked;
             config.EnableDMFlags2 = checkBoxDMFlags2.Checked;
+            config.windowSize = this.Size;
         }
 
         private void SkipSelection(object sender, EventArgs e)
@@ -1247,47 +1229,91 @@ namespace DoomRPG
         {
             string mod = e.Node.FullPath != "DoomRPG" ? $"{config.modsPath}\\{e.Node.FullPath}" : $"{config.DRPGPath}\\DoomRPG";
 
-            if (!e.Node.Checked)
+            if (e.Action != TreeViewAction.Unknown)
             {
-                config.mods.Remove(mod);
-                int index = patches.FindIndex(p => p.ReqiredMods.Contains(e.Node.Text));
-                if (index >= 0)
+                if (!e.Node.Checked)
                 {
-                    patches[index].Enabled = false;
-                    checkedListBoxPatches.SetItemChecked(index, false);
+                    RemoveMod(mod, true);
                 }
-                if (e.Node.FullPath == "DoomRPG")
-                {
-                    for (int i = 0; i < patches.Count; i++)
-                    {
-                        patches[i].Enabled = false;
-                        checkedListBoxPatches.SetItemChecked(i, false);
-                    }
-                }
-            }
-            else if (!config.mods.Contains(mod))
-                config.mods.Add(mod);
-
-            RefreshLoadOrder();
-
-            if (mod.Contains("DoomRL_Arsenal"))
-            {
-                PopulateDifficulty();
-                if (config.startupMode == 1 && e.Node.Checked)
-                    comboBoxClass.Enabled = true;
                 else
-                    comboBoxClass.Enabled = false;
+                    AddMod(mod);
             }
         }
 
         private void RefreshLoadOrder()
         {
             listViewLoadOrder.Items.Clear();
-            foreach (string m in config.mods)
+
+            int drpgIndex = config.mods.IndexOf($"{config.DRPGPath}\\DoomRPG");
+
+            for (int i = 0; i < config.mods.Count; i++)
             {
-                listViewLoadOrder.Items.Add(m.Split('\\').Last());
+                string file = config.mods[i].Split('\\').Last();
+                listViewLoadOrder.Items.Add(file);
+
+                PatchInfo patch = patches.Find(p => p.Path == config.mods[i]);
+                if (patch != null)
+                {
+                    foreach (string req in patch.Requires)
+                    {
+                        if (!patches.Find(p => p.Name == req).Enabled)
+                        {
+                            listViewLoadOrder.Items[i].BackColor = Color.PaleVioletRed;
+                            listViewLoadOrder.Items[i].ToolTipText += $"This patch requires {req} to be activated\r\n";
+                        }
+                    }
+                    foreach (string conf in patch.Conflicts)
+                    {
+                        if (patches.Find(p => p.Name == conf).Enabled)
+                        {
+                            listViewLoadOrder.Items[i].BackColor = Color.Orange;
+                            listViewLoadOrder.Items[i].ToolTipText += $"This patch conflicts with {conf}\r\n";
+                        }
+                    }
+                    foreach (string mod in patch.ReqiredMods)
+                    {
+                        if (!config.mods.Exists(m => m.Split('\\').Last() == mod))
+                        {
+                            listViewLoadOrder.Items[i].BackColor = Color.PaleVioletRed;
+                            listViewLoadOrder.Items[i].ToolTipText += $"This patch requires the file {mod}\r\n";
+                        }
+                    }
+                    if (drpgIndex < 0)
+                    {
+                        listViewLoadOrder.Items[i].BackColor = Color.PaleVioletRed;
+                        listViewLoadOrder.Items[i].ToolTipText += $"Patches work only with DoomRPG\r\n";
+                    }
+                    if (i < drpgIndex)
+                    {
+                        listViewLoadOrder.Items[i].BackColor = Color.LightGoldenrodYellow;
+                        listViewLoadOrder.Items[i].ToolTipText += $"Patches should be place after DoomRPG in load order\r\n";
+                    }
+                }
+                else
+                {
+                    if (drpgIndex > -1)
+                    {
+                        if (drpgIndex < i)
+                        {
+                            listViewLoadOrder.Items[drpgIndex].BackColor = Color.LightGoldenrodYellow;
+                            listViewLoadOrder.Items[drpgIndex].ToolTipText = $"DoomRPG should be placed after all mods in load order\r\n";
+                        }
+                        foreach (PatchInfo p in patches)
+                        {
+                            foreach (string mod in p.ReqiredMods)
+                            {
+                                if (!p.Enabled && mod == file)
+                                {
+                                    listViewLoadOrder.Items[i].BackColor = Color.PaleVioletRed;
+                                    listViewLoadOrder.Items[i].ToolTipText += $"This mod requires patch {p} to be activated\r\n";
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            buttonLaunch.Text = config.mods.Contains(config.DRPGPath + "\\DoomRPG") ? "Launch Doom RPG" : "Launch Doom";
+
+            buttonLaunch.Text = drpgIndex > 0 ? "Launch Doom RPG" : "Launch Doom";
         }
 
         private void ListViewLoadOrder_ItemDrag(object sender, ItemDragEventArgs e)
@@ -1295,8 +1321,7 @@ namespace DoomRPG
             if (listViewLoadOrder.DoDragDrop(e.Item, DragDropEffects.Move) == DragDropEffects.None)
             {
                 ListViewItem item = (ListViewItem)e.Item;
-                config.mods.RemoveAt(listViewLoadOrder.Items.IndexOf(item));
-                UncheckNodes(treeViewMods.Nodes, item.Text);
+                RemoveMod(config.mods[listViewLoadOrder.Items.IndexOf(item)]);
                 listViewLoadOrder.Items.Remove(item);
             }
         }
@@ -1363,7 +1388,57 @@ namespace DoomRPG
                 config.mods.Remove(mod);
                 listViewLoadOrder.Items.Insert(newIndex, item);
                 config.mods.Insert(newIndex, mod);
+
+                RefreshLoadOrder();
             }
+        }
+
+        private void AddMod(string mod)
+        {
+            if (!config.mods.Contains(mod))
+                config.mods.Add(mod);
+
+            if (mod.Contains("DoomRL_Arsenal"))
+            {
+                PopulateDifficulty();
+                if (config.startupMode == 1)
+                    comboBoxClass.Enabled = true;
+            }
+            else if (mod.Contains("DRLAX_"))
+                PopulateClasses();
+
+            RefreshLoadOrder();
+        }
+
+        private void RemoveMod(string mod, bool manually = false)
+        {
+            config.mods.Remove(mod);
+            string name = mod.Split('\\').Last();
+
+            int index = patches.FindIndex(p => p.Path == mod);
+            if (index >= 0)
+            {
+                // It is patch
+                if (patches[index].Enabled)
+                    patches[index].Enabled = false;
+                if (!manually && checkedListBoxPatches.GetItemChecked(index))
+                    checkedListBoxPatches.SetItemChecked(index, false);
+            }
+            else
+            {
+                // It is mod
+                if (!manually)
+                    UncheckNodes(treeViewMods.Nodes, name);
+
+                else if (mod.Contains("DoomRL_Arsenal"))
+                {
+                    PopulateDifficulty();
+                    if (config.startupMode == 1)
+                        comboBoxClass.Enabled = false;
+                }
+            }
+
+            RefreshLoadOrder();
         }
     }
 }

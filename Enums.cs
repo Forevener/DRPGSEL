@@ -32,6 +32,20 @@ namespace DoomRPG
         Demolitionist
     }
 
+    public enum DRLAXClass
+    {
+        Marine,
+        Scout,
+        Technician,
+        Renegade,
+        Demolitionist,
+        Mechanoid,
+        Nomad,
+        NanoManiac,
+        PhaseSisters,
+        Sarge
+    }
+
     public enum MultiplayerMode
     {
         Hosting,

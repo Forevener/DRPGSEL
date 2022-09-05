@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 
@@ -26,7 +27,7 @@ namespace DoomRPG
         // Startup
         public int startupMode = 0;
         public int difficulty = 1;
-        public DRLAClass rlClass = DRLAClass.Marine;
+        public DRLAXClass rlClass = DRLAXClass.Marine;
         public int mapNumber = 1;
 
         // Multiplayer
@@ -46,6 +47,7 @@ namespace DoomRPG
 
         // Warnings
         public bool wipeWarning = false;
+        public Size windowSize = new Size(475, 536);
 
         public Config(string name)
         {
@@ -78,6 +80,11 @@ namespace DoomRPG
                     if (listString[listString.Length - 1] == ';')
                         listString = listString.Remove(listString.Length - 1);
                     data.Add(listString);
+                }
+                else if (field.GetValue(this).GetType() == typeof(Size))
+                {
+                    Size size = (Size)field.GetValue(this);
+                    data.Add($"{field.Name}={size.Width};{size.Height}");
                 }
                 else // Basic Type
                     data.Add(field.Name + "=" + field.GetValue(this));
@@ -122,10 +129,10 @@ namespace DoomRPG
                         }
 
                         // Enums
-                        if (field.GetValue(this).GetType() == typeof(DRLAClass))
-                            for (int i = 0; i < Enum.GetNames(typeof(DRLAClass)).Length; i++)
-                                if (Enum.GetNames(typeof(DRLAClass))[i].Contains(s[1]))
-                                    field.SetValue(this, Enum.ToObject(typeof(DRLAClass), i));
+                        if (field.GetValue(this).GetType() == typeof(DRLAXClass))
+                            for (int i = 0; i < Enum.GetNames(typeof(DRLAXClass)).Length; i++)
+                                if (Enum.GetNames(typeof(DRLAXClass))[i].Contains(s[1]))
+                                    field.SetValue(this, Enum.ToObject(typeof(DRLAXClass), i));
                         if (field.GetValue(this).GetType() == typeof(MultiplayerMode))
                             for (int i = 0; i < Enum.GetNames(typeof(MultiplayerMode)).Length; i++)
                                 if (Enum.GetNames(typeof(MultiplayerMode))[i].Contains(s[1]))
@@ -134,6 +141,13 @@ namespace DoomRPG
                             for (int i = 0; i < Enum.GetNames(typeof(ServerType)).Length; i++)
                                 if (Enum.GetNames(typeof(ServerType))[i].Contains(s[1]))
                                     field.SetValue(this, Enum.ToObject(typeof(ServerType), i));
+
+                        // Structs
+                        if (field.GetValue(this).GetType() == typeof(Size))
+                        {
+                            string[] entries = s[1].Split(';');
+                            field.SetValue(this, new Size(int.Parse(entries[0]), int.Parse(entries[1])));
+                        }
                     }
                 }
             }
