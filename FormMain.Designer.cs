@@ -258,9 +258,9 @@
             this.labelIWADsLocation.Location = new System.Drawing.Point(17, 156);
             this.labelIWADsLocation.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelIWADsLocation.Name = "labelIWADsLocation";
-            this.labelIWADsLocation.Size = new System.Drawing.Size(221, 25);
+            this.labelIWADsLocation.Size = new System.Drawing.Size(306, 25);
             this.labelIWADsLocation.TabIndex = 35;
-            this.labelIWADsLocation.Text = "IWAD Folder Location";
+            this.labelIWADsLocation.Text = "Vanilla (IWAD) Folder Location";
             this.labelIWADsLocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // buttonConfigRemove
@@ -446,9 +446,9 @@
             this.labelModsLocation.Location = new System.Drawing.Point(17, 229);
             this.labelModsLocation.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelModsLocation.Name = "labelModsLocation";
-            this.labelModsLocation.Size = new System.Drawing.Size(273, 25);
+            this.labelModsLocation.Size = new System.Drawing.Size(335, 25);
             this.labelModsLocation.TabIndex = 12;
-            this.labelModsLocation.Text = "WAD/PK3s Folder Location";
+            this.labelModsLocation.Text = "Mods (WAD/PK3) Folder Location";
             this.labelModsLocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // buttonBrowseDRPGPath

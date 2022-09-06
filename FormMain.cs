@@ -1099,8 +1099,8 @@ namespace DoomRPG
 
         private void SaveControls()
         {
-            config.fork = comboBoxForks.SelectedItem.ToString();
-            config.branch = comboBoxBranch.SelectedItem.ToString();
+            config.fork = comboBoxForks.SelectedItem.ToString() ?? "Sumwunn/DoomRPG";
+            config.branch = comboBoxBranch.SelectedItem?.ToString() ?? "master";
             config.portPath = textBoxPortPath.Text;
             config.IWADPath = textBoxIWADsPath.Text;
             config.DRPGPath = textBoxDRPGPath.Text;
@@ -1286,7 +1286,7 @@ namespace DoomRPG
                     if (i < drpgIndex)
                     {
                         listViewLoadOrder.Items[i].BackColor = Color.LightGoldenrodYellow;
-                        listViewLoadOrder.Items[i].ToolTipText += $"Patches should be place after DoomRPG in load order\r\n";
+                        listViewLoadOrder.Items[i].ToolTipText += $"Patches should be placed after DoomRPG in load order\r\n";
                     }
                 }
                 else
