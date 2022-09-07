@@ -11,7 +11,7 @@ namespace DoomRPG
         public string Name;
 
         // Basic
-        public string fork = "Sumwunn/DoomRPG";
+        public string fork = "WNC12k/DoomRPG-Rebalance";
         public string branch = "master";
         public string portPath = string.Empty;
         public string IWADPath = string.Empty;

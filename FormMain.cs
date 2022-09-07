@@ -77,7 +77,7 @@ namespace DoomRPG
             string cmdline = string.Empty;
 
             // IWAD
-            cmdline += " -iwad " + Utils.RelativePath($"{config.IWADPath}\\{config.iwad}", config.portPath);
+            cmdline += " -iwad " + Utils.GetRelativePath(config.portPath, $"{config.IWADPath}\\{config.iwad}");
 
             if (config.startupMode == 0)
             {
@@ -149,7 +149,7 @@ namespace DoomRPG
             // Mods selected from the mods list
             foreach (string mod in config.mods)
             {
-                cmdline += " " + Utils.RelativePath(mod, config.portPath);
+                cmdline += " " + Utils.GetRelativePath(config.portPath, mod);
             }
 
             // DMFlags
@@ -689,6 +689,27 @@ namespace DoomRPG
             PopulatePatches();
         }
 
+        private void ConvertPaths()
+        {
+            // Check for relative paths and make them absolute
+            if (config.DRPGPath.StartsWith("."))
+            {
+                config.DRPGPath = Path.GetFullPath(config.DRPGPath);
+            }
+            if (config.IWADPath.StartsWith("."))
+            {
+                config.IWADPath = Path.GetFullPath(config.IWADPath);
+            }
+            if (config.modsPath.StartsWith("."))
+            {
+                config.modsPath = Path.GetFullPath(config.modsPath);
+            }
+            if (config.portPath.StartsWith("."))
+            {
+                config.portPath = Path.GetFullPath(config.portPath);
+            }
+        }
+
         private void DownloadDRPG()
         {
             Uri uri = new Uri($@"https://github.com/{config.fork}/archive/{currentBranch}.zip");
@@ -829,6 +850,8 @@ namespace DoomRPG
                     }
 
                     config = configs.Find(c => c.Name == current);
+
+                    ConvertPaths();
                 }
 
                 if (config == null)
