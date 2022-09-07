@@ -1083,6 +1083,7 @@
             this.checkBoxDMFlags2.TabIndex = 23;
             this.checkBoxDMFlags2.Text = "Enable DMFlags2";
             this.checkBoxDMFlags2.UseVisualStyleBackColor = true;
+            this.checkBoxDMFlags2.CheckedChanged += new System.EventHandler(this.CheckBoxDMFlags2_CheckedChanged);
             // 
             // checkBoxDMFlags
             // 
@@ -1094,6 +1095,7 @@
             this.checkBoxDMFlags.TabIndex = 22;
             this.checkBoxDMFlags.Text = "Enable DMFlags";
             this.checkBoxDMFlags.UseVisualStyleBackColor = true;
+            this.checkBoxDMFlags.CheckedChanged += new System.EventHandler(this.CheckBoxDMFlags_CheckedChanged);
             // 
             // listViewDMFlags
             // 

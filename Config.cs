@@ -46,7 +46,7 @@ namespace DoomRPG
         public int DMFlags2 = 0;
 
         // Warnings
-        public bool wipeWarning = false;
+        public bool wipeWarning = true;
         public Size windowSize = new Size(475, 536);
 
         public Config(string name)

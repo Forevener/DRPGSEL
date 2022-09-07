@@ -23,6 +23,7 @@ namespace DoomRPG
         string currentBranch = string.Empty;
         private List<DMFlag> DMFlags = new List<DMFlag>();
         private List<DMFlag> DMFlags2 = new List<DMFlag>();
+        private string launchProblem = String.Empty;
 
         // Extensions of known mod filetypes
         private readonly string[] fileTypes =
@@ -97,7 +98,9 @@ namespace DoomRPG
             else
             {
                 // Load savegame
-                cmdline += $" -loadgame \"{Path.GetDirectoryName(textBoxPortPath.Text)}\\{comboBoxSaveGame.Text}\"";
+                string dir = Path.GetDirectoryName(config.portPath);
+                dir = Directory.Exists(dir + "\\Save") ? dir + "\\Save" : dir;
+                cmdline += $" -loadgame \"{dir}\\{comboBoxSaveGame.Text}\"";
             }
 
             // Record Demo
@@ -330,11 +333,10 @@ namespace DoomRPG
         {
             try
             {
-                if (config.mods.Contains(config.DRPGPath + "\\DoomRPG"))
+                if (launchProblem != String.Empty)
                 {
-                    // Check for patch conflicts
-                    if (!PatchInfo.CheckForConflicts(patches))
-                        return;
+                    Utils.ShowError("There are some problems in the load order - please fix them first:\r\n" + launchProblem);
+                    return;
                 }
 
                 // Save config
@@ -406,6 +408,22 @@ namespace DoomRPG
             config.DMFlags2 = flags2;
         }
 
+        private void CheckBoxDMFlags_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxDMFlags.Checked)
+                listViewDMFlags.Enabled = true;
+            else
+                listViewDMFlags.Enabled = false;
+        }
+
+        private void CheckBoxDMFlags2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxDMFlags2.Checked)
+                listViewDMFlags2.Enabled = true;
+            else
+                listViewDMFlags2.Enabled = false;
+        }
+
         private void CheckedListBoxPatches_ItemCheck(object sender, ItemCheckEventArgs e)
         {
             if (e.NewValue != e.CurrentValue)
@@ -472,14 +490,6 @@ namespace DoomRPG
 
         private async Task CheckForUpdates()
         {
-            DialogResult result;
-
-            // Wipe Warning
-            if (!config.wipeWarning)
-                result = MessageBox.Show("This process will wipe whatever is in your selected Doom RPG folder. Are you sure you want to continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-            else
-                result = DialogResult.Yes;
-
             // Extra check to see if your selected Doom RPG path already has stuff in it
             if (CheckForMods())
             {
@@ -487,64 +497,71 @@ namespace DoomRPG
 
                 if (createResult == DialogResult.Yes)
                 {
-                    textBoxDRPGPath.Text += "\\DoomRPG";
-                    config.DRPGPath += "\\DoomRPG";
+                    string path = $"\\{config.fork.Split('/').Last()}";
+                    textBoxDRPGPath.Text += path;
+                    config.DRPGPath += path;
                 }
                 else
                     return;
             }
 
-            if (result == DialogResult.Yes)
+            toolStripStatusLabel.ForeColor = Color.FromKnownColor(KnownColor.ControlText);
+            toolStripStatusLabel.Text = "Checking for updates...";
+            toolStripProgressBar.Style = ProgressBarStyle.Marquee;
+
+            try
             {
-                config.wipeWarning = true;
+                string branchSHA = await GetBranchSHA(currentBranch);
+                string SHAPath = config.DRPGPath + "\\SHA-1";
 
-                toolStripStatusLabel.ForeColor = Color.FromKnownColor(KnownColor.ControlText);
-                toolStripStatusLabel.Text = "Checking for updates...";
-                toolStripProgressBar.Style = ProgressBarStyle.Marquee;
-
-                try
+                // Does the SHA-1 of the current version match the remote branch?
+                if (Directory.Exists(config.DRPGPath + "\\.git")) // Version is pulled from git, why bother updating with the launcher?
                 {
-                    string branchSHA = await GetBranchSHA(currentBranch);
-                    string SHAPath = config.DRPGPath + "\\SHA-1";
+                    toolStripStatusLabel.Text = "This version of Doom RPG is managed by git";
+                    toolStripProgressBar.Style = ProgressBarStyle.Continuous;
+                    SetMainControlsState(true);
+                    return;
+                }
+                else if (!Directory.Exists(config.DRPGPath)) // Directory wasn't found
+                {
+                    toolStripStatusLabel.ForeColor = Color.Red;
+                    toolStripStatusLabel.Text = "Could not find Doom RPG directory, downloading latest version...";
+                }
+                else if (File.Exists(SHAPath))
+                {
+                    string localSHA = File.ReadAllLines(SHAPath)[0];
 
-                    // Does the SHA-1 of the current version match the remote branch?
-                    if (Directory.Exists(config.DRPGPath + "\\.git")) // Version is pulled from git, why bother updating with the launcher?
+                    // Not a match, need to grab the latest version
+                    if (branchSHA != localSHA)
                     {
-                        toolStripStatusLabel.Text = "This version of Doom RPG is managed by git";
+                        toolStripStatusLabel.ForeColor = Color.Red;
+                        toolStripStatusLabel.Text = "Out-of-date, downloading latest version...";
+                    }
+                    else // Up-to-date
+                    {
+                        toolStripStatusLabel.ForeColor = Color.Green;
+                        toolStripStatusLabel.Text = "Already up-to-date!";
                         toolStripProgressBar.Style = ProgressBarStyle.Continuous;
                         SetMainControlsState(true);
                         return;
                     }
-                    else if (!Directory.Exists(config.DRPGPath)) // Directory wasn't found
-                    {
-                        toolStripStatusLabel.ForeColor = Color.Red;
-                        toolStripStatusLabel.Text = "Could not find Doom RPG directory, downloading latest version...";
-                    }
-                    else if (File.Exists(SHAPath))
-                    {
-                        string localSHA = File.ReadAllLines(SHAPath)[0];
+                }
+                else // Could not find SHA-1, download a new copy
+                {
+                    toolStripStatusLabel.ForeColor = Color.Red;
+                    toolStripStatusLabel.Text = "Could not find SHA-1, downloading latest version...";
+                }
 
-                        // Not a match, need to grab the latest version
-                        if (branchSHA != localSHA)
-                        {
-                            toolStripStatusLabel.ForeColor = Color.Red;
-                            toolStripStatusLabel.Text = "Out-of-date, downloading latest version...";
-                        }
-                        else // Up-to-date
-                        {
-                            toolStripStatusLabel.ForeColor = Color.Green;
-                            toolStripStatusLabel.Text = "Already up-to-date!";
-                            toolStripProgressBar.Style = ProgressBarStyle.Continuous;
-                            SetMainControlsState(true);
-                            return;
-                        }
-                    }
-                    else // Could not find SHA-1, download a new copy
-                    {
-                        toolStripStatusLabel.ForeColor = Color.Red;
-                        toolStripStatusLabel.Text = "Could not find SHA-1, downloading latest version...";
-                    }
+                // Wipe Warning
+                DialogResult result;
+               
+                if (config.wipeWarning)
+                    result = MessageBox.Show("Updating Doom RPG will wipe whatever is in your selected Doom RPG folder. Are you sure you want to continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                else
+                    result = DialogResult.Yes;
 
+                if (result == DialogResult.Yes)
+                {
                     // Delete the old folder
                     if (Directory.Exists(config.DRPGPath))
                         Directory.Delete(config.DRPGPath, true);
@@ -554,14 +571,17 @@ namespace DoomRPG
 
                     DownloadDRPG();
                 }
-                catch (Exception e)
+                else
                 {
-                    Utils.ShowError(e);
+                    toolStripStatusLabel.ForeColor = Color.FromKnownColor(KnownColor.ControlText);
+                    toolStripStatusLabel.Text = "Update was cancelled by user";
+                    toolStripProgressBar.Style = ProgressBarStyle.Continuous;
+                    SetMainControlsState(true);
                 }
             }
-            else
+            catch (Exception e)
             {
-                SetMainControlsState(true);
+                Utils.ShowError(e);
             }
         }
 
@@ -606,6 +626,34 @@ namespace DoomRPG
                 textBoxHostname.Enabled = true;
             else
                 textBoxHostname.Enabled = false;
+        }
+
+        private void CheckPaths()
+        {
+            if (Directory.Exists(textBoxDRPGPath.Text))
+            {
+                string problem = String.Empty;
+                if (Directory.Exists(textBoxIWADsPath.Text))
+                {
+                    if (textBoxIWADsPath.Text.StartsWith(textBoxDRPGPath.Text))
+                        problem += "DoomRPG folder should not contain IWADs folder\r\n";
+                }
+                if (Directory.Exists(textBoxModsPath.Text))
+                {
+                    if (textBoxModsPath.Text.StartsWith(textBoxDRPGPath.Text))
+                        problem += "DoomRPG folder should not contain mods folder\r\n";
+                    else if (textBoxDRPGPath.Text.StartsWith(textBoxModsPath.Text))
+                        problem += "Mods folder should not contain DoomRPG folder\r\n";
+                }
+                if (File.Exists(textBoxPortPath.Text))
+                {
+                    if (Path.GetDirectoryName(textBoxPortPath.Text).StartsWith(textBoxDRPGPath.Text))
+                        problem += "DoomRPG folder should not contain GZDoom folder\r\n";
+                }
+
+                if (problem != String.Empty)
+                    Utils.ShowError(problem);
+            }
         }
 
         private void Client_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
@@ -1040,7 +1088,9 @@ namespace DoomRPG
 
             if (File.Exists(config.portPath))
             {
-                List<string> files = Directory.EnumerateFiles(Path.GetDirectoryName(config.portPath), "*.zds").ToList();
+                string dir = Path.GetDirectoryName(config.portPath);
+                dir = Directory.Exists(dir + "\\Save") ? dir + "\\Save" : dir;
+                List<string> files = Directory.EnumerateFiles(dir, "*.zds").ToList();
 
                 foreach (string file in files)
                     comboBoxSaveGame.Items.Add(Path.GetFileName(file));
@@ -1177,6 +1227,7 @@ namespace DoomRPG
                 textBoxDRPGPath.ForeColor = SystemColors.WindowText;
                 LoadCredits();
                 PopulatePatches();
+                CheckPaths();
             }
             else
             {
@@ -1191,6 +1242,7 @@ namespace DoomRPG
                 textBoxIWADsPath.ForeColor = SystemColors.WindowText;
                 config.IWADPath = textBoxIWADsPath.Text;
                 PopulateIWADs();
+                CheckPaths();
             }
             else
             {
@@ -1205,6 +1257,7 @@ namespace DoomRPG
                 textBoxModsPath.ForeColor = SystemColors.WindowText;
                 // Re-populate the mods list
                 PopulateMods();
+                CheckPaths();
             }
             else
             {
@@ -1214,7 +1267,14 @@ namespace DoomRPG
 
         private void TextBoxPortPath_TextChanged(object sender, EventArgs e)
         {
-            textBoxPortPath.ForeColor = File.Exists(textBoxPortPath.Text) ? SystemColors.WindowText : Color.Red;
+            if (File.Exists(textBoxPortPath.Text))
+            {
+                textBoxPortPath.ForeColor = SystemColors.WindowText;
+                CheckPaths();
+            }
+            else
+                textBoxPortPath.ForeColor = Color.Red;
+            
             PopulateSaveGames();
         }
 
@@ -1243,6 +1303,7 @@ namespace DoomRPG
         private void RefreshLoadOrder()
         {
             listViewLoadOrder.Items.Clear();
+            launchProblem = "";
 
             int drpgIndex = config.mods.IndexOf($"{config.DRPGPath}\\DoomRPG");
 
@@ -1258,35 +1319,45 @@ namespace DoomRPG
                     {
                         if (!patches.Find(p => p.Name == req).Enabled)
                         {
+                            string msg = $"Patch [{patch}] requires [{req}] to be activated\r\n";
                             listViewLoadOrder.Items[i].BackColor = Color.PaleVioletRed;
-                            listViewLoadOrder.Items[i].ToolTipText += $"This patch requires {req} to be activated\r\n";
+                            listViewLoadOrder.Items[i].ToolTipText += msg;
+                            launchProblem += msg;
                         }
                     }
                     foreach (string conf in patch.Conflicts)
                     {
                         if (patches.Find(p => p.Name == conf).Enabled)
                         {
+                            string msg = $"Patch [{patch}] conflicts with [{conf}]\r\n";
                             listViewLoadOrder.Items[i].BackColor = Color.Orange;
-                            listViewLoadOrder.Items[i].ToolTipText += $"This patch conflicts with {conf}\r\n";
+                            listViewLoadOrder.Items[i].ToolTipText += msg;
+                            launchProblem += msg;
                         }
                     }
                     foreach (string mod in patch.ReqiredMods)
                     {
                         if (!config.mods.Exists(m => m.Split('\\').Last() == mod))
                         {
+                            string msg = $"Patch [{patch}] requires the file {mod}\r\n";
                             listViewLoadOrder.Items[i].BackColor = Color.PaleVioletRed;
-                            listViewLoadOrder.Items[i].ToolTipText += $"This patch requires the file {mod}\r\n";
+                            listViewLoadOrder.Items[i].ToolTipText += msg;
+                            launchProblem += msg;
                         }
                     }
                     if (drpgIndex < 0)
                     {
+                        string msg = $"Patch [{patch}] works only with DoomRPG\r\n";
                         listViewLoadOrder.Items[i].BackColor = Color.PaleVioletRed;
-                        listViewLoadOrder.Items[i].ToolTipText += $"Patches work only with DoomRPG\r\n";
+                        listViewLoadOrder.Items[i].ToolTipText += msg;
+                        launchProblem += msg;
                     }
                     if (i < drpgIndex)
                     {
-                        listViewLoadOrder.Items[i].BackColor = Color.LightGoldenrodYellow;
-                        listViewLoadOrder.Items[i].ToolTipText += $"Patches should be placed after DoomRPG in load order\r\n";
+                        string msg = $"Patch [{patch}] should be placed after DoomRPG in load order\r\n";
+                        listViewLoadOrder.Items[i].BackColor = Color.PaleVioletRed;
+                        listViewLoadOrder.Items[i].ToolTipText += msg;
+                        launchProblem += msg;
                     }
                 }
                 else
@@ -1295,8 +1366,11 @@ namespace DoomRPG
                     {
                         if (drpgIndex < i)
                         {
-                            listViewLoadOrder.Items[drpgIndex].BackColor = Color.LightGoldenrodYellow;
-                            listViewLoadOrder.Items[drpgIndex].ToolTipText = $"DoomRPG should be placed after all mods in load order\r\n";
+                            string msg = $"DoomRPG should be placed after all mods in load order\r\n";
+                            listViewLoadOrder.Items[drpgIndex].BackColor = Color.PaleVioletRed;
+                            listViewLoadOrder.Items[drpgIndex].ToolTipText = msg;
+                            if (!launchProblem.Contains(msg))
+                                launchProblem += msg;
                         }
                         foreach (PatchInfo p in patches)
                         {
@@ -1304,8 +1378,10 @@ namespace DoomRPG
                             {
                                 if (!p.Enabled && mod == file)
                                 {
+                                    string msg = $"This mod requires patch [{p}] to be activated\r\n";
                                     listViewLoadOrder.Items[i].BackColor = Color.PaleVioletRed;
-                                    listViewLoadOrder.Items[i].ToolTipText += $"This mod requires patch {p} to be activated\r\n";
+                                    listViewLoadOrder.Items[i].ToolTipText += msg;
+                                    launchProblem += msg;
                                 }
                             }
                         }
@@ -1396,7 +1472,13 @@ namespace DoomRPG
         private void AddMod(string mod)
         {
             if (!config.mods.Contains(mod))
-                config.mods.Add(mod);
+            {
+                int drpgIndex = config.mods.IndexOf($"{config.DRPGPath}\\DoomRPG");
+                if (drpgIndex < 0 || patches.FindIndex(p => p.Path == mod) >= 0)
+                    config.mods.Add(mod);
+                else
+                    config.mods.Insert(drpgIndex, mod);
+            }
 
             if (mod.Contains("DoomRL_Arsenal"))
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -10,6 +11,7 @@ namespace DoomRPG
     {
         public static async Task<Branch[]> GetAllBranches(string author, string repository)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             using (HttpClient cl = new HttpClient() { BaseAddress = new Uri("https://api.github.com"), DefaultRequestHeaders = { { "User-Agent", "DRPGSEL" } } })
             {
                 DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Branch[]));
