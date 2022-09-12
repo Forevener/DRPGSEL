@@ -49,6 +49,11 @@ namespace DoomRPG
         public bool wipeWarning = true;
         public Size windowSize = new Size(475, 536);
 
+        public Config()
+        {
+
+        }
+
         public Config(string name)
         {
             Name = name;

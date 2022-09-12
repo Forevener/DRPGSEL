@@ -10,20 +10,19 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace DoomRPG
 {
     public partial class FormMain : Form
     {
-        readonly string configPath = Application.StartupPath + "\\" + Assembly.GetEntryAssembly().GetName().Name + ".cfg";
+        readonly string configPath = $"{Application.ExecutablePath.TrimEnd(".exe".ToCharArray())}.cfg";
         Config config;
         private List<Config> configs = new List<Config>();
         string currentBranch = string.Empty;
         private List<DMFlag> DMFlags = new List<DMFlag>();
         private List<DMFlag> DMFlags2 = new List<DMFlag>();
         private string launchProblem = String.Empty;
+        bool ctrlHold = false;
 
         // Extensions of known mod filetypes
         private readonly string[] fileTypes =
@@ -64,7 +63,35 @@ namespace DoomRPG
 
             // Populate controls
             LoadContent();
-            CheckForMods();
+            PopulateMods();
+        }
+
+        private void FormMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.LControlKey || e.KeyCode == Keys.LControlKey || e.KeyCode == Keys.ControlKey)
+                ctrlHold = true;
+        }
+
+        private void FormMain_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.LControlKey || e.KeyCode == Keys.LControlKey || e.KeyCode == Keys.ControlKey)
+                ctrlHold = false;
+        }
+
+        private void FormMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (ctrlHold)
+            {
+                for (int i = 0; i < config.mods.Count; i++)
+                {
+                    config.mods[i] = Utils.GetRelativePath(Application.ExecutablePath, config.mods[i]);
+                }
+                config.DRPGPath = Utils.GetRelativePath(Application.ExecutablePath, config.DRPGPath);
+                config.IWADPath = Utils.GetRelativePath(Application.ExecutablePath, config.IWADPath);
+                config.modsPath = Utils.GetRelativePath(Application.ExecutablePath, config.modsPath);
+                config.portPath = Utils.GetRelativePath(Application.ExecutablePath, config.portPath);
+                SaveConfigs();
+            }
         }
 
         private void ComboBoxForks_SelectedIndexChanged(object sender, EventArgs e)
@@ -77,25 +104,29 @@ namespace DoomRPG
             string cmdline = string.Empty;
 
             // IWAD
-            cmdline += " -iwad " + Utils.GetRelativePath(config.portPath, $"{config.IWADPath}\\{config.iwad}");
+            cmdline += " -iwad " + Utils.GetRelativePath(config.portPath, $"{config.IWADPath}\\{config.iwad}", true);
 
-            if (config.startupMode == 0)
-            {
-
-            }
-            else if (config.startupMode == 1)
+            if (config.startupMode == 1)
             {
                 // Skill/Difficulty
                 cmdline += " -skill " + (config.difficulty + 1);
 
                 // Map Number
-                cmdline += " -warp " + config.mapNumber;
+                if (config.mapNumber == 0)
+                {
+                    if (config.mods.Contains($"{config.DRPGPath}\\DoomRPG"))
+                        cmdline += " +map outpost";
+                    else
+                        cmdline += $" -warp {config.mapNumber + 1}";
+                }
+                else
+                    cmdline += " -warp " + config.mapNumber;
 
                 // DRLA Class
                 if (IsDRLAActive)
                     cmdline += " +playerclass " + config.rlClass.ToString();
             }
-            else
+            else if (config.startupMode == 2)
             {
                 // Load savegame
                 string dir = Path.GetDirectoryName(config.portPath);
@@ -149,7 +180,7 @@ namespace DoomRPG
             // Mods selected from the mods list
             foreach (string mod in config.mods)
             {
-                cmdline += " " + Utils.GetRelativePath(config.portPath, mod);
+                cmdline += " " + Utils.GetRelativePath(config.portPath, mod, true);
             }
 
             // DMFlags
@@ -191,17 +222,15 @@ namespace DoomRPG
         private void ButtonBrowseDRPGPath_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            if (textBoxDRPGPath.Text == String.Empty)
-                dialog.SelectedPath = Directory.GetCurrentDirectory();
-            else
+            
+            if (Directory.Exists(textBoxDRPGPath.Text))
                 dialog.SelectedPath = textBoxDRPGPath.Text;
+            else
+                dialog.SelectedPath = Directory.GetCurrentDirectory();
+
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 textBoxDRPGPath.Text = dialog.SelectedPath;
-                config.DRPGPath = dialog.SelectedPath;
-                // Load Credits and re-populate the patches list
-                LoadCredits();
-                PopulatePatches();
             }
             dialog.Dispose();
         }
@@ -209,17 +238,12 @@ namespace DoomRPG
         private void ButtonBrowseIWADsPath_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            if (textBoxIWADsPath.Text == string.Empty)
-            {
-                if (Directory.Exists(textBoxPortPath.Text))
-                    dialog.SelectedPath = textBoxPortPath.Text;
-                else
-                    dialog.SelectedPath = Directory.GetCurrentDirectory();
-            }
+            
+            if (Directory.Exists(textBoxIWADsPath.Text))
+                dialog.SelectedPath = textBoxIWADsPath.Text;
             else
-            {
-                dialog.SelectedPath = textBoxDRPGPath.Text;
-            }
+                dialog.SelectedPath = Directory.GetCurrentDirectory();
+
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 textBoxIWADsPath.Text = dialog.SelectedPath;
@@ -230,14 +254,15 @@ namespace DoomRPG
         private void ButtonBrowseModsPath_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-            if (textBoxModsPath.Text == String.Empty)
-                dialog.SelectedPath = Directory.GetCurrentDirectory();
-            else
+
+            if (Directory.Exists(textBoxModsPath.Text))
                 dialog.SelectedPath = textBoxModsPath.Text;
+            else
+                dialog.SelectedPath = Directory.GetCurrentDirectory();
+
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 textBoxModsPath.Text = dialog.SelectedPath;
-                config.modsPath = dialog.SelectedPath;
             }
             dialog.Dispose();
         }
@@ -245,14 +270,15 @@ namespace DoomRPG
         private void ButtonBrowsePortPath_Click(object sender, EventArgs e)
         {
             FileDialog dialog = new OpenFileDialog() { Title = "Specify (G)ZDoom EXE...", Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*" };
-            if (textBoxPortPath.Text == string.Empty)
-                dialog.InitialDirectory = Directory.GetCurrentDirectory();
-            else
+            
+            if (File.Exists(textBoxPortPath.Text))
                 dialog.InitialDirectory = Path.GetDirectoryName(textBoxPortPath.Text);
+            else
+                dialog.InitialDirectory = Directory.GetCurrentDirectory();
+
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 textBoxPortPath.Text = dialog.FileName;
-                config.portPath = dialog.FileName;
             }
             dialog.Dispose();
         }
@@ -691,22 +717,15 @@ namespace DoomRPG
 
         private void ConvertPaths()
         {
-            // Check for relative paths and make them absolute
-            if (config.DRPGPath.StartsWith("."))
+            // Make sure paths are absolute
+            config.DRPGPath = Path.GetFullPath(config.DRPGPath);
+            config.IWADPath = Path.GetFullPath(config.IWADPath);
+            config.modsPath = Path.GetFullPath(config.modsPath);
+            config.portPath = Path.GetFullPath(config.portPath);
+
+            for (int i = 0; i < config.mods.Count; i++)
             {
-                config.DRPGPath = Path.GetFullPath(config.DRPGPath);
-            }
-            if (config.IWADPath.StartsWith("."))
-            {
-                config.IWADPath = Path.GetFullPath(config.IWADPath);
-            }
-            if (config.modsPath.StartsWith("."))
-            {
-                config.modsPath = Path.GetFullPath(config.modsPath);
-            }
-            if (config.portPath.StartsWith("."))
-            {
-                config.portPath = Path.GetFullPath(config.portPath);
+                config.mods[i] = Path.GetFullPath(config.mods[i]);
             }
         }
 
@@ -1207,7 +1226,7 @@ namespace DoomRPG
 
         private void SkipSelection(object sender, EventArgs e)
         {
-            ((System.Windows.Forms.ListView)sender).SelectedIndices.Clear();
+            ((ListView)sender).SelectedIndices.Clear();
         }
 
         private void ComboBoxStartupMode_SelectedIndexChanged(object sender, EventArgs e)
@@ -1247,8 +1266,10 @@ namespace DoomRPG
         {
             if (Directory.Exists(textBoxDRPGPath.Text))
             {
+                config.DRPGPath = textBoxDRPGPath.Text;
                 textBoxDRPGPath.ForeColor = SystemColors.WindowText;
                 LoadCredits();
+                PopulateMods();
                 PopulatePatches();
                 CheckPaths();
             }
@@ -1262,6 +1283,7 @@ namespace DoomRPG
         {
             if (Directory.Exists(textBoxIWADsPath.Text))
             {
+                config.IWADPath = textBoxIWADsPath.Text;
                 textBoxIWADsPath.ForeColor = SystemColors.WindowText;
                 config.IWADPath = textBoxIWADsPath.Text;
                 PopulateIWADs();
@@ -1277,6 +1299,7 @@ namespace DoomRPG
         {
             if (Directory.Exists(textBoxModsPath.Text))
             {
+                config.modsPath = textBoxModsPath.Text;
                 textBoxModsPath.ForeColor = SystemColors.WindowText;
                 // Re-populate the mods list
                 PopulateMods();
@@ -1292,6 +1315,7 @@ namespace DoomRPG
         {
             if (File.Exists(textBoxPortPath.Text))
             {
+                config.portPath = textBoxPortPath.Text;
                 textBoxPortPath.ForeColor = SystemColors.WindowText;
                 CheckPaths();
             }

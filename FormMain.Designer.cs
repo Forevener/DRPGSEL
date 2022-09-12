@@ -644,19 +644,9 @@
             0,
             0,
             0});
-            this.numericUpDownMapNumber.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.numericUpDownMapNumber.Name = "numericUpDownMapNumber";
             this.numericUpDownMapNumber.Size = new System.Drawing.Size(148, 31);
             this.numericUpDownMapNumber.TabIndex = 28;
-            this.numericUpDownMapNumber.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // labelMapNumber
             // 
@@ -1256,12 +1246,16 @@
             this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.statusStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(882, 995);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Doom RPG SE Launcher";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FormMain_KeyUp);
             this.tabControlMain.ResumeLayout(false);
             this.tabPageBasic.ResumeLayout(false);
             this.tabPageBasic.PerformLayout();

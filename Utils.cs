@@ -17,7 +17,7 @@ namespace DoomRPG
             MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        public static string GetRelativePath(string path1, string path2)
+        public static string GetRelativePath(string path1, string path2, bool quotes = false)
         {
             // From .NET Core 3.1
             if (string.IsNullOrEmpty(path1))
@@ -95,7 +95,7 @@ namespace DoomRPG
                 path += path2Segments[len2 - 1];
             }
 
-            return path.Contains(" ") ? $"\"{path}\"" : path;
+            return quotes && path.Contains(" ") ? $"\"{path.TrimStart('\\')}\"" : path.TrimStart('\\');
         }
     }
 }
