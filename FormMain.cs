@@ -1269,8 +1269,8 @@ namespace DoomRPG
                 config.DRPGPath = textBoxDRPGPath.Text;
                 textBoxDRPGPath.ForeColor = SystemColors.WindowText;
                 LoadCredits();
-                PopulateMods();
                 PopulatePatches();
+                PopulateMods();
                 CheckPaths();
             }
             else
@@ -1364,7 +1364,7 @@ namespace DoomRPG
                 {
                     foreach (string req in patch.Requires)
                     {
-                        if (!patches.Find(p => p.Name == req).Enabled)
+                        if (!patches.Find(p => p.Name == req)?.Enabled ?? false)
                         {
                             string msg = $"Patch [{patch}] requires [{req}] to be activated\r\n";
                             listViewLoadOrder.Items[i].BackColor = Color.PaleVioletRed;
@@ -1374,7 +1374,7 @@ namespace DoomRPG
                     }
                     foreach (string conf in patch.Conflicts)
                     {
-                        if (patches.Find(p => p.Name == conf).Enabled)
+                        if (patches.Find(p => p.Name == conf)?.Enabled ?? false)
                         {
                             string msg = $"Patch [{patch}] conflicts with [{conf}]\r\n";
                             listViewLoadOrder.Items[i].BackColor = Color.Orange;
