@@ -131,7 +131,7 @@ namespace DoomRPG
                 // Load savegame
                 string dir = Path.GetDirectoryName(config.portPath);
                 dir = Directory.Exists(dir + "\\Save") ? dir + "\\Save" : dir;
-                cmdline += $" -loadgame \"{dir}\\{comboBoxSaveGame.Text}\"";
+                cmdline += $" -loadgame \"{dir}\\{comboBoxSaveGame.Text.Split(' ').First()}\"";
             }
 
             // Record Demo
@@ -201,7 +201,7 @@ namespace DoomRPG
         {
             TreeNode currentNode = node.Add(directoryInfo.Name);
             if (config.mods.Contains(directoryInfo.FullName))
-                currentNode.Nodes[currentNode.Nodes.Count - 1].Checked = true;
+                currentNode.Checked = true;
 
             foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
             {
@@ -582,7 +582,7 @@ namespace DoomRPG
                 DialogResult result;
                
                 if (config.wipeWarning)
-                    result = MessageBox.Show("Updating Doom RPG will wipe whatever is in your selected Doom RPG folder. Are you sure you want to continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                    result = MessageBox.Show("Updating Doom RPG will wipe whatever is in your selected Doom RPG folder.\r\nSave files from the old versions will not work on the new version, but you still can save your character(s).\r\nAre you sure you want to continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 else
                     result = DialogResult.Yes;
 
@@ -1124,22 +1124,26 @@ namespace DoomRPG
             comboBoxClass.SelectedIndex = Math.Min((int)config.rlClass, classes.Length - 1);
         }
 
-        private void PopulateSaveGames()
+        private void PopulateSaveGames(bool keepIndex = false)
         {
+            string save = comboBoxSaveGame.SelectedItem?.ToString() ?? String.Empty;
             comboBoxSaveGame.Items.Clear();
 
             if (File.Exists(config.portPath))
             {
                 string dir = Path.GetDirectoryName(config.portPath);
                 dir = Directory.Exists(dir + "\\Save") ? dir + "\\Save" : dir;
-                List<string> files = Directory.EnumerateFiles(dir, "*.zds").ToList();
-
-                foreach (string file in files)
-                    comboBoxSaveGame.Items.Add(Path.GetFileName(file));
+                IEnumerable<string> paths = Directory.EnumerateFiles(dir, "*.zds");
+                
+                if (paths.Count() > 0)
+                {
+                    comboBoxSaveGame.Items.AddRange(paths.Select(f => new FileInfo(f)).OrderByDescending(f => f.LastWriteTime).Select(f => f.Name + " - " + f.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss")).ToArray());
+                    if (keepIndex && File.Exists($"{dir}\\{save.Split(' ').First()}"))
+                        comboBoxSaveGame.SelectedItem = save;
+                    else
+                        comboBoxSaveGame.SelectedIndex = 0;
+                }
             }
-
-            if (comboBoxSaveGame.Items.Count > 0)
-                comboBoxSaveGame.SelectedIndex = 0;
         }
 
         private void RadioButtonHosting_CheckedChanged(object sender, EventArgs e)
@@ -1568,6 +1572,11 @@ namespace DoomRPG
             }
 
             RefreshLoadOrder();
+        }
+
+        private void ComboBoxSaveGame_Enter(object sender, EventArgs e)
+        {
+            PopulateSaveGames(true);
         }
     }
 }
