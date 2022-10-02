@@ -124,7 +124,7 @@ namespace DoomRPG
 
                 // DRLA Class
                 if (IsDRLAActive)
-                    cmdline += " +playerclass " + config.rlClass.ToString();
+                    cmdline += " +playerclass " + config.rlClass.ToString("d");
             }
             else if (config.startupMode == 2)
             {
@@ -170,9 +170,7 @@ namespace DoomRPG
 
             // Enable Logging to File
             if (checkBoxLogging.Checked)
-                cmdline += " +logfile \"Doom RPG.log\"";
-
-
+                cmdline += $" +logfile \"Doom RPG log {DateTime.Now:yyyyMMdd-HHmmss}.txt\"";
 
             // Mods & Patches
             cmdline += " -file";

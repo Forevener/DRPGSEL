@@ -34,16 +34,16 @@ namespace DoomRPG
 
     public enum DRLAXClass
     {
-        Marine,
-        Scout,
-        Technician,
-        Renegade,
-        Demolitionist,
-        Mechanoid,
-        Nomad,
-        NanoManiac,
-        PhaseSisters,
-        Sarge
+        Marine = 0,
+        Scout = 1,
+        Technician = 2,
+        Renegade = 3,
+        Demolitionist = 4,
+        Mechanoid = 6,
+        Nomad = 7,
+        NanoManiac = 8,
+        PhaseSisters = 9,
+        Sarge = 10
     }
 
     public enum MultiplayerMode
