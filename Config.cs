@@ -27,7 +27,7 @@ namespace DoomRPG
         // Startup
         public int startupMode = 0;
         public int difficulty = 1;
-        public DRLAXClass rlClass = DRLAXClass.Marine;
+        public string rlClass = "Marine";
         public int mapNumber = 1;
 
         // Multiplayer
@@ -134,10 +134,6 @@ namespace DoomRPG
                         }
 
                         // Enums
-                        if (field.GetValue(this).GetType() == typeof(DRLAXClass))
-                            for (int i = 0; i < Enum.GetNames(typeof(DRLAXClass)).Length; i++)
-                                if (Enum.GetNames(typeof(DRLAXClass))[i].Contains(s[1]))
-                                    field.SetValue(this, Enum.ToObject(typeof(DRLAXClass), i));
                         if (field.GetValue(this).GetType() == typeof(MultiplayerMode))
                             for (int i = 0; i < Enum.GetNames(typeof(MultiplayerMode)).Length; i++)
                                 if (Enum.GetNames(typeof(MultiplayerMode))[i].Contains(s[1]))

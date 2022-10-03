@@ -40,6 +40,21 @@ namespace DoomRPG
             "plutonia.wad"
         };
 
+        private readonly List<string> DRLAXClasses = new List<string>()
+        {
+            "Marine",
+            "Scout",
+            "Technician",
+            "Renegade",
+            "Demolitionist",
+            //"Commando",
+            "Mechanoid",
+            "Nomad",
+            "Nano Maniac",
+            "Phase Sisters",
+            "Sarge"
+        };
+
         private List<PatchInfo> patches = new List<PatchInfo>();
         private readonly Version version = Assembly.GetExecutingAssembly().GetName().Version;
 
@@ -124,7 +139,7 @@ namespace DoomRPG
 
                 // DRLA Class
                 if (IsDRLAActive)
-                    cmdline += " +playerclass " + config.rlClass.ToString("d");
+                    cmdline += " +playerclass " + (config.rlClass.Contains(' ') ? $"\"{config.rlClass}\"" : config.rlClass);
             }
             else if (config.startupMode == 2)
             {
@@ -1117,9 +1132,9 @@ namespace DoomRPG
 
         private void PopulateClasses()
         {
-            var classes = patches.Find(p => p.Name == "DoomRL Arsenal Extended")?.Enabled ?? false ? Enum.GetValues(typeof(DRLAXClass)) : Enum.GetValues(typeof(DRLAClass));
-            comboBoxClass.DataSource = classes;
-            comboBoxClass.SelectedIndex = Math.Min((int)config.rlClass, classes.Length - 1);
+            comboBoxClass.DataSource = patches.Find(p => p.Name == "DoomRL Arsenal Extended")?.Enabled ?? false ? DRLAXClasses : DRLAXClasses.Take(5).ToList();
+            int i = comboBoxClass.Items.IndexOf(config.rlClass);
+            comboBoxClass.SelectedIndex = i >= 0 ? i : 0;
         }
 
         private void PopulateSaveGames(bool keepIndex = false)
@@ -1202,7 +1217,7 @@ namespace DoomRPG
             config.iwad = comboBoxIWAD.SelectedItem?.ToString() ?? "doom2.wad";
             config.startupMode = comboBoxStartupMode.SelectedIndex;
             config.difficulty = comboBoxDifficulty.SelectedIndex;
-            config.rlClass = (DRLAXClass)comboBoxClass.SelectedIndex;
+            config.rlClass = comboBoxClass.SelectedItem.ToString();
             config.mapNumber = (int)numericUpDownMapNumber.Value;
             config.demo = textBoxDemo.Text;
             config.enableCheats = checkBoxEnableCheats.Checked;
