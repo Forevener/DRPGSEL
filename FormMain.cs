@@ -986,7 +986,7 @@ namespace DoomRPG
 
         private void PopulateDifficulty()
         {
-            var difficulties = IsDRLAActive ? Enum.GetValues(typeof(DRLADifficulty)) : Enum.GetValues(typeof(Difficulty));
+            var difficulties = config.mods.Exists(m => m.Contains("DoomRL_Monsters") && !m.Contains("Brightmaps")) ? Enum.GetValues(typeof(DRLADifficulty)) : Enum.GetValues(typeof(Difficulty));
             comboBoxDifficulty.DataSource = difficulties;
             comboBoxDifficulty.SelectedIndex = Math.Min(config.difficulty, difficulties.Length - 1);
         }
@@ -1132,7 +1132,7 @@ namespace DoomRPG
 
         private void PopulateClasses()
         {
-            comboBoxClass.DataSource = patches.Find(p => p.Name == "DoomRL Arsenal Extended")?.Enabled ?? false ? DRLAXClasses : DRLAXClasses.Take(5).ToList();
+            comboBoxClass.DataSource = config.mods.Exists(m => m.Contains("DRLAX_")) ? DRLAXClasses : DRLAXClasses.Take(5).ToList();
             int i = comboBoxClass.Items.IndexOf(config.rlClass);
             comboBoxClass.SelectedIndex = i >= 0 ? i : 0;
         }
@@ -1546,12 +1546,17 @@ namespace DoomRPG
 
             if (mod.Contains("DoomRL_Arsenal"))
             {
-                PopulateDifficulty();
                 if (config.startupMode == 1)
                     comboBoxClass.Enabled = true;
             }
+            else if (mod.Contains("DoomRL_Monsters"))
+            {
+                PopulateDifficulty();
+            }
             else if (mod.Contains("DRLAX_"))
+            {
                 PopulateClasses();
+            }
 
             RefreshLoadOrder();
         }
@@ -1576,11 +1581,18 @@ namespace DoomRPG
                 if (!manually)
                     UncheckNodes(treeViewMods.Nodes, name);
 
-                else if (mod.Contains("DoomRL_Arsenal"))
+                if (mod.Contains("DoomRL_Arsenal"))
                 {
-                    PopulateDifficulty();
                     if (config.startupMode == 1)
                         comboBoxClass.Enabled = false;
+                }
+                else if (mod.Contains("DoomRL_Monsters"))
+                {
+                    PopulateDifficulty();
+                }
+                else if (mod.Contains("DRLAX_"))
+                {
+                    PopulateClasses();
                 }
             }
 
