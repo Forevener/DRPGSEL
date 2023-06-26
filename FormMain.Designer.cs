@@ -29,14 +29,17 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("Mod1");
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("Mod2");
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("Mod3");
-            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("Mod4");
-            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("Mod5");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Mod1");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("Mod2");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("Mod3");
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("Mod4");
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("Mod5");
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabPageBasic = new System.Windows.Forms.TabPage();
+            this.buttonBrowseSavePath = new System.Windows.Forms.Button();
+            this.textBoxSavePath = new System.Windows.Forms.TextBox();
+            this.labelSaveLocation = new System.Windows.Forms.Label();
             this.comboBoxForks = new System.Windows.Forms.ComboBox();
             this.labelFork = new System.Windows.Forms.Label();
             this.buttonConfigSave = new System.Windows.Forms.Button();
@@ -158,6 +161,9 @@
             // 
             // tabPageBasic
             // 
+            this.tabPageBasic.Controls.Add(this.buttonBrowseSavePath);
+            this.tabPageBasic.Controls.Add(this.textBoxSavePath);
+            this.tabPageBasic.Controls.Add(this.labelSaveLocation);
             this.tabPageBasic.Controls.Add(this.comboBoxForks);
             this.tabPageBasic.Controls.Add(this.labelFork);
             this.tabPageBasic.Controls.Add(this.buttonConfigSave);
@@ -195,11 +201,47 @@
             this.tabPageBasic.Text = "Basic";
             this.tabPageBasic.UseVisualStyleBackColor = true;
             // 
+            // buttonBrowseSavePath
+            // 
+            this.buttonBrowseSavePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonBrowseSavePath.Location = new System.Drawing.Point(739, 329);
+            this.buttonBrowseSavePath.Margin = new System.Windows.Forms.Padding(6);
+            this.buttonBrowseSavePath.Name = "buttonBrowseSavePath";
+            this.buttonBrowseSavePath.Size = new System.Drawing.Size(132, 38);
+            this.buttonBrowseSavePath.TabIndex = 47;
+            this.buttonBrowseSavePath.Text = "Browse...";
+            this.buttonBrowseSavePath.UseVisualStyleBackColor = true;
+            this.buttonBrowseSavePath.Click += new System.EventHandler(this.ButtonBrowseSavePath_Click);
+            // 
+            // textBoxSavePath
+            // 
+            this.textBoxSavePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxSavePath.Location = new System.Drawing.Point(20, 333);
+            this.textBoxSavePath.Margin = new System.Windows.Forms.Padding(6);
+            this.textBoxSavePath.Name = "textBoxSavePath";
+            this.textBoxSavePath.Size = new System.Drawing.Size(702, 31);
+            this.textBoxSavePath.TabIndex = 46;
+            this.textBoxSavePath.TextChanged += new System.EventHandler(this.TextBoxSavePath_TextChanged);
+            // 
+            // labelSaveLocation
+            // 
+            this.labelSaveLocation.AutoSize = true;
+            this.labelSaveLocation.Cursor = System.Windows.Forms.Cursors.Help;
+            this.labelSaveLocation.Location = new System.Drawing.Point(16, 302);
+            this.labelSaveLocation.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.labelSaveLocation.Name = "labelSaveLocation";
+            this.labelSaveLocation.Size = new System.Drawing.Size(334, 25);
+            this.labelSaveLocation.TabIndex = 45;
+            this.labelSaveLocation.Text = "Saved Games Folder Location (?)";
+            this.labelSaveLocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTipMain.SetToolTip(this.labelSaveLocation, resources.GetString("labelSaveLocation.ToolTip"));
+            // 
             // comboBoxForks
             // 
             this.comboBoxForks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxForks.FormattingEnabled = true;
-            this.comboBoxForks.Location = new System.Drawing.Point(20, 414);
+            this.comboBoxForks.Location = new System.Drawing.Point(20, 494);
             this.comboBoxForks.Margin = new System.Windows.Forms.Padding(6);
             this.comboBoxForks.Name = "comboBoxForks";
             this.comboBoxForks.Size = new System.Drawing.Size(238, 33);
@@ -209,7 +251,7 @@
             // labelFork
             // 
             this.labelFork.AutoSize = true;
-            this.labelFork.Location = new System.Drawing.Point(17, 383);
+            this.labelFork.Location = new System.Drawing.Point(17, 463);
             this.labelFork.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelFork.Name = "labelFork";
             this.labelFork.Size = new System.Drawing.Size(162, 25);
@@ -220,7 +262,7 @@
             // 
             this.buttonConfigSave.BackgroundImage = global::DoomRPG.Properties.Resources.Save_16x;
             this.buttonConfigSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonConfigSave.Location = new System.Drawing.Point(645, 382);
+            this.buttonConfigSave.Location = new System.Drawing.Point(645, 462);
             this.buttonConfigSave.Margin = new System.Windows.Forms.Padding(6);
             this.buttonConfigSave.Name = "buttonConfigSave";
             this.buttonConfigSave.Size = new System.Drawing.Size(48, 48);
@@ -255,19 +297,22 @@
             // labelIWADsLocation
             // 
             this.labelIWADsLocation.AutoSize = true;
+            this.labelIWADsLocation.Cursor = System.Windows.Forms.Cursors.Help;
             this.labelIWADsLocation.Location = new System.Drawing.Point(17, 156);
             this.labelIWADsLocation.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelIWADsLocation.Name = "labelIWADsLocation";
-            this.labelIWADsLocation.Size = new System.Drawing.Size(306, 25);
+            this.labelIWADsLocation.Size = new System.Drawing.Size(338, 25);
             this.labelIWADsLocation.TabIndex = 35;
-            this.labelIWADsLocation.Text = "Vanilla (IWAD) Folder Location";
+            this.labelIWADsLocation.Text = "Vanilla (IWAD) Folder Location (?)";
             this.labelIWADsLocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTipMain.SetToolTip(this.labelIWADsLocation, "A folder where vanilla IWAD(s) are stored (probably where one of the Doom games i" +
+        "s installed). Could be in the same folder as GZDoom");
             // 
             // buttonConfigRemove
             // 
             this.buttonConfigRemove.BackgroundImage = global::DoomRPG.Properties.Resources.Eraser_16x;
             this.buttonConfigRemove.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonConfigRemove.Location = new System.Drawing.Point(825, 382);
+            this.buttonConfigRemove.Location = new System.Drawing.Point(825, 462);
             this.buttonConfigRemove.Margin = new System.Windows.Forms.Padding(6);
             this.buttonConfigRemove.Name = "buttonConfigRemove";
             this.buttonConfigRemove.Size = new System.Drawing.Size(48, 48);
@@ -280,7 +325,7 @@
             // 
             this.buttonDuplicateConfig.BackgroundImage = global::DoomRPG.Properties.Resources.Copy_16x;
             this.buttonDuplicateConfig.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonDuplicateConfig.Location = new System.Drawing.Point(765, 382);
+            this.buttonDuplicateConfig.Location = new System.Drawing.Point(765, 462);
             this.buttonDuplicateConfig.Margin = new System.Windows.Forms.Padding(6);
             this.buttonDuplicateConfig.Name = "buttonDuplicateConfig";
             this.buttonDuplicateConfig.Size = new System.Drawing.Size(48, 48);
@@ -293,7 +338,7 @@
             // 
             this.buttonRenameConfig.BackgroundImage = global::DoomRPG.Properties.Resources.Pen1_16x;
             this.buttonRenameConfig.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonRenameConfig.Location = new System.Drawing.Point(705, 382);
+            this.buttonRenameConfig.Location = new System.Drawing.Point(705, 462);
             this.buttonRenameConfig.Margin = new System.Windows.Forms.Padding(6);
             this.buttonRenameConfig.Name = "buttonRenameConfig";
             this.buttonRenameConfig.Size = new System.Drawing.Size(48, 48);
@@ -306,7 +351,7 @@
             // 
             this.buttonCreateConfig.BackgroundImage = global::DoomRPG.Properties.Resources.AddFile_16x;
             this.buttonCreateConfig.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonCreateConfig.Location = new System.Drawing.Point(585, 382);
+            this.buttonCreateConfig.Location = new System.Drawing.Point(585, 462);
             this.buttonCreateConfig.Margin = new System.Windows.Forms.Padding(6);
             this.buttonCreateConfig.Name = "buttonCreateConfig";
             this.buttonCreateConfig.Size = new System.Drawing.Size(48, 48);
@@ -321,7 +366,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxConfig.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxConfig.FormattingEnabled = true;
-            this.comboBoxConfig.Location = new System.Drawing.Point(585, 337);
+            this.comboBoxConfig.Location = new System.Drawing.Point(585, 417);
             this.comboBoxConfig.Margin = new System.Windows.Forms.Padding(6);
             this.comboBoxConfig.Name = "comboBoxConfig";
             this.comboBoxConfig.Size = new System.Drawing.Size(287, 33);
@@ -333,7 +378,7 @@
             this.labelConfig.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelConfig.AutoSize = true;
-            this.labelConfig.Location = new System.Drawing.Point(579, 307);
+            this.labelConfig.Location = new System.Drawing.Point(579, 387);
             this.labelConfig.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelConfig.Name = "labelConfig";
             this.labelConfig.Size = new System.Drawing.Size(140, 25);
@@ -345,7 +390,7 @@
             this.comboBoxBranch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxBranch.Enabled = false;
             this.comboBoxBranch.FormattingEnabled = true;
-            this.comboBoxBranch.Location = new System.Drawing.Point(19, 497);
+            this.comboBoxBranch.Location = new System.Drawing.Point(19, 577);
             this.comboBoxBranch.Margin = new System.Windows.Forms.Padding(6);
             this.comboBoxBranch.Name = "comboBoxBranch";
             this.comboBoxBranch.Size = new System.Drawing.Size(238, 33);
@@ -355,7 +400,7 @@
             // labelBranch
             // 
             this.labelBranch.AutoSize = true;
-            this.labelBranch.Location = new System.Drawing.Point(16, 466);
+            this.labelBranch.Location = new System.Drawing.Point(16, 546);
             this.labelBranch.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelBranch.Name = "labelBranch";
             this.labelBranch.Size = new System.Drawing.Size(187, 25);
@@ -378,7 +423,7 @@
             // checkBoxLogging
             // 
             this.checkBoxLogging.AutoSize = true;
-            this.checkBoxLogging.Location = new System.Drawing.Point(299, 378);
+            this.checkBoxLogging.Location = new System.Drawing.Point(299, 458);
             this.checkBoxLogging.Margin = new System.Windows.Forms.Padding(6);
             this.checkBoxLogging.Name = "checkBoxLogging";
             this.checkBoxLogging.Size = new System.Drawing.Size(259, 29);
@@ -389,7 +434,7 @@
             // checkBoxEnableCheats
             // 
             this.checkBoxEnableCheats.AutoSize = true;
-            this.checkBoxEnableCheats.Location = new System.Drawing.Point(299, 337);
+            this.checkBoxEnableCheats.Location = new System.Drawing.Point(299, 417);
             this.checkBoxEnableCheats.Margin = new System.Windows.Forms.Padding(6);
             this.checkBoxEnableCheats.Name = "checkBoxEnableCheats";
             this.checkBoxEnableCheats.Size = new System.Drawing.Size(185, 29);
@@ -401,7 +446,7 @@
             // 
             this.comboBoxIWAD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxIWAD.FormattingEnabled = true;
-            this.comboBoxIWAD.Location = new System.Drawing.Point(20, 335);
+            this.comboBoxIWAD.Location = new System.Drawing.Point(20, 415);
             this.comboBoxIWAD.Margin = new System.Windows.Forms.Padding(6);
             this.comboBoxIWAD.Name = "comboBoxIWAD";
             this.comboBoxIWAD.Size = new System.Drawing.Size(238, 33);
@@ -410,7 +455,7 @@
             // labelIWAD
             // 
             this.labelIWAD.AutoSize = true;
-            this.labelIWAD.Location = new System.Drawing.Point(17, 304);
+            this.labelIWAD.Location = new System.Drawing.Point(17, 384);
             this.labelIWAD.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelIWAD.Name = "labelIWAD";
             this.labelIWAD.Size = new System.Drawing.Size(128, 25);
@@ -443,13 +488,16 @@
             // labelModsLocation
             // 
             this.labelModsLocation.AutoSize = true;
+            this.labelModsLocation.Cursor = System.Windows.Forms.Cursors.Help;
             this.labelModsLocation.Location = new System.Drawing.Point(17, 229);
             this.labelModsLocation.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelModsLocation.Name = "labelModsLocation";
-            this.labelModsLocation.Size = new System.Drawing.Size(335, 25);
+            this.labelModsLocation.Size = new System.Drawing.Size(367, 25);
             this.labelModsLocation.TabIndex = 12;
-            this.labelModsLocation.Text = "Mods (WAD/PK3) Folder Location";
+            this.labelModsLocation.Text = "Mods (WAD/PK3) Folder Location (?)";
             this.labelModsLocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTipMain.SetToolTip(this.labelModsLocation, "A folder where all the mods are stored (except for the DoomRPG). Launcher support" +
+        "s subfolders, so mods could be sorted");
             // 
             // buttonBrowseDRPGPath
             // 
@@ -477,13 +525,16 @@
             // labelDoomRPGFolderLocation
             // 
             this.labelDoomRPGFolderLocation.AutoSize = true;
+            this.labelDoomRPGFolderLocation.Cursor = System.Windows.Forms.Cursors.Help;
             this.labelDoomRPGFolderLocation.Location = new System.Drawing.Point(16, 81);
             this.labelDoomRPGFolderLocation.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelDoomRPGFolderLocation.Name = "labelDoomRPGFolderLocation";
-            this.labelDoomRPGFolderLocation.Size = new System.Drawing.Size(274, 25);
+            this.labelDoomRPGFolderLocation.Size = new System.Drawing.Size(306, 25);
             this.labelDoomRPGFolderLocation.TabIndex = 3;
-            this.labelDoomRPGFolderLocation.Text = "Doom RPG Folder Location";
+            this.labelDoomRPGFolderLocation.Text = "Doom RPG Folder Location (?)";
             this.labelDoomRPGFolderLocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTipMain.SetToolTip(this.labelDoomRPGFolderLocation, "A folder where DoomRPG mod itself is stored. It should be kept separate from othe" +
+        "r mods, since the folder will be wiped during the update.");
             // 
             // buttonBrowsePortPath
             // 
@@ -511,13 +562,15 @@
             // labelPortLocation
             // 
             this.labelPortLocation.AutoSize = true;
+            this.labelPortLocation.Cursor = System.Windows.Forms.Cursors.Help;
             this.labelPortLocation.Location = new System.Drawing.Point(16, 6);
             this.labelPortLocation.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.labelPortLocation.Name = "labelPortLocation";
-            this.labelPortLocation.Size = new System.Drawing.Size(185, 25);
+            this.labelPortLocation.Size = new System.Drawing.Size(217, 25);
             this.labelPortLocation.TabIndex = 0;
-            this.labelPortLocation.Text = "GZDoom Location";
+            this.labelPortLocation.Text = "GZDoom Location (?)";
             this.labelPortLocation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTipMain.SetToolTip(this.labelPortLocation, "A folder where GZDoom source port is stored. ");
             // 
             // tabPageStartup
             // 
@@ -968,11 +1021,11 @@
             this.listViewLoadOrder.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listViewLoadOrder.HideSelection = false;
             this.listViewLoadOrder.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem6,
-            listViewItem7,
-            listViewItem8,
-            listViewItem9,
-            listViewItem10});
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4,
+            listViewItem5});
             this.listViewLoadOrder.LabelWrap = false;
             this.listViewLoadOrder.Location = new System.Drawing.Point(447, 28);
             this.listViewLoadOrder.MultiSelect = false;
@@ -1218,6 +1271,10 @@
             this.timerPulse.Interval = 10;
             this.timerPulse.Tick += new System.EventHandler(this.TimerPulse_Tick);
             // 
+            // toolTipMain
+            // 
+            this.toolTipMain.IsBalloon = true;
+            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 2;
@@ -1376,6 +1433,9 @@
         private System.Windows.Forms.Label labelMapNumber;
         private System.Windows.Forms.ComboBox comboBoxDifficulty;
         private System.Windows.Forms.Label labelDifficulty;
+        private System.Windows.Forms.Button buttonBrowseSavePath;
+        private System.Windows.Forms.TextBox textBoxSavePath;
+        private System.Windows.Forms.Label labelSaveLocation;
     }
 }
 

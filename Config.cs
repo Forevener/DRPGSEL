@@ -17,6 +17,7 @@ namespace DoomRPG
         public string IWADPath = string.Empty;
         public string DRPGPath = string.Empty;
         public string modsPath = string.Empty;
+        public string savePath = string.Empty;
         public string iwad = "doom2.wad";
         public string demo = string.Empty;
         public bool enableCheats = false;
