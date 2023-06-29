@@ -7,7 +7,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,14 +25,14 @@ namespace DoomRPG
         bool ctrlHold = false;
 
         // Extensions of known mod filetypes
-        private readonly string[] fileTypes =
+        private readonly HashSet<string> fileTypes = new HashSet<string>
         {
-            "wad",                  // Original vanilla Doom archive type
-            "zip", "pk3", "pk7",    // Archive File Types
-            "deh", "bex"            // DeHackEd File Types
+            ".wad",                    // Original vanilla Doom archive type
+            ".zip", ".pk3", ".pk7",    // Archive File Types
+            ".deh", ".bex"             // DeHackEd File Types
         };
 
-        private readonly List<string> IWADs = new List<string>()
+        private readonly List<string> IWADs = new List<string>
         {
             "doom.wad",
             "doom2.wad",
@@ -41,7 +40,7 @@ namespace DoomRPG
             "plutonia.wad"
         };
 
-        private readonly List<string> DRLAXClasses = new List<string>()
+        private readonly List<string> DRLAXClasses = new List<string>
         {
             "Marine",
             "Scout",
@@ -69,7 +68,7 @@ namespace DoomRPG
             InitializeComponent();
 
             // Title
-            Text = "Doom RPG SE Launcher v" + version.ToString(3);
+            Text = "Doom RPG SE Launcher v" + version.ToString(4);
 
             // Load config
             LoadConfigs();
@@ -79,7 +78,6 @@ namespace DoomRPG
 
             // Populate controls
             LoadContent();
-            PopulateMods();
         }
 
         private void FormMain_KeyDown(object sender, KeyEventArgs e)
@@ -212,26 +210,32 @@ namespace DoomRPG
             return cmdline;
         }
 
-        private void BuildTree(DirectoryInfo directoryInfo, TreeNodeCollection node)
+        private void BuildTree(DirectoryInfo directoryInfo, TreeNodeCollection nodes)
         {
-            TreeNode currentNode = node.Add(directoryInfo.Name);
-            if (config.mods.Contains(directoryInfo.FullName))
-                currentNode.Checked = true;
-
             foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
             {
                 if (directory.FullName != config.DRPGPath)
-                    BuildTree(directory, currentNode.Nodes);
-            }
-            foreach (FileInfo file in directoryInfo.GetFiles().Where(file => fileTypes.Any(file.Name.EndsWith)))
-            {
-                currentNode.Nodes.Add(file.Name);
-                if (config.mods.Contains(file.FullName))
                 {
-                    currentNode.Nodes[currentNode.Nodes.Count - 1].Checked = true;
-                    currentNode.Expand();
+                    BuildTree(directory, AddNode(directory, nodes).Nodes);
                 }
             }
+            foreach (FileInfo file in directoryInfo.GetFiles().Where(file => fileTypes.Contains(file.Extension.ToLower())))
+            {
+                AddNode(file, nodes);
+            }
+        }
+
+        private TreeNode AddNode(FileSystemInfo info, TreeNodeCollection nodes)
+        {
+            TreeNode currentNode = nodes.Add(info.Name);
+            if (config.mods.Contains(info.FullName))
+            {
+                currentNode.Checked = true;
+                if (currentNode.Parent != null && !currentNode.Parent.IsExpanded)
+                    currentNode.Parent.Expand();
+            }
+
+            return currentNode;
         }
 
         private void ButtonBrowseDRPGPath_Click(object sender, EventArgs e)
@@ -1098,6 +1102,7 @@ namespace DoomRPG
 
         private void PopulateMods()
         {
+            treeViewMods.SuspendLayout();
             // Remove non-existant mods
             config.mods.RemoveAll(m => !File.Exists(m) && !Directory.Exists(m));
 
@@ -1112,19 +1117,9 @@ namespace DoomRPG
             }
             if (Directory.Exists(config.modsPath))
             {
-                DirectoryInfo directoryInfo = new DirectoryInfo(config.modsPath);
-                foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
-                {
-                    if (directory.FullName != config.DRPGPath)
-                        BuildTree(directory, treeViewMods.Nodes);
-                }
-                foreach (FileInfo file in directoryInfo.GetFiles().Where(file => fileTypes.Any(file.Name.EndsWith)))
-                {
-                    treeViewMods.Nodes.Add(file.Name);
-                    if (config.mods.Contains(file.FullName))
-                        treeViewMods.Nodes[treeViewMods.Nodes.Count - 1].Checked = true;
-                }
+                BuildTree(new DirectoryInfo(config.modsPath), treeViewMods.Nodes);
             }
+            treeViewMods.ResumeLayout();
         }
 
         private void ListViewLoadOrder_SizeChanged(object sender, EventArgs e)
