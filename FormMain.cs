@@ -144,9 +144,9 @@ namespace DoomRPG
             else if (config.startupMode == 2)
             {
                 // Load savegame
-                string dir = Path.GetDirectoryName(config.portPath);
-                dir = Directory.Exists(dir + "\\Save") ? dir + "\\Save" : dir;
-                cmdline += $" -loadgame \"{dir}\\{comboBoxSaveGame.Text.Split(' ').First()}\"";
+                //string dir = Path.GetFullPath(config.savePath);
+                //cmdline += $" -loadgame \"{dir}\\{comboBoxSaveGame.Text.Split(' ').First()}\"";
+                cmdline += $" -loadgame \"{comboBoxSaveGame.Text.Split(' ').First()}\"";
             }
 
             // Record Demo
@@ -188,7 +188,8 @@ namespace DoomRPG
                 cmdline += $" +logfile \"Doom RPG log {DateTime.Now:yyyyMMdd-HHmmss}.txt\"";
 
             // Mods & Patches
-            cmdline += " -file";
+            if (config.mods.Count > 0)
+                cmdline += " -file";
 
             // Mods selected from the mods list
             foreach (string mod in config.mods)
@@ -204,7 +205,7 @@ namespace DoomRPG
                 cmdline += " +set dmflags2 " + config.DMFlags2.ToString();
 
             // Custom Commands
-            if (config.customCommands != string.Empty)
+            if (string.IsNullOrWhiteSpace(config.customCommands))
                 cmdline += " " + config.customCommands;
 
             return cmdline;
@@ -1150,10 +1151,10 @@ namespace DoomRPG
                             checkedListBoxPatches.SetItemChecked(patches.Count - 1, true);
                     }
                 }
-
-                // Populate DRLA(X) Class
-                PopulateClasses();
             }
+
+            // Populate DRLA(X) Class
+            PopulateClasses();
         }
 
         private void PopulateClasses()
@@ -1242,7 +1243,7 @@ namespace DoomRPG
             config.iwad = comboBoxIWAD.SelectedItem?.ToString() ?? "doom2.wad";
             config.startupMode = comboBoxStartupMode.SelectedIndex;
             config.difficulty = comboBoxDifficulty.SelectedIndex;
-            config.rlClass = comboBoxClass.SelectedItem.ToString();
+            config.rlClass = comboBoxClass.SelectedItem?.ToString() ?? DRLAXClasses.First();
             config.mapNumber = (int)numericUpDownMapNumber.Value;
             config.demo = textBoxDemo.Text;
             config.enableCheats = checkBoxEnableCheats.Checked;
