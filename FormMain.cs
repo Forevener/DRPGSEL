@@ -52,7 +52,9 @@ namespace DoomRPG
             "Nomad",
             "Nano Maniac",
             "Phase Sisters",
-            "Sarge"
+            "Sarge",
+            "Trespasser",
+            "Bunker"
         };
 
         private List<PatchInfo> patches = new List<PatchInfo>();
@@ -411,7 +413,13 @@ namespace DoomRPG
                     return;
 
                 // Launch
-                Process.Start(config.portPath, BuildCommandLine());
+                Process.Start(new ProcessStartInfo
+                {
+                    WorkingDirectory = Directory.GetParent(config.portPath).FullName,
+                    Arguments = BuildCommandLine(),
+                    UseShellExecute = false,
+                    FileName = config.portPath
+                });
             }
             catch (Exception ex)
             {
